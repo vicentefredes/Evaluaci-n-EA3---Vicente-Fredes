@@ -72,6 +72,18 @@ def artistas_del(request, pk):
 @login_required
 def crud_albums(request):
     albums = Album.objects.all().order_by('id_artista', 'nombre_disco')
+    paginator = Paginator(albums, 25)
+
+    page = request.GET.get('page')
+
+    try:
+        albums = paginator.page(page)
+    except PageNotAnInteger:
+        albums = paginator.page(1)
+    except EmptyPage:
+        albums = paginator.page(paginator.num_pages)
+
+
     context = {'albums': albums, 'clase': 'mantenedores'}
     return render(request, 'discos/albums_list.html', context)
 
@@ -151,5 +163,16 @@ def mensajesAdd(request):
 #Discos (para el cliente)
 def listado_albums(request):
     albums = Album.objects.all().order_by('id_artista', 'nombre_disco')
+    paginator = Paginator(albums, 12)  
+
+    page = request.GET.get('page')
+
+    try:
+        albums = paginator.page(page)
+    except PageNotAnInteger:
+        albums = paginator.page(1)
+    except EmptyPage:
+        albums = paginator.page(paginator.num_pages)
+
     context = {'albums': albums, 'clase': 'discos'}
     return render(request, 'discos/discos.html', context)

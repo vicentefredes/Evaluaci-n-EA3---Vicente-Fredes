@@ -45,6 +45,7 @@ class Compra(models.Model):
 
     def __str__(self):
         return f"Compra {self.id_compra} - {self.fecha}"
+    
 class Mensaje(models.Model):
     id_mensaje = models.AutoField(db_column='idMensaje', primary_key=True) 
     nombre = models.CharField(max_length=100, null=False, blank=False)

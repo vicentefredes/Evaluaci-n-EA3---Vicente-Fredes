@@ -14,5 +14,5 @@ urlpatterns = [
     path('listadoMensajes', views.listadoMensajes, name='mensajes'),
     path('mensajesAdd', views.mensajesAdd, name='contacto'),
     path('mensajes_del/<int:pk>', views.mensajes_del, name='mensajes_del'),
-    path('listado_albums', views.listado_albums, name='discos')
+    path('discos', views.listado_albums, name='discos')
 ]
