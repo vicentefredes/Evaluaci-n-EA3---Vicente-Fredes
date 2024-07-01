@@ -123,3 +123,21 @@ def mensajes_del(request, pk):
         mensaje = f"ERROR: el id {pk} no existe"
         context = {'mensaje': mensajeAlert, 'mensajes': Mensaje.objects.all().order_by('-fecha'), 'clase': 'mensajes'}
         return render(request, 'discos/mensajes.html', context)
+    
+def mensajesAdd(request):
+    if request.method == "POST":
+        form = MensajeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            nombre = form.cleaned_data.get('nombre')
+            mensaje = f"{nombre}, tu mensaje ha sido enviado exitosamente. ¡Gracias por comunicarte con nosotros!"
+            return render(request, 'discos/contacto.html', {'form': MensajeForm(), 'mensaje': mensaje, 'clase': 'contacto'})
+    else:
+        form = MensajeForm()
+    return render(request, 'discos/contacto.html', {'form': form, 'clase': 'contacto'})
+
+#Discos (para el cliente)
+def listado_albums(request):
+    albums = Album.objects.all().order_by('id_artista', 'nombre_disco')
+    context = {'albums': albums, 'clase': 'discos'}
+    return render(request, 'discos/discos.html', context)

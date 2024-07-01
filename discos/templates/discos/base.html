@@ -60,8 +60,8 @@
                 </li>
             
             {% else %}
-              {% if clase == 'productos' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
-                  <a class="nav-link" href="#">Productos</a>
+              {% if clase == 'discos' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
+                  <a class="nav-link" href="{% url 'discos' %}">Discos</a>
                 </li>
               
               {% if clase == 'carrito' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
@@ -69,7 +69,7 @@
                 </li>
 
               {% if clase == 'contacto' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
-                  <a class="nav-link" href="#">Contacto</a>
+                  <a class="nav-link" href="{% url 'contacto' %}">Contacto</a>
                 </li>
               
             {% endif %}
@@ -85,7 +85,7 @@
                 </div>
               </li>
             {% else %}
-              {% if clase == 'contacto' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
+              {% if clase == 'login' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
                   <a class="nav-link" href="{% url 'login' %}">Entrar</a>
                 </li>
             {% endif %}
