@@ -1,0 +1,56 @@
+{% extends "discos/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+    <header>
+      <div class="row justify-content-center">
+        <div class="col-md-8 col-sm-12">
+          <h1>Listado de Artistas</h1>
+        </div>
+        <div class="col-md-4 col-sm-12">
+          <div class="container-btn">
+            <button class="btn btn-light" id="btnAgregar">
+              <a href="{% url 'artistasAdd' %}">Agregar Artista</a>
+            </button>
+          </div>
+        </div>
+      </div>   
+    </header>
+
+    <div id="idMensajes">
+      {% if mensaje %}
+          <div class="alert alert-warning mx-auto">
+              {{ mensaje }}
+          </div>
+      {% endif %}
+    </div>
+
+    <div class="table-container">
+        <table class="table table-striped">
+            {% if artistas %}
+                <thead>
+                    <tr>
+                    <th scope="col">Nombre del Artista</th>
+                    <th scope="col">Nacionalidad</th>
+                    <th scope="col">Biografía</th>
+                    <th scope="col" colspan="2">Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for artista in artistas %}
+                        <tr>
+                            <td>{{ artista.nombre_artista }}</td>
+                            <td>{{ artista.nacionalidad }}</td>
+                            <td>{{ artista.biografia }}</td>
+                            <td class="td-update"><a href="{% url 'artistas_edit' pk=artista.id_artista %}">Modificar</a></td> 
+                            <td class="td-delete"><a href="{% url 'artistas_del' pk=artista.id_artista %}">Eliminar</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            {% endif %}    
+        </table>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "discos/base.html" %}
+
+{% load static %}
+
+{% block content %}
+  <br>
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-sm-12">
+        <header>
+          <h1>Listado de Álbumes</h1>
+        </header>
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <div class="container-btn">
+          <button class="btn btn-light" id="btnAgregar">
+            <a href="{% url 'albumsAdd' %}">Agregar Álbum</a>
+          </button>
+        </div>
+      </div>
+    </div>   
+
+    <div id="idMensajes">
+      {% if mensaje %}
+          <div class="alert alert-warning mx-auto">
+              {{ mensaje }}
+          </div>
+      {% endif %}
+    </div>
+
+    <div class="table-container">
+        <table class="table table-striped">
+            {% if albums %}
+                <thead>
+                    <tr>
+                    <th scope="col">Artista</th>
+                    <th scope="col">Nombre del Disco</th>
+                    <th scope="col">Género</th>
+                    <th scope="col">Fecha de Lanzamiento</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Formato</th>
+                    <th scope="col" colspan="2">Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for album in albums %}
+                        <tr>
+                            <td>{{ album.id_artista }}</td>
+                            <td>{{ album.nombre_disco }}</td>
+                            <td>{{ album.id_genero }}</td>
+                            <td>{{ album.fecha_lanzamiento }}</td>
+                            <td>${{ album.precio }}</td>
+                            <td>{{ album.id_formato }}</td>
+                            <td class="td-update"><a href="{% url 'albums_edit' pk=album.id_album %}">Modificar</a></td> 
+                            <td class="td-delete"><a href="{% url 'albums_del' pk=album.id_album %}">Eliminar</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            {% endif %}    
+        </table>
+    </div>
+
+{% endblock %}

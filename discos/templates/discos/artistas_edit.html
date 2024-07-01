@@ -1,0 +1,65 @@
+{% extends "discos/base.html" %}
+
+{% load static %}
+
+{% block content %}
+  <br>
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10 col-sm-12">
+        <div id="formCrud" class="p-4 border rounded">
+          <h2 class="text-center">Modificar Artista:</h2>
+          <br />
+
+          <form action="" method="POST" class="form-horizontal" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-row justify-content-center">
+              <div class="form-group col-md-8">
+                {{ form.non_field_errors }}
+                <label for="{{ form.nombre_artista.id_for_label }}"
+                  >{{ form.nombre_artista.label }}</label
+                >
+                {{ form.nombre_artista }} {{ form.nombre_artista.errors }}
+              </div>
+              <div class="form-group col-md-8">
+                <label for="{{ form.nacionalidad.id_for_label }}"
+                  >{{ form.nacionalidad.label }}</label
+                >
+                {{ form.nacionalidad }} {{ form.nacionalidad.errors }}
+              </div>
+              <div class="form-group col-md-8">
+                <label for="{{ form.biografia.id_for_label }}"
+                  >{{ form.biografia.label }}</label
+                >
+                {{ form.biografia }} {{ form.biografia.errors }}
+              </div>
+              <div class="form-group col-md-8">
+                <label for="{{ form.foto.id_for_label }}"
+                  >{{ form.foto.label }}</label
+                >
+                {{ form.foto }} {{ form.foto.errors }}
+              </div>
+            </div>
+            <br />
+            <div class="form-group text-center">
+              <button type="submit" class="btn btn-primary" id="btnEnviarForm">
+                Actualizar
+              </button>
+              <a
+                href="{% url 'crud_artistas' %}"
+                class="btn btn-secondary"
+                id="btnVolver"
+                >Volver</a
+              >
+            </div>
+          </form>
+
+          <div id="idMensajes">
+            {% if mensaje %}
+            <div class="alert alert-success mx-auto">{{ mensaje }}</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

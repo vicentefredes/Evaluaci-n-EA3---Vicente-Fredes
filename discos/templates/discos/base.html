@@ -51,12 +51,12 @@
                     Mantenedores   
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="#">Artistas</a>
-                      <a class="dropdown-item" href="#">Discos</a>
+                      <a class="dropdown-item" href="{% url 'crud_artistas' %}">Artistas</a>
+                      <a class="dropdown-item" href="{% url 'crud_albums' %}">Discos</a>
                   </div>
                 </li>
               {% if clase == 'mensajes' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
-                  <a class="nav-link" href="#">Mensajes</a>
+                  <a class="nav-link" href="{% url 'mensajes' %}">Mensajes</a>
                 </li>
             
             {% else %}

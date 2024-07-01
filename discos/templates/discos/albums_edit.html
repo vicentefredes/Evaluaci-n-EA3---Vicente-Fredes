@@ -1,0 +1,83 @@
+{% extends "discos/base.html" %}
+
+{% load static %}
+
+{% block content %}
+  <br>
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10 col-sm-12">
+        <div id="formCrud" class="p-4 border rounded">
+          <h2 class="text-center">Modificar Álbum:</h2>
+          <br />
+
+          <form action="" method="POST" class="form-horizontal" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-row justify-content-center">
+              <div class="form-group col-md-8">
+                {{ form.non_field_errors }}
+                <label for="{{ form.id_artista.id_for_label }}"
+                  >{{ form.id_artista.label }}</label
+                >
+                {{ form.id_artista }} {{ form.id_artista.errors }}
+              </div>
+              <div class="form-group col-md-8">
+                <label for="{{ form.nombre_disco.id_for_label }}"
+                  >{{ form.nombre_disco.label }}</label
+                >
+                {{ form.nombre_disco }} {{ form.nombre_disco.errors }}
+              </div>
+              <div class="form-group col-md-8">
+                <label for="{{ form.fecha_lanzamiento.id_for_label }}"
+                  >{{ form.fecha_lanzamiento.label }}</label
+                >
+                {{ form.fecha_lanzamiento }} {{ form.fecha_lanzamiento.errors }}
+              </div>
+              <div class="form-group col-md-8">
+                <label for="{{ form.precio.id_for_label }}"
+                  >{{ form.precio.label }}</label
+                >
+                {{ form.precio }} {{ form.precio.errors }}
+              </div>
+              <div class="form-group col-md-8">
+                <label for="{{ form.id_formato.id_for_label }}"
+                  >{{ form.id_formato.label }}</label
+                >
+                {{ form.id_formato }} {{ form.id_formato.errors }}
+              </div>
+              <div class="form-group col-md-8">
+                <label for="{{ form.id_genero.id_for_label }}"
+                  >{{ form.id_genero.label }}</label
+                >
+                {{ form.id_genero }} {{ form.id_genero.errors }}
+              </div>
+              <div class="form-group col-md-8">
+                <label for="{{ form.portada.id_for_label }}"
+                  >{{ form.portada.label }}</label
+                >
+                {{ form.portada }} {{ form.portada.errors }}
+              </div>
+            </div>
+            <br />
+            <div class="form-group text-center">
+              <button type="submit" class="btn btn-primary" id="btnEnviarForm">
+                Actualizar
+              </button>
+              <a
+                href="{% url 'crud_albums' %}"
+                class="btn btn-secondary"
+                id="btnVolver"
+                >Volver</a
+              >
+            </div>
+          </form>
+
+          <div id="idMensajes">
+            {% if mensaje %}
+            <div class="alert alert-success mx-auto">{{ mensaje }}</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
