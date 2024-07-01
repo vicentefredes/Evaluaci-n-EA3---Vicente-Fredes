@@ -1,0 +1,48 @@
+from django.db import models
+from django.contrib.auth.models import User
+
+# Create your models here.
+
+class Formato(models.Model):
+    id_formato  = models.AutoField(db_column='idFormato', primary_key=True) 
+    formato     = models.CharField(max_length=20, blank=False, null=False)
+
+    def __str__(self):
+        return str(self.formato)
+    
+class Genero(models.Model):
+    id_genero  = models.AutoField(db_column='idGenero', primary_key=True) 
+    genero     = models.CharField(max_length=20, blank=False, null=False)
+
+    def __str__(self):
+        return str(self.genero)
+
+class Artista(models.Model):
+    id_artista = models.AutoField(db_column='idArtista', primary_key=True) 
+    nombre_artista = models.CharField(max_length=100, null=False, blank=False)
+    nacionalidad = models.CharField(max_length=30, null=False, blank=False)
+    biografia = models.TextField(null=True, blank=True)
+    foto = models.ImageField(upload_to="media/", null=True, blank=True, default=None)
+    def __str__(self):
+        return str(self.nombre_artista)
+
+class Album(models.Model):
+    id_album = models.AutoField(db_column='idAlbum', primary_key=True) 
+    id_artista = models.ForeignKey('Artista',on_delete=models.CASCADE, db_column='idArtista')
+    nombre_disco = models.CharField(max_length=100, null=False)
+    fecha_lanzamiento = models.DateField(null=False, blank=False)
+    precio = models.IntegerField(null=False, blank=False)
+    id_formato = models.ForeignKey('Formato',on_delete=models.CASCADE, db_column='idFormato')  
+    id_genero = models.ForeignKey('Genero',on_delete=models.CASCADE, db_column='idGenero')  
+    portada = models.ImageField(upload_to="media/", default=None)
+    def __str__(self):
+        return str(self.id_artista) + " - " + str(self.nombre_disco)
+    
+class Compra(models.Model):
+    id_compra = models.AutoField(db_column='idCompra', primary_key=True) 
+    id_usuario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, db_column='idUsuario')
+    fecha = models.DateTimeField(auto_now_add=True)
+    discos = models.ManyToManyField('Album', related_name='compras')
+
+    def __str__(self):
+        return f"Compra {self.id_compra} - {self.fecha}"
