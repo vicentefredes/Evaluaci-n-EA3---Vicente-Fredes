@@ -22,7 +22,6 @@ class Artista(models.Model):
     nombre_artista = models.CharField(max_length=100, null=False, blank=False)
     nacionalidad = models.CharField(max_length=30, null=False, blank=False)
     biografia = models.TextField(null=True, blank=True)
-    foto = models.ImageField(upload_to="media/", null=True, blank=True, default=None)
     def __str__(self):
         return str(self.nombre_artista)
 
@@ -46,3 +45,12 @@ class Compra(models.Model):
 
     def __str__(self):
         return f"Compra {self.id_compra} - {self.fecha}"
+class Mensaje(models.Model):
+    id_mensaje = models.AutoField(db_column='idMensaje', primary_key=True) 
+    nombre = models.CharField(max_length=100, null=False, blank=False)
+    correo_electronico = models.EmailField(max_length=254, null=False, blank=False)
+    mensaje = models.TextField(null=False, blank=False)
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Mensaje de {self.nombre} - {self.fecha}"

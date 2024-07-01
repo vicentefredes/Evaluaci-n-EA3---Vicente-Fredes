@@ -46,27 +46,49 @@
               <a class="nav-link" href="{% url 'index' %}">Inicio</a>
             </li>
             {% if user.is_staff %}
-            {% if clase == 'gestion_usuarios' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
-                    <a class="nav-link" href="#">Mantenedor de Usuarios</a>
+              {% if clase == 'mantenedores' %}<li class="nav-item dropdown active">{% else %}<li class="nav-item dropdown">{% endif %}
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Mantenedores   
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="#">Artistas</a>
+                      <a class="dropdown-item" href="#">Discos</a>
+                  </div>
                 </li>
+              {% if clase == 'mensajes' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
+                  <a class="nav-link" href="#">Mensajes</a>
+                </li>
+            
+            {% else %}
+              {% if clase == 'productos' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
+                  <a class="nav-link" href="#">Productos</a>
+                </li>
+              
+              {% if clase == 'carrito' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
+                  <a class="nav-link" href="#">Mi Carrito</a>
+                </li>
+
+              {% if clase == 'contacto' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
+                  <a class="nav-link" href="#">Contacto</a>
+                </li>
+              
             {% endif %}
-            {% if clase == 'gestion_clientes' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
-              <a class="nav-link" href="#">Gestión de Clientes</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Gestión de Contratos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" href="#">Gestión de Pagos</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{ user.username }}    
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+            {% if user.is_authenticated %}
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      {{ user.username }}    
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Mi Perfil</a>
                     <a class="dropdown-item" href="{% url 'logout' %}">Cerrar Sesión</a>
                 </div>
-            </li>
+              </li>
+            {% else %}
+              {% if clase == 'contacto' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
+                  <a class="nav-link" href="{% url 'login' %}">Entrar</a>
+                </li>
+            {% endif %}
           </ul>
         </div>
       </nav>
