@@ -48,6 +48,10 @@ class AlbumForm(forms.ModelForm):
             'portada': forms.FileInput(attrs={'class': 'form-control'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['id_artista'].queryset = Artista.objects.order_by('nombre_artista')   
+
 class MensajeForm(forms.ModelForm):
     class Meta:
         model = Mensaje

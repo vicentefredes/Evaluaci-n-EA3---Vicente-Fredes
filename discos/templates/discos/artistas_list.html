@@ -51,6 +51,50 @@
                 </tbody>
             {% endif %}    
         </table>
+
+      <!-- Paginación de Bootstrap -->
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if artistas.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="Primera">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Primera</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ artistas.previous_page_number }}" aria-label="Anterior">
+                        <span aria-hidden="true">&lt;</span>
+                        <span class="sr-only">Anterior</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% for num in artistas.paginator.page_range %}
+                {% if artistas.number == num %}
+                    <li class="page-item active" aria-current="page"><span class="page-link">{{ num }}</span></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if artistas.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ artistas.next_page_number }}" aria-label="Siguiente">
+                        <span aria-hidden="true">&gt;</span>
+                        <span class="sr-only">Siguiente</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ artistas.paginator.num_pages }}" aria-label="Última">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Última</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+      </nav>
     </div>
+      
 
 {% endblock %}

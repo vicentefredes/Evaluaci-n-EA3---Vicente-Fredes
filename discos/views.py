@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Formato, Genero, Artista, Album, Compra, Mensaje
 from .forms import ArtistaForm, AlbumForm, MensajeForm 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 
@@ -13,6 +14,17 @@ def index(request):
 @login_required
 def crud_artistas(request):
     artistas = Artista.objects.all().order_by('nombre_artista')
+    paginator = Paginator(artistas, 25)
+
+    page = request.GET.get('page')
+
+    try:
+        artistas = paginator.page(page)
+    except PageNotAnInteger:
+        artistas = paginator.page(1)
+    except EmptyPage:
+        artistas = paginator.page(paginator.num_pages)
+
     context = {'artistas': artistas, 'clase': 'mantenedores'}
     return render(request, 'discos/artistas_list.html', context)
 
