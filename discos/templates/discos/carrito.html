@@ -11,10 +11,23 @@
                 <ul class="list-group">
                     {% for album in compra.discos.all %}
                         <li class="list-group-item">
-                            <h4>{{ album.nombre_disco }}</h4>
-                            <p><strong>Artista:</strong> {{ album.id_artista }}</p>
-                            <p><strong>Formato:</strong> {{ album.id_formato }}</p>
-                            <p><strong>Precio:</strong> ${{ album.precio }}</p>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <img src="{{ album.portada.url }}" alt="{{ album.nombre_disco }}" class="img-thumbnail">
+                                </div>
+                                <div class="col-md-8">
+                                    <h4>{{ album.nombre_disco }}</h4>
+                                    <p><strong>Artista:</strong> {{ album.id_artista }}</p>
+                                    <p><strong>Formato:</strong> {{ album.id_formato }}</p>
+                                    <p><strong>Precio:</strong> ${{ album.precio }}</p>
+                                </div>
+                                <div class="col-md-2">
+                                    <form method="POST" action="{% url 'eliminar_del_carrito' compra.id_compra album.id_album %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                    </form>
+                                </div>
+                            </div>
                         </li>
                     {% endfor %}
                 </ul>

@@ -177,15 +177,15 @@ def listado_albums(request):
     context = {'albums': albums, 'clase': 'discos'}
     return render(request, 'discos/discos.html', context)
 
+# Vista para agregar productos al carrito
 def agregar_al_carrito(request, fk_album):
     album = Album.objects.get(id_album=fk_album)
-    print(f"Album encontrado: {album.nombre_disco}")
     
     if request.user.is_authenticated:
         # Usuario autenticado: obtener o crear la compra en progreso del usuario
         compra, created = Compra.objects.get_or_create(id_usuario=request.user, finalizada=False)
         if created:
-            print("Se creó una nueva compra.")
+            print("Se creó una nueva compra para el usuario autenticado.")
     else:
         # Usuario invitado: verificar si hay una compra en la sesión
         compra_id = request.session.get('id_compra')
@@ -210,11 +210,18 @@ def agregar_al_carrito(request, fk_album):
     # Redirigir a la misma página de listado de álbumes
     return redirect('discos')
 
-
+# Vista para mostrar el carrito de compras
 def carrito_compra(request):
     if request.user.is_authenticated:
         # Usuario autenticado: obtener o crear la compra en progreso del usuario
         compra = Compra.objects.filter(id_usuario=request.user, finalizada=False).first()
+        # Si hay una compra en la sesión para usuario invitado, transferir a usuario autenticado
+        compra_invitado = Compra.objects.filter(id_compra=request.session.get('id_compra'), finalizada=False).first()
+        if compra_invitado and not compra:
+            compra_invitado.id_usuario = request.user
+            compra_invitado.save()
+            request.session['id_compra'] = compra_invitado.id_compra
+            compra = compra_invitado
     else:
         # Usuario invitado: obtener la compra usando la sesión, o crear una nueva si no existe
         compra_id = request.session.get('id_compra')
@@ -229,16 +236,30 @@ def carrito_compra(request):
         context = {
             'compra': compra,
             'total_price': total_price,
+            'clase':'carrito'
         }
     else:
-        context = {'compra': None}  # Contexto para indicar que no hay compra activa
+        context = {'compra': None, 'clase':'carrito'} 
 
     return render(request, 'discos/carrito.html', context)
-
-
 
 def confirmar_compra(request, pk):
     compra = Compra.objects.get(id_compra=pk)
     compra.finalizada = True
     compra.save()
+    return redirect('carrito')
+
+def eliminar_del_carrito(request, id_compra, id_album):
+    compra = Compra.objects.get(id_compra=id_compra)
+    album = Album.objects.get(id_album=id_album)
+    
+    # Verificar que el álbum esté en la compra del usuario actual
+    if compra.discos.filter(id_album=id_album).exists():
+        compra.discos.remove(album)
+    
+    # Verificar si la compra está vacía y eliminarla si es necesario
+    if compra.discos.count() == 0:
+        compra.delete()
+    
+    # Redireccionar de vuelta al carrito
     return redirect('carrito')

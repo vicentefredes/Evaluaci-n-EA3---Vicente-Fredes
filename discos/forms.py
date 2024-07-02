@@ -50,7 +50,8 @@ class AlbumForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['id_artista'].queryset = Artista.objects.order_by('nombre_artista')   
+        self.fields['id_artista'].queryset = Artista.objects.order_by('nombre_artista')  
+        self.fields['id_genero'].queryset = Genero.objects.order_by('genero')  
 
 class MensajeForm(forms.ModelForm):
     class Meta:

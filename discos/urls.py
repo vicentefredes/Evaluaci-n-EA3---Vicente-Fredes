@@ -17,5 +17,6 @@ urlpatterns = [
     path('discos', views.listado_albums, name='discos'),
     path('agregar_al_carrito/<int:fk_album>/', views.agregar_al_carrito, name='agregar_al_carrito'),
     path('carrito', views.carrito_compra, name='carrito'),
+    path('eliminar-del-carrito/<int:id_compra>/<int:id_album>/', views.eliminar_del_carrito, name='eliminar_del_carrito'),
     path('confirmar_compra/<int:pk>/', views.confirmar_compra, name='confirmar_compra'),
 ]
