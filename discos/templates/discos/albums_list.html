@@ -50,7 +50,7 @@
                           <td>{{ album.id_artista }}</td>
                           <td>{{ album.nombre_disco }}</td>
                           <td>{{ album.id_genero }}</td>
-                          <td>{{ album.fecha_lanzamiento }}</td>
+                          <td>{{ album.fecha_lanzamiento|date:"d/m/Y" }}</td>
                           <td>${{ album.precio }}</td>
                           <td>{{ album.id_formato }}</td>
                           <td class="td-update"><a href="{% url 'albums_edit' pk=album.id_album %}">Modificar</a></td> 

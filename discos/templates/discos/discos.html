@@ -14,7 +14,7 @@
                     <ul>
                         <li>Género: {{ album.id_genero }}</li>
                         <li>Formato: {{ album.id_formato }}</li>
-                        <li>Lanzamiento: {{ album.fecha_lanzamiento }}</li>
+                        <li>Lanzamiento: {{ album.fecha_lanzamiento|date:"d/m/Y" }}</li>
                         <li>Precio: ${{ album.precio }}</li>
                     </ul>
                     <!-- Formulario para agregar al carrito -->

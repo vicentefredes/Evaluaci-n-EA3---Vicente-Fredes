@@ -1,0 +1,57 @@
+{% extends "discos/base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <h1>Mi Cuenta</h1>
+
+    <div class="container-fluid inicioUsuario" style="height: 100%;">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-4 col-lg-3 mb-5">
+                <img src="{% static 'img/usuario.jpg'%}" alt="usuario" class="img-fluid rounded-circle">
+            </div>
+            <div class="col-md-8 col-lg-6 mb-5">
+                <h3>¡Bienvenido/a, {{ nombre }}!</h3>
+                <div class="infoUsuario">
+                    <div class="row">
+                        <ul>
+                            <li>Usuario desde: {{ fecha_registro|date:"d/m/Y" }}</li>
+                            <li>Última vez activo: {{ ultima_vez_activo|date:"d/m/Y H:i:s" }}</li>
+                            <!-- Otros atributos del usuario aquí -->
+                        </ul>
+                    </div>
+                    <div class="row justify-content-center">
+                        <button type="submit" class="btn btn-secondary" id="botonCerrarSesion">Cerrar Sesión</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lista de compras realizadas -->
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Historial de Compras</h3>
+                <div class="list-group">
+                    {% if compras %}
+                        {% for compra in compras %}
+                            <div class="list-group-item">
+                                <h5 class="mb-1">Fecha de compra: {{ compra.fecha|date:"d/m/Y H:i:s" }}</h5>
+                                <p class="mb-1"><strong>Discos comprados:</strong></p>
+                                <ul class="list-group list-group-flush">
+                                    {% for disco in compra.discos.all %}
+                                        <li class="list-group-item">
+                                            {{ disco.nombre }} - {{ disco.artista.nombre_artista }}
+                                            <span class="badge badge-primary badge-pill float-right">${{ disco.precio }}</span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="list-group-item">No hay compras realizadas.</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

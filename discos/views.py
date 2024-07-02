@@ -274,3 +274,18 @@ def eliminar_del_carrito(request, id_compra, id_album):
     
     # Redireccionar de vuelta al carrito
     return redirect('carrito')
+
+@login_required
+def perfil(request):
+
+    user = request.user
+    
+    # Obtener las compras finalizadas del usuario
+    compras = Compra.objects.filter(id_usuario=user, finalizada=True).order_by('-fecha')
+
+    context = {
+        'clase': 'perfil',
+        'compras': compras
+    }
+    
+    return render(request, 'discos/perfil.html', context)
