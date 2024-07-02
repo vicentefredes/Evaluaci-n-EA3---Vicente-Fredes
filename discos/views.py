@@ -283,9 +283,13 @@ def perfil(request):
     # Obtener las compras finalizadas del usuario
     compras = Compra.objects.filter(id_usuario=user, finalizada=True).order_by('-fecha')
 
+    for compra in compras:
+        total_price = sum(album.precio for album in compra.discos.all())
+
     context = {
         'clase': 'perfil',
-        'compras': compras
+        'compras': compras,
+        'total_price': total_price
     }
-    
+
     return render(request, 'discos/perfil.html', context)
