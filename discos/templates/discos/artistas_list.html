@@ -33,7 +33,7 @@
                 <thead>
                     <tr>
                     <th scope="col">Nombre del Artista</th>
-                    <th scope="col">Nacionalidad</th>
+                    <th scope="col">País</th>
                     <th scope="col">Biografía</th>
                     <th scope="col" colspan="2">Acción</th>
                     </tr>
@@ -42,7 +42,7 @@
                     {% for artista in artistas %}
                         <tr>
                             <td>{{ artista.nombre_artista }}</td>
-                            <td>{{ artista.nacionalidad }}</td>
+                            <td>{{ artista.pais }}</td>
                             <td>{{ artista.biografia }}</td>
                             <td class="td-update"><a href="{% url 'artistas_edit' pk=artista.id_artista %}">Modificar</a></td> 
                             <td class="td-delete"><a href="{% url 'artistas_del' pk=artista.id_artista %}">Eliminar</a></td>

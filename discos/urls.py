@@ -14,5 +14,8 @@ urlpatterns = [
     path('listadoMensajes', views.listadoMensajes, name='mensajes'),
     path('mensajesAdd', views.mensajesAdd, name='contacto'),
     path('mensajes_del/<int:pk>', views.mensajes_del, name='mensajes_del'),
-    path('discos', views.listado_albums, name='discos')
+    path('discos', views.listado_albums, name='discos'),
+    path('agregar_al_carrito/<int:fk_album>/', views.agregar_al_carrito, name='agregar_al_carrito'),
+    path('carrito', views.carrito_compra, name='carrito'),
+    path('confirmar_compra/<int:pk>/', views.confirmar_compra, name='confirmar_compra'),
 ]

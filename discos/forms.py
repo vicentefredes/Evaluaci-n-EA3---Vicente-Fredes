@@ -9,16 +9,16 @@ class ArtistaForm(forms.ModelForm):
     class Meta:
         model = Artista
         fields = [
-            'nombre_artista', 'nacionalidad', 'biografia'
+            'nombre_artista', 'pais', 'biografia'
         ]
         labels = {
             'nombre_artista': "Nombre del Artista",
-            'nacionalidad': "Nacionalidad",
+            'pais': "País",
             'biografia': "Biografía",
         }
         widgets = {
             'nombre_artista': forms.TextInput(attrs={'class': 'form-control'}),
-            'nacionalidad': forms.TextInput(attrs={'class': 'form-control'}),
+            'pais': forms.TextInput(attrs={'class': 'form-control'}),
             'biografia': forms.Textarea(attrs={'class': 'form-control'}),
         }
 

@@ -1,0 +1,32 @@
+{% extends "discos/base.html" %}
+
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2>Carrito de Compra</h2>
+            {% if compra.discos.all %}
+                <ul class="list-group">
+                    {% for album in compra.discos.all %}
+                        <li class="list-group-item">
+                            <h4>{{ album.nombre_disco }}</h4>
+                            <p><strong>Artista:</strong> {{ album.id_artista }}</p>
+                            <p><strong>Formato:</strong> {{ album.id_formato }}</p>
+                            <p><strong>Precio:</strong> ${{ album.precio }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <p class="mt-3"><strong>Total:</strong> ${{ total_price }}</p>
+                <form method="POST" action="{% url 'confirmar_compra' compra.id_compra %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Confirmar Compra</button>
+                </form>
+            {% else %}
+                <p>No hay álbumes en tu carrito.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
