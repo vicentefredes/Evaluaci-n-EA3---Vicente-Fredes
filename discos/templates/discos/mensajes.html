@@ -3,54 +3,65 @@
 {% load static %}
 
 {% block content %}
+
+{% if user.is_staff %}
+
   <br>
-    <div class="row justify-content-center">
-      <div class="col-md-8 col-sm-12">
-        <header>
-          <h1>Listado de Mensajes</h1>
-        </header>
-      </div>
-    </div>   
-
-    <div id="idMensajes">
-      {% if mensaje %}
-          <div class="alert alert-warning mx-auto">
-              {{ mensaje }}
-          </div>
-      {% endif %}
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-sm-12">
+      <header>
+        <h1>Listado de Mensajes</h1>
+      </header>
     </div>
+  </div>   
 
-    <div class="table-container">
-        <table class="table table-striped">
-            {% if mensajes %}
-                <thead>
-                    <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Correo Electrónico</th>
-                    <th scope="col">Mensaje</th>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for mensaje in mensajes %}
-                        <tr>
-                            <td>{{ mensaje.nombre }}</td>
-                            <td>{{ mensaje.correo_electronico }}</td>
-                            <td>{{ mensaje.mensaje }}</td>
-                            <td>{{ mensaje.fecha }}</td>
-                            <td class="td-delete"><a href="{% url 'mensajes_del' pk=mensaje.id_mensaje %}">Eliminar</a></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            {% endif %}    
-        </table>
-    </div>
+  <div id="idMensajes">
+    {% if mensaje %}
+        <div class="alert alert-warning mx-auto">
+            {{ mensaje }}
+        </div>
+    {% endif %}
+  </div>
 
-    <script>
-        $(document).ready(function() {
-            $("#idMensajes").delay(2000).fadeOut("slow");
-        });
-    </script>
+  <div class="table-container">
+      <table class="table table-striped">
+          {% if mensajes %}
+              <thead>
+                  <tr>
+                      <th scope="col">Nombre</th>
+                      <th scope="col">Correo Electrónico</th>
+                      <th scope="col">Mensaje</th>
+                      <th scope="col">Fecha</th>
+                      <th scope="col" colspan="2">Acción</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for mensaje in mensajes %}
+                      <tr>
+                          <td>{{ mensaje.nombre }}</td>
+                          <td>{{ mensaje.correo_electronico }}</td>
+                          <td>{{ mensaje.mensaje }}</td>
+                          <td>{{ mensaje.fecha }}</td>                          
+                          <td class="td-mark-read">
+                              {% if not mensaje.leido %}
+                                  <a href="{% url 'cambiar_estado' pk=mensaje.id_mensaje %}">Marcar como leído</a>
+                              {% else %}
+                                  <a href="{% url 'cambiar_estado' pk=mensaje.id_mensaje %}">Marcar como no leído</a>
+                              {% endif %}
+                          </td>
+                          <td class="td-delete"><a href="{% url 'mensajes_del' pk=mensaje.id_mensaje %}">Eliminar</a></td>
+                      </tr>
+                  {% endfor %}
+              </tbody>
+          {% endif %}    
+      </table>
+  </div>
+
+{% else %}
+  <div class="container-permisos">
+    <h1>Error</h1>
+    <p>No tienes permisos para ver esta página</p>
+  </div>
+{% endif %}
 
 {% endblock %}

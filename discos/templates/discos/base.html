@@ -13,7 +13,7 @@
           crossorigin="anonymous"
         ></script>
     
-        <!-- Boostrap -->
+        <!-- Bootstrap -->
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
@@ -26,10 +26,10 @@
           crossorigin="anonymous"
         ></script>
     
-        <!-- Mi hoja de estilos CSS -->
+        <!-- Custom CSS -->
         <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
     
-        <!-- Mi archivo JS -->
+        <!-- Custom JS -->
         <script src="{% static 'js/main.js' %}"></script>
 
       </head>
@@ -54,25 +54,23 @@
                       <a class="dropdown-item" href="{% url 'crud_artistas' %}">Artistas</a>
                       <a class="dropdown-item" href="{% url 'crud_albums' %}">Discos</a>
                   </div>
-                </li>
+              </li>
               {% if clase == 'mensajes' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
                   <a class="nav-link" href="{% url 'mensajes' %}">Mensajes</a>
-                </li>
-            
-            {% else %}
-              {% if clase == 'discos' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
-                  <a class="nav-link" href="{% url 'discos' %}">Discos</a>
-                </li>
-              
-              {% if clase == 'carrito' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
-                  <a class="nav-link" href="{% url 'carrito' %}">Mi Carrito</a>
-                </li>
-
-              {% if clase == 'contacto' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
-                  <a class="nav-link" href="{% url 'contacto' %}">Contacto</a>
-                </li>
-              
+              </li>
             {% endif %}
+              
+            {% if clase == 'discos' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
+                <a class="nav-link" href="{% url 'discos' %}">Discos</a>
+            </li>
+              
+            {% if clase == 'carrito' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
+                <a class="nav-link" href="{% url 'carrito' %}">Carrito</a>
+            </li>
+
+            {% if clase == 'contacto' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
+                <a class="nav-link" href="{% url 'contacto' %}">Contacto</a>
+            </li>
 
             {% if user.is_authenticated %}
               <li class="nav-item dropdown">
@@ -85,12 +83,12 @@
                       {% csrf_token %}
                       <button type="submit" class="dropdown-item" style="cursor: pointer; border: none; background: none; padding: 0;">Cerrar Sesión</button>
                     </form>
-                </div>
+                  </div>
               </li>
             {% else %}
               {% if clase == 'login' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
                   <a class="nav-link" href="{% url 'login' %}">Entrar</a>
-                </li>
+              </li>
             {% endif %}
           </ul>
         </div>

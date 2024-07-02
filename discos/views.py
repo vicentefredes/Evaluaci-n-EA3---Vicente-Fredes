@@ -126,7 +126,7 @@ def albums_del(request, pk):
         mensaje = f"ERROR: el id {pk} no existe"
         context = {'mensaje': mensaje, 'albums': Album.objects.all().order_by('nombre_disco'), 'clase': 'mantenedores'}
         return render(request, 'discos/albums_list.html', context)
-    
+
 #Mensajes
 @login_required
 def listadoMensajes(request):
@@ -143,7 +143,7 @@ def mensajes_del(request, pk):
         mensajeAlert = f"El mensaje ha sido eliminado"
         context = {'mensaje': mensajeAlert, 'mensajes': Mensaje.objects.all().order_by('-fecha'), 'clase': 'mensajes'}
         return render(request, 'discos/mensajes.html', context)
-    except Album.DoesNotExist:
+    except Mensaje.DoesNotExist:
         mensaje = f"ERROR: el id {pk} no existe"
         context = {'mensaje': mensajeAlert, 'mensajes': Mensaje.objects.all().order_by('-fecha'), 'clase': 'mensajes'}
         return render(request, 'discos/mensajes.html', context)
@@ -159,6 +159,17 @@ def mensajesAdd(request):
     else:
         form = MensajeForm()
     return render(request, 'discos/contacto.html', {'form': form, 'clase': 'contacto'})
+
+@login_required
+def cambiar_estado(request, pk):
+    mensaje = Mensaje.objects.get(id_mensaje=pk)
+    if mensaje.leido == True:
+        mensaje.leido = False
+    else: 
+        mensaje.leido = True
+    mensaje.save()
+    return redirect('mensajes')
+
 
 #Discos (para el cliente)
 def listado_albums(request):

@@ -3,6 +3,9 @@
 {% load static %}
 
 {% block content %}
+
+{% if user.is_staff %}
+
 <br>
   <div class="row justify-content-center">
     <div class="col-md-8 col-sm-12">
@@ -102,4 +105,12 @@
       {% endif %}
     </ul>
   </nav>
+
+{% else %}
+  <div class="container-permisos">
+    <h1>Error</h1>
+    <p>No tienes permisos para ver esta página</p>
+  </div>
+{% endif %}
+
 {% endblock %}

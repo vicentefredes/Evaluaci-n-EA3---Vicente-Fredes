@@ -59,6 +59,7 @@ class Mensaje(models.Model):
     correo_electronico = models.EmailField(max_length=254, null=False, blank=False)
     mensaje = models.TextField(null=False, blank=False)
     fecha = models.DateTimeField(auto_now_add=True)
+    leido = models.BooleanField(default=False, db_column='leido')
 
     def __str__(self):
         return f"Mensaje de {self.nombre} - {self.fecha}"
