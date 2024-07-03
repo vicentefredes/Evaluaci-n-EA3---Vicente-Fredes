@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from .models import Formato, Genero, Artista, Album, Compra, Mensaje
 from .forms import ArtistaForm, AlbumForm, MensajeForm 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db import IntegrityError
 from django.db.models import Sum, Count
 from datetime import date
 
@@ -28,28 +29,35 @@ def custom_login(request):
     # Si el método no es POST o hubo un error, mostrar el formulario de inicio de sesión
     context = {'clase': 'entrar'}
     return render(request, 'discos/login.html', context)
-    
+
+
 def registro(request):
     if request.user.is_authenticated:
         return redirect('index')
 
-    if request.method == "POST":
-        nombre = request.POST.get("nombre")
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        first_name = request.POST.get("first_name")
-        last_name = request.POST.get("last_name")
-        
-        user = User.objects.create_user(username=nombre, email=email, password=password,
-                                        first_name=first_name, last_name=last_name)
-        user.save()
-        
-        context = {"clase": "entrar", "mensaje": "Los datos fueron registrados"}
-        return render(request, 'discos/registro.html', context)
+    error_message = None
+    nombre = request.POST.get("nombre", "")  # Obtener el nombre de usuario del POST o vacío si no está presente
+    email = request.POST.get("email", "")    # Obtener el email del POST o vacío si no está presente
+    first_name = request.POST.get("first_name", "")  # Obtener el nombre del POST o vacío si no está presente
+    last_name = request.POST.get("last_name", "")    # Obtener el apellido del POST o vacío si no está presente
     
-    # Si el método no es POST, mostrar el formulario vacío
-    context = {"clase": "entrar"}
+    if request.method == "POST":
+        password = request.POST.get("password")
+        
+        try:
+            user = User.objects.create_user(username=nombre, email=email, password=password,
+                                            first_name=first_name, last_name=last_name)
+            user.save()
+            context = {"clase": "entrar", "mensaje": "Tu nuevo usuario ha sido registrado"}
+            return render(request, 'discos/registro.html', context)
+        
+        except IntegrityError:
+            error_message = "El nombre de usuario de usuario ya está en uso."
+    
+    # Si el método no es POST o hubo un error de integridad, mostrar el formulario con los datos ingresados y el mensaje de error si existe
+    context = {"clase": "entrar", "error_message": error_message, "nombre": nombre, "email": email, "first_name": first_name, "last_name": last_name}
     return render(request, 'discos/registro.html', context)
+
 
 def index(request):
     # Obtener la cantidad total de artistas
