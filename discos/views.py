@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import views as auth_views
-from django.contrib.auth.views import LoginView
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.contrib.auth.models import User
 from .models import Formato, Genero, Artista, Album, Compra, Mensaje
 from .forms import ArtistaForm, AlbumForm, MensajeForm 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -12,12 +12,38 @@ from django.db.models import Sum
 
 def custom_login(request):
     if request.method == 'POST':
-        return auth_views.LoginView.as_view(template_name='discos/login.html')(request)
-    else:
-        form = AuthenticationForm()
-        context = {'clase': 'login', 'form': form} 
-        return render(request, 'discos/login.html', context)
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('index')  # Redirigir a la página deseada después del inicio de sesión exitoso
+        else:
+            messages.error(request, 'Nombre de usuario o contraseña incorrectos.')
     
+    # Si el método no es POST o hubo un error, mostrar el formulario de inicio de sesión
+    context = {'clase': 'login'}
+    return render(request, 'discos/login.html', context)
+    
+def registro(request):
+    if request.method == "POST":
+        nombre = request.POST.get("nombre")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        
+        user = User.objects.create_user(username=nombre, email=email, password=password,
+                                        first_name=first_name, last_name=last_name)
+        user.save()
+        
+        context = {"clase": "registro", "mensaje": "Los datos fueron registrados"}
+        return render(request, 'discos/registro.html', context)
+    
+    # Si el método no es POST, mostrar el formulario vacío
+    context = {"clase": "registro"}
+    return render(request, 'discos/registro.html', context)
+
 def index(request):
     context = {'clase':'index'}
     return render(request, 'discos/index.html', context)
