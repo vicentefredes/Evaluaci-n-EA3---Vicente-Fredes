@@ -7,20 +7,24 @@
 <div class="container-fluid inicioUsuario" style="height: 100%;">
     <div class="row justify-content-center align-items-center">
         <div class="col-md-4 col-lg-3 mb-5">
-            <img src="{% static 'img/usuario.jpg'%}" alt="usuario" class="img-fluid rounded-circle">
+            <img src="{% static 'img/usuario.jpg' %}" alt="usuario" class="img-fluid rounded-circle">
         </div>
         <div class="col-md-8 col-lg-6 mb-5">
-            <h3>¡Bienvenido/a, {{ nombre }}!</h3>
+            <h3>¡Bienvenido/a, {{ user.username }}!</h3>
             <div class="infoUsuario">
                 <div class="row">
                     <ul>
-                        <li>Usuario desde: {{ fecha_registro|date:"d/m/Y" }}</li>
-                        <li>Última vez activo: {{ ultima_vez_activo|date:"d/m/Y H:i:s" }}</li>
-                        <!-- Otros atributos del usuario aquí -->
+                        <li>Nombre: {{ user.get_full_name }}</li>
+                        <li>Correo Electrónico: {{ user.email }}</li>
+                        <li>Usuario desde: {{ user.date_joined }}</li>
+                        <li>Última vez activo: {{ user.last_login }}</li>
                     </ul>
                 </div>
                 <div class="row justify-content-center">
-                    <button type="submit" class="btn btn-secondary" id="botonCerrarSesion">Cerrar Sesión</button>
+                    <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary" id="botonCerrarSesion">Cerrar Sesión</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -39,13 +43,13 @@
                     <ul class="list-group list-group-flush">
                         {% for disco in compra.discos.all %}
                         <li class="list-group-item">
-                            {{ disco.id_artista.nombre_artista}} - {{ disco.nombre_disco }}
+                            {{ disco.id_artista.nombre_artista }} - {{ disco.nombre_disco }}
                             <span class="badge badge-primary badge-pill float-right">${{ disco.precio }}</span>
                         </li>
                         {% endfor %}
                     </ul>
-                    <!-- Calculo del precio total de la compra -->
-                    <p class="mt-2"><strong>Precio total:</strong> ${{ total_price }}</p>
+                    <!-- Mostrar precio total de la compra -->
+                    <p class="mt-2"><strong>Precio total:</strong> ${{ compra.total_price }}</p>
                 </div>
                 {% endfor %}
                 {% else %}

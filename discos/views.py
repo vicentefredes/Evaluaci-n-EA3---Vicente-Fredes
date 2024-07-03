@@ -1,11 +1,23 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.forms import AuthenticationForm
 from .models import Formato, Genero, Artista, Album, Compra, Mensaje
 from .forms import ArtistaForm, AlbumForm, MensajeForm 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Sum
 
 # Create your views here.
 
+def custom_login(request):
+    if request.method == 'POST':
+        return auth_views.LoginView.as_view(template_name='discos/login.html')(request)
+    else:
+        form = AuthenticationForm()
+        context = {'clase': 'login', 'form': form} 
+        return render(request, 'discos/login.html', context)
+    
 def index(request):
     context = {'clase':'index'}
     return render(request, 'discos/index.html', context)
@@ -277,19 +289,19 @@ def eliminar_del_carrito(request, id_compra, id_album):
 
 @login_required
 def perfil(request):
-
     user = request.user
     
     # Obtener las compras finalizadas del usuario
     compras = Compra.objects.filter(id_usuario=user, finalizada=True).order_by('-fecha')
-
+    
     for compra in compras:
-        total_price = sum(album.precio for album in compra.discos.all())
-
+        # Calcular el precio total de los discos comprados en esta compra
+        total_price = compra.discos.aggregate(total=Sum('precio'))['total']
+        compra.total_price = total_price if total_price else 0  # Añadir el precio total como atributo a la compra
+    
     context = {
         'clase': 'perfil',
         'compras': compras,
-        'total_price': total_price
     }
 
     return render(request, 'discos/perfil.html', context)

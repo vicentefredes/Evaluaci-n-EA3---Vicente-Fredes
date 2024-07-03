@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 from django.urls import path, include
 
 urlpatterns = [
@@ -23,6 +24,7 @@ urlpatterns = [
     path('discos/', include('discos.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('discos.urls')),
+    path('login/', auth_views.LoginView.as_view(template_name='discos/login.html'), name='login'),
 ]
 
 if settings.DEBUG:

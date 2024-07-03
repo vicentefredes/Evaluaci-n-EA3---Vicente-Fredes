@@ -21,4 +21,5 @@ urlpatterns = [
     path('eliminar-del-carrito/<int:id_compra>/<int:id_album>/', views.eliminar_del_carrito, name='eliminar_del_carrito'),
     path('confirmar_compra/<int:pk>/', views.confirmar_compra, name='confirmar_compra'),
     path('perfil', views.perfil, name='perfil'),
+    path('entrar', views.custom_login, name='entrar')
 ]
