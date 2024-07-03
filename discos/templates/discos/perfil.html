@@ -20,12 +20,6 @@
                         <li>Última vez activo: {{ user.last_login }}</li>
                     </ul>
                 </div>
-                <div class="row justify-content-center">
-                    <form method="post" action="{% url 'logout' %}" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-secondary" id="botonCerrarSesion">Cerrar Sesión</button>
-                    </form>
-                </div>
             </div>
         </div>
     </div>
