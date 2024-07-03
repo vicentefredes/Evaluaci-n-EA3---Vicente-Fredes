@@ -22,7 +22,7 @@ def custom_login(request):
             messages.error(request, 'Nombre de usuario o contraseña incorrectos.')
     
     # Si el método no es POST o hubo un error, mostrar el formulario de inicio de sesión
-    context = {'clase': 'login'}
+    context = {'clase': 'entrar'}
     return render(request, 'discos/login.html', context)
     
 def registro(request):
@@ -37,11 +37,11 @@ def registro(request):
                                         first_name=first_name, last_name=last_name)
         user.save()
         
-        context = {"clase": "registro", "mensaje": "Los datos fueron registrados"}
+        context = {"clase": "entrar", "mensaje": "Los datos fueron registrados"}
         return render(request, 'discos/registro.html', context)
     
     # Si el método no es POST, mostrar el formulario vacío
-    context = {"clase": "registro"}
+    context = {"clase": "entrar"}
     return render(request, 'discos/registro.html', context)
 
 def index(request):
