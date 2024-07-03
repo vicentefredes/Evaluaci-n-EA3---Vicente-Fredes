@@ -3,51 +3,52 @@
 
 {% block content %}
 
-    <div class="row justify-content-center">
-        <!-- Cantidad total de artistas -->
-        <div class="col-md-3">
-            <div class="container-fluid bg-white mb-4 p-4">
-                <div class="text-center">
-                    <h2 class="display-4">{{ total_artistas }}</h2>
-                    <p class="lead">Artistas registrados</p>
+    {% if user.is_staff %}
+
+        <div class="row justify-content-center">
+            <!-- Cantidad total de artistas -->
+            <div class="col-md-3">
+                <div class="container-fluid bg-white mb-4 p-4">
+                    <div class="text-center">
+                        <h2 class="display-4">{{ total_artistas }}</h2>
+                        <p class="lead">Artistas registrados</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cantidad total de álbumes -->
+            <div class="col-md-3">
+                <div class="container-fluid bg-white mb-4 p-4">
+                    <div class="text-center">
+                        <h2 class="display-4">{{ total_albumes }}</h2>
+                        <p class="lead">Álbumes en venta</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Cantidad total de álbumes -->
-        <div class="col-md-3">
-            <div class="container-fluid bg-white mb-4 p-4">
-                <div class="text-center">
-                    <h2 class="display-4">{{ total_albumes }}</h2>
-                    <p class="lead">Álbumes en venta</p>
+        <div class="row justify-content-center">
+            <!-- Cantidad total de géneros -->
+            <div class="col-md-3">
+                <div class="container-fluid bg-white mb-4 p-4">
+                    <div class="text-center">
+                        <h2 class="display-4">{{ total_generos }}</h2>
+                        <p class="lead">Géneros registrados</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cantidad total de compras finalizadas -->
+            <div class="col-md-3">
+                <div class="container-fluid bg-white mb-4 p-4">
+                    <div class="text-center">
+                        <h2 class="display-4">{{ total_compras }}</h2>
+                        <p class="lead">Compras realizadas</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row justify-content-center">
-        <!-- Cantidad total de géneros -->
-        <div class="col-md-3">
-            <div class="container-fluid bg-white mb-4 p-4">
-                <div class="text-center">
-                    <h2 class="display-4">{{ total_generos }}</h2>
-                    <p class="lead">Géneros registrados</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Cantidad total de compras finalizadas -->
-        <div class="col-md-3">
-            <div class="container-fluid bg-white mb-4 p-4">
-                <div class="text-center">
-                    <h2 class="display-4">{{ total_compras }}</h2>
-                    <p class="lead">Compras realizadas</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
         <h1 class="mt-4 mb-4">Estadísticas</h1>
 
         <div class="row justify-content-center">
@@ -128,4 +129,76 @@
                     </div>
                 </div>
             </div>
+
+    {% else %}
+
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <br>
+                <h1>Bienvenido/a {{ user.username }} </h1>
+                <br>
+                <div id="carouselInicio" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                    <li data-target="#carouselInicio" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselInicio" data-slide-to="1"></li>
+                    <li data-target="#carouselInicio" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img class="d-block w-100 img-fluid" src="{% static 'img/slide1.jpg' %}" alt="First slide">
+                        <div class="carousel-caption d-none d-md-block">
+                        <h5>¡Explora nuestra colección de vinilos clásicos y modernos. ¡Encuentra tu música favorita en formato físico!</h5>
+                        </div>
+                        </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100 img-fluid" src="{% static 'img/slide2.png' %}" alt="Second slide">
+                        <div class="carousel-caption d-none d-md-block">
+                        <h5>!Ofertas exclusivas en discos seleccionados. ¡Aprovecha nuestros precios y completa tu colección!</h5>
+                        </div>
+                    </div>
+                    <div class="carousel-item img-fluid">
+                        <img class="d-block w-100" src="{% static 'img/slide3.jpeg' %}" alt="Third slide">
+                        <div class="carousel-caption d-none d-md-block">
+                        <h5>¡Descubre nuevos lanzamientos y reediciones especiales. ¡Mantente al día con las últimas novedades musicales!</h5>
+                        </div>
+                    </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselInicio" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Prev.</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselInicio" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="container mt-5 bg-white">
+                    <h2>Novedades</h2>
+                    <div class="list-group">
+                        {% for album in novedades %}
+                        <a href="{% url 'discos' %}" class="list-group-item list-group-item-action">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <img src="{{ album.portada.url }}" class="img-fluid rounded-lg" alt="{{ album.nombre_disco }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="mb-1">{{ album.nombre_disco }}</h5>
+                                    <p class="mb-1"><strong>Artista:</strong> {{ album.id_artista }}</p>
+                                    <p class="mb-1"><strong>Formato:</strong> {{ album.id_formato }}</p>
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        
+
+    {% endif %}
+
 {% endblock %}

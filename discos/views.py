@@ -64,6 +64,9 @@ def index(request):
     albumes_por_genero = Album.objects.values('id_genero__genero').annotate(num_albumes=Count('id_genero'))
     estadisticas_por_decada = albums_por_decada()
 
+    # Novedades para index de cliente
+    novedades = Album.objects.order_by('-id_album')[:5]
+
     context = {
         'clase': 'index',
         'total_artistas': total_artistas,
@@ -73,7 +76,8 @@ def index(request):
         'artistas_por_pais': artistas_por_pais,
         'albumes_por_formato': albumes_por_formato,
         'albumes_por_genero': albumes_por_genero,
-        'estadisticas_por_decada': estadisticas_por_decada
+        'estadisticas_por_decada': estadisticas_por_decada,
+        'novedades':novedades
     }
     return render(request, 'discos/index.html', context)
 
