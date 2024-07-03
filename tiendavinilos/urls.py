@@ -24,7 +24,6 @@ urlpatterns = [
     path('discos/', include('discos.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('discos.urls')),
-    path('login/', auth_views.LoginView.as_view(template_name='discos/login.html'), name='login'),
 ]
 
 if settings.DEBUG:

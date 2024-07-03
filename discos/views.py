@@ -12,6 +12,9 @@ from datetime import date
 # Create your views here.
 
 def custom_login(request):
+    if request.user.is_authenticated:
+        return redirect('index')
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -27,6 +30,9 @@ def custom_login(request):
     return render(request, 'discos/login.html', context)
     
 def registro(request):
+    if request.user.is_authenticated:
+        return redirect('index')
+
     if request.method == "POST":
         nombre = request.POST.get("nombre")
         email = request.POST.get("email")
