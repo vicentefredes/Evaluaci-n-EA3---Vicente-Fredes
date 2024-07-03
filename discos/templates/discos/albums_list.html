@@ -41,6 +41,7 @@
                   <th scope="col">Fecha de Lanzamiento</th>
                   <th scope="col">Precio</th>
                   <th scope="col">Formato</th>
+                  <th scope="col">Stock</th>
                   <th scope="col" colspan="2">Acción</th>
                   </tr>
               </thead>
@@ -53,6 +54,7 @@
                           <td>{{ album.fecha_lanzamiento|date:"d/m/Y" }}</td>
                           <td>${{ album.precio }}</td>
                           <td>{{ album.id_formato }}</td>
+                          <td>{{ album.stock }}</td>
                           <td class="td-update"><a href="{% url 'albums_edit' pk=album.id_album %}">Modificar</a></td> 
                           <td class="td-delete"><a href="{% url 'albums_del' pk=album.id_album %}">Eliminar</a></td>
                       </tr>

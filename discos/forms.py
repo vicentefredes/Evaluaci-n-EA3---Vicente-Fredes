@@ -27,7 +27,7 @@ class AlbumForm(forms.ModelForm):
         model = Album
         fields = [
             'id_artista', 'nombre_disco', 'fecha_lanzamiento', 
-            'precio', 'id_formato', 'id_genero', 'portada'
+            'precio', 'id_formato', 'id_genero', 'stock', 'portada'
         ]
         labels = {
             'id_artista': "Artista",
@@ -36,7 +36,8 @@ class AlbumForm(forms.ModelForm):
             'precio': "Precio",
             'id_formato': "Formato",
             'id_genero': "Género",
-            'portada': "Portada",
+            'stock': "Stock",
+            'portada': "Portada"
         }
         widgets = {
             'id_artista': forms.Select(attrs={'class': 'form-control'}),
@@ -45,6 +46,7 @@ class AlbumForm(forms.ModelForm):
             'precio': forms.NumberInput(attrs={'class': 'form-control'}),
             'id_formato': forms.Select(attrs={'class': 'form-control'}),
             'id_genero': forms.Select(attrs={'class': 'form-control'}),
+            'stock': forms.NumberInput(attrs={'class': 'form-control'}),
             'portada': forms.FileInput(attrs={'class': 'form-control'}),
         }
 

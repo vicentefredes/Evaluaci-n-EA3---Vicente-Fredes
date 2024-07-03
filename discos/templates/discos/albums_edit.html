@@ -19,45 +19,35 @@
             <div class="form-row justify-content-center">
               <div class="form-group col-md-8">
                 {{ form.non_field_errors }}
-                <label for="{{ form.id_artista.id_for_label }}"
-                  >{{ form.id_artista.label }}</label
-                >
+                <label for="{{ form.id_artista.id_for_label }}">{{ form.id_artista.label }}</label>
                 {{ form.id_artista }} {{ form.id_artista.errors }}
               </div>
               <div class="form-group col-md-8">
-                <label for="{{ form.nombre_disco.id_for_label }}"
-                  >{{ form.nombre_disco.label }}</label
-                >
+                <label for="{{ form.nombre_disco.id_for_label }}">{{ form.nombre_disco.label }}</label>
                 {{ form.nombre_disco }} {{ form.nombre_disco.errors }}
               </div>
               <div class="form-group col-md-8">
-                <label for="{{ form.fecha_lanzamiento.id_for_label }}"
-                  >{{ form.fecha_lanzamiento.label }}</label
-                >
+                <label for="{{ form.fecha_lanzamiento.id_for_label }}">{{ form.fecha_lanzamiento.label }}</label>
                 {{ form.fecha_lanzamiento }} {{ form.fecha_lanzamiento.errors }}
               </div>
               <div class="form-group col-md-8">
-                <label for="{{ form.precio.id_for_label }}"
-                  >{{ form.precio.label }}</label
-                >
+                <label for="{{ form.precio.id_for_label }}">{{ form.precio.label }}</label>
                 {{ form.precio }} {{ form.precio.errors }}
               </div>
               <div class="form-group col-md-8">
-                <label for="{{ form.id_formato.id_for_label }}"
-                  >{{ form.id_formato.label }}</label
-                >
+                <label for="{{ form.id_formato.id_for_label }}">{{ form.id_formato.label }}</label>
                 {{ form.id_formato }} {{ form.id_formato.errors }}
               </div>
               <div class="form-group col-md-8">
-                <label for="{{ form.id_genero.id_for_label }}"
-                  >{{ form.id_genero.label }}</label
-                >
+                <label for="{{ form.id_genero.id_for_label }}">{{ form.id_genero.label }}</label>
                 {{ form.id_genero }} {{ form.id_genero.errors }}
               </div>
               <div class="form-group col-md-8">
-                <label for="{{ form.portada.id_for_label }}"
-                  >{{ form.portada.label }}</label
-                >
+                <label for="{{ form.stock.id_for_label }}">{{ form.stock.label }}</label>
+                {{ form.stock }} {{ form.stock.errors }}
+              </div>
+              <div class="form-group col-md-8">
+                <label for="{{ form.portada.id_for_label }}">{{ form.portada.label }}</label>
                 {{ form.portada }} {{ form.portada.errors }}
               </div>
             </div>

@@ -360,6 +360,12 @@ def confirmar_compra(request, pk):
     compra = Compra.objects.get(id_compra=pk)
     compra.finalizada = True
     compra.save()
+
+    for album in compra.discos.all():
+        if album.stock is not None and album.stock > 0:
+            album.stock -= 1
+            album.save()
+
     return redirect('carrito')
 
 def eliminar_del_carrito(request, id_compra, id_album):

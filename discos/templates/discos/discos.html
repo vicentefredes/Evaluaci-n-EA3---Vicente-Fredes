@@ -16,7 +16,10 @@
                         <li>Formato: {{ album.id_formato }}</li>
                         <li>Lanzamiento: {{ album.fecha_lanzamiento|date:"d/m/Y" }}</li>
                         <li>Precio: ${{ album.precio }}</li>
+                        <li>Stock: {{ album.stock }}</li>
                     </ul>
+                    <!-- Verificación del stock para mostrar el botón o el texto -->
+                    {% if album.stock > 0 %}
                     <!-- Formulario para agregar al carrito -->
                     <form method="POST" action="{% url 'agregar_al_carrito' album.id_album %}">
                         {% csrf_token %}
@@ -24,6 +27,9 @@
                             Agregar a carrito
                         </button>
                     </form>
+                    {% else %}
+                    <p class="text-danger">Agotado</p>
+                    {% endif %}
                 </div>
             </div>
         </div>

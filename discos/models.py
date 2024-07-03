@@ -37,6 +37,7 @@ class Album(models.Model):
     id_formato = models.ForeignKey('Formato',on_delete=models.CASCADE, db_column='idFormato')  
     id_genero = models.ForeignKey('Genero',on_delete=models.CASCADE, db_column='idGenero')  
     portada = models.ImageField(upload_to="media/", default=None)
+    stock = models.IntegerField(null=True, default=0)
 
     def __str__(self):
         return str(self.id_artista) + " - " + str(self.nombre_disco)
