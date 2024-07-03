@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 from .models import Formato, Genero, Artista, Album, Compra, Mensaje
 from .forms import ArtistaForm, AlbumForm, MensajeForm 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Sum
+from django.db.models import Sum, Count
+from datetime import date
 
 # Create your views here.
 
@@ -45,8 +46,71 @@ def registro(request):
     return render(request, 'discos/registro.html', context)
 
 def index(request):
-    context = {'clase':'index'}
+    # Obtener la cantidad total de artistas
+    total_artistas = Artista.objects.count()
+
+    # Obtener la cantidad total de álbumes
+    total_albumes = Album.objects.count()
+
+    # Obtener la cantidad total de géneros
+    total_generos = Genero.objects.count()
+
+    # Obtener la cantidad total de compras finalizadas
+    total_compras = Compra.objects.filter(finalizada=True).count()
+
+    # Resto de las consultas para las estadísticas detalladas
+    artistas_por_pais = Artista.objects.exclude(pais='N/A').values('pais').annotate(num_artistas=Count('id_artista'))
+    albumes_por_formato = Album.objects.values('id_formato__formato').annotate(num_albumes=Count('id_formato'))
+    albumes_por_genero = Album.objects.values('id_genero__genero').annotate(num_albumes=Count('id_genero'))
+    estadisticas_por_decada = albums_por_decada()
+
+    context = {
+        'clase': 'index',
+        'total_artistas': total_artistas,
+        'total_albumes': total_albumes,
+        'total_generos': total_generos,
+        'total_compras': total_compras,
+        'artistas_por_pais': artistas_por_pais,
+        'albumes_por_formato': albumes_por_formato,
+        'albumes_por_genero': albumes_por_genero,
+        'estadisticas_por_decada': estadisticas_por_decada
+    }
     return render(request, 'discos/index.html', context)
+
+
+def albums_por_decada():
+    # Define los rangos de las décadas
+    decades = [
+        (date(1920, 1, 1), date(1929, 12, 31)),
+        (date(1930, 1, 1), date(1939, 12, 31)),
+        (date(1940, 1, 1), date(1949, 12, 31)),
+        (date(1950, 1, 1), date(1959, 12, 31)),
+        (date(1960, 1, 1), date(1969, 12, 31)),
+        (date(1970, 1, 1), date(1979, 12, 31)),
+        (date(1980, 1, 1), date(1989, 12, 31)),
+        (date(1990, 1, 1), date(1999, 12, 31)),
+        (date(2000, 1, 1), date(2009, 12, 31)),
+        (date(2010, 1, 1), date(2019, 12, 31)),
+        (date(2020, 1, 1), date(2029, 12, 31))
+    ]
+    
+    # Lista para almacenar los resultados por década
+    resultados = []
+    
+    # Itera sobre cada década y cuenta los álbumes
+    for start_date, end_date in decades:
+        # Filtra los álbumes por la fecha de lanzamiento dentro de la década
+        num_albumes = Album.objects.filter(fecha_lanzamiento__range=(start_date, end_date)).count()
+        
+        decada_texto = f"{start_date.year}s"
+
+        # Añade el resultado a la lista
+        resultados.append({
+            'decada': decada_texto,
+            'num_albumes': num_albumes
+        })
+    
+    return resultados
 
 #CRUD de Artistas
 @login_required

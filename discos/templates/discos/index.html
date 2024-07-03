@@ -1,9 +1,131 @@
 {% extends "discos/base.html" %}
-
 {% load static %}
 
 {% block content %}
-    <h1>HOLA</h1>
 
+    <div class="row justify-content-center">
+        <!-- Cantidad total de artistas -->
+        <div class="col-md-3">
+            <div class="container-fluid bg-white mb-4 p-4">
+                <div class="text-center">
+                    <h2 class="display-4">{{ total_artistas }}</h2>
+                    <p class="lead">Artistas registrados</p>
+                </div>
+            </div>
+        </div>
 
+        <!-- Cantidad total de álbumes -->
+        <div class="col-md-3">
+            <div class="container-fluid bg-white mb-4 p-4">
+                <div class="text-center">
+                    <h2 class="display-4">{{ total_albumes }}</h2>
+                    <p class="lead">Álbumes en venta</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <!-- Cantidad total de géneros -->
+        <div class="col-md-3">
+            <div class="container-fluid bg-white mb-4 p-4">
+                <div class="text-center">
+                    <h2 class="display-4">{{ total_generos }}</h2>
+                    <p class="lead">Géneros registrados</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cantidad total de compras finalizadas -->
+        <div class="col-md-3">
+            <div class="container-fluid bg-white mb-4 p-4">
+                <div class="text-center">
+                    <h2 class="display-4">{{ total_compras }}</h2>
+                    <p class="lead">Compras realizadas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 class="mt-4 mb-4">Estadísticas</h1>
+
+        <div class="row justify-content-center">
+            <!-- Cantidad de artistas por país -->
+            <div class="col-md-6">
+                <div class="container-fluid bg-white mb-4 p-4">
+                    <h2>Cantidad de artistas por país</h2>
+                    <div class="row">
+                        <div class="col">
+                            <ul class="list-unstyled">
+                                {% for stats in artistas_por_pais %}
+                                    <li>{{ stats.pais }}: {{ stats.num_artistas }}</li>
+                                    {% if forloop.counter|divisibleby:12 and not forloop.last %}
+                                        </ul>
+                                    </div>
+                                    <div class="col">
+                                        <ul class="list-unstyled">
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cantidad de álbumes por género -->
+            <div class="col-md-6">
+                <div class="container-fluid bg-white mb-4 p-4">
+                    <h2>Cantidad de álbumes por género</h2>
+                    <div class="row">
+                        <div class="col">
+                            <ul class="list-unstyled">
+                                {% for stats in albumes_por_genero %}
+                                    <li>{{ stats.id_genero__genero }}: {{ stats.num_albumes }}</li>
+                                    {% if forloop.counter|divisibleby:12 and not forloop.last %}
+                                        </ul>
+                                    </div>
+                                    <div class="col">
+                                        <ul class="list-unstyled">
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cantidad de álbumes por formato -->
+            <div class="col-md-6">
+                <div class="container-fluid bg-white mb-4 p-4">
+                    <h2>Cantidad de álbumes por formato</h2>
+                    <ul class="list-unstyled">
+                        {% for stats in albumes_por_formato %}
+                            <li>{{ stats.id_formato__formato }}: {{ stats.num_albumes }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Cantidad de álbumes por década -->
+            <div class="col-md-6">
+                <div class="container-fluid bg-white mb-4 p-4">
+                    <h2>Cantidad de álbumes por década</h2>
+                    <div class="row">
+                        <div class="col">
+                            <ul class="list-unstyled">
+                                {% for stats in estadisticas_por_decada %}
+                                    <li>{{ stats.decada }}: {{ stats.num_albumes }}</li>
+                                    {% if forloop.counter|divisibleby:6 and not forloop.last %}
+                                        </ul>
+                                    </div>
+                                    <div class="col">
+                                        <ul class="list-unstyled">
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
 {% endblock %}
