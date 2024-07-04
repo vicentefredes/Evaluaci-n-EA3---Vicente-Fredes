@@ -5,7 +5,7 @@ urlpatterns = [
     path('registro', views.registro, name='registro'),
     path('chequear_disponibilidad', views.chequear_disponibilidad, name='chequear_disponibilidad'),
     path('entrar', views.custom_login, name='entrar'),
-    path('index', views.index, name='index'),
+    path('', views.index, name='index'),
     path('crud_artistas', views.crud_artistas, name='crud_artistas'),
     path('artistasAdd', views.artistasAdd, name='artistasAdd'),
     path('artistas_edit/<int:pk>', views.artistas_edit, name='artistas_edit'),
@@ -23,5 +23,6 @@ urlpatterns = [
     path('carrito', views.carrito_compra, name='carrito'),
     path('eliminar-del-carrito/<int:id_compra>/<int:id_album>/', views.eliminar_del_carrito, name='eliminar_del_carrito'),
     path('confirmar_compra/<int:pk>/', views.confirmar_compra, name='confirmar_compra'),
-    path('perfil', views.perfil, name='perfil')
+    path('perfil', views.perfil, name='perfil'),
+    path('obtener_discos_en_carrito', views.obtener_discos_en_carrito, name='obtener_discos_en_carrito'),
 ]

@@ -373,7 +373,6 @@ def carrito_compra(request):
         if not compra:
             compra = Compra.objects.create(id_usuario=None, finalizada=False)
             request.session['id_compra'] = compra.id_compra
-            print(f"Se creó una nueva compra para un usuario invitado con id_compra: {compra.id_compra}")
 
     if compra:
         total_price = sum(album.precio for album in compra.discos.all())
@@ -432,3 +431,32 @@ def perfil(request):
     }
 
     return render(request, 'discos/perfil.html', context)
+
+def obtener_discos_en_carrito(request):
+    if request.user.is_authenticated:
+        # Usuario autenticado: obtener o crear la compra en progreso del usuario
+        compra = Compra.objects.filter(id_usuario=request.user, finalizada=False).first()
+        # Si hay una compra en la sesión para usuario invitado, transferir a usuario autenticado
+        compra_invitado = Compra.objects.filter(id_compra=request.session.get('id_compra'), finalizada=False).first()
+        if compra_invitado and not compra:
+            compra_invitado.id_usuario = request.user
+            compra_invitado.save()
+            request.session['id_compra'] = compra_invitado.id_compra
+            compra = compra_invitado
+    else:
+        # Usuario invitado: obtener la compra usando la sesión, o crear una nueva si no existe
+        compra_id = request.session.get('id_compra')
+        compra = Compra.objects.filter(id_compra=compra_id, finalizada=False).first()
+        if not compra:
+            compra = Compra.objects.create(id_usuario=None, finalizada=False)
+            request.session['id_compra'] = compra.id_compra
+
+    if compra:
+        cantidad_albumes = compra.discos.count()
+    else:
+        cantidad_albumes = 0
+
+    data = {
+        'cantidad_albumes': cantidad_albumes
+    }
+    return JsonResponse(data)

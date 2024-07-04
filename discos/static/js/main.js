@@ -4,6 +4,29 @@ $(document).ready(function() {
 
     $("#idMensajes").delay(2000).fadeOut("slow");
 
+    // Función para actualizar el badge con la cantidad de álbumes en el carrito
+    function actualizarBadgeCarrito() {
+        $.ajax({
+            url: "obtener_discos_en_carrito",  // URL para obtener la cantidad de álbumes
+            type: "GET",
+            success: function(data) {
+                var cantidadAlbumes = data.cantidad_albumes;
+                if (cantidadAlbumes > 0) {
+                    $("#orderBadge").text(cantidadAlbumes);  // Actualizar el texto del badge con la cantidad de álbumes
+                    $("#orderBadge").removeClass("d-none");  // Mostrar el badge si hay álbumes en el carrito
+                } else {
+                    $("#orderBadge").addClass("d-none");  // Ocultar el badge si no hay álbumes en el carrito
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error al obtener la cantidad de álbumes en el carrito:", error);
+            }
+        });
+    }
+
+    // Llamar a la función al cargar la página
+    actualizarBadgeCarrito();
+
     const formatoCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     function validarCampoVacio(campo, mensajeError, idError) {

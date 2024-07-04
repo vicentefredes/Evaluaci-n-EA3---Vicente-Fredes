@@ -65,7 +65,7 @@
             </li>
               
             {% if clase == 'carrito' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
-                <a class="nav-link" href="{% url 'carrito' %}">Carrito</a>
+                <a class="nav-link" href="{% url 'carrito' %}">Carrito <span id="orderBadge" class="badge badge-warning d-none">0</span></a>
             </li>
 
             {% if clase == 'contacto' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
@@ -96,7 +96,24 @@
 
     {% block content %}{% endblock %}
 
-    <footer><p>Todos los derechos reservados. Vinyl's Lovers &copy; 2024</p></footer>
+    <footer class="footer">
+      <div class="container">
+          <div class="row justify-content-center">
+              <div class="col-md-4">
+                  <p>Vinyl's Lovers &copy; 2024</p>
+                  <p>Todos los derechos reservados.</p>
+              </div>
+              <div class="col-md-4">
+                  <ul>
+                      <li style="list-style: none;"><a href="https://x.com/numetal_moment">Twitter</a></li>
+                      <li style="list-style: none;"><a href="https://www.instagram.com/alantiwa2000">Instagram</a></li>
+                      <li style="list-style: none;"><a href="https://www.linkedin.com/in/vicente-fredes-estuardo/">Linkedin</a></li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </footer>
+  
 
 </body>
 </html>
