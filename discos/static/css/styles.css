@@ -28,8 +28,6 @@ body {
     color: rgb(0, 78, 140);
     line-height: 1.5;
     margin-right: 2vh;
-    padding-left: 2vh;
-    padding-right: 2vh;
 }
 
 .dropdown-menu {
@@ -47,8 +45,6 @@ body {
 }
 
 .navbar .navbar-nav .nav-item.active .nav-link {
-    padding-left: 2vh;
-    padding-right: 2vh;
     background-color: rgb(194, 155, 222);
     color: white;
     font-weight: bold;
