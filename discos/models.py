@@ -27,11 +27,14 @@ class Artista(models.Model):
         return str(self.nombre_artista)
     class Meta:
         unique_together = [['nombre_artista', 'pais']]
+    
+    def unique_error_message(self, *args, **kwargs):
+        return "Ya existe un artista con este nombre en este país."
 
 class Album(models.Model):
     id_album = models.AutoField(db_column='idAlbum', primary_key=True) 
     id_artista = models.ForeignKey('Artista',on_delete=models.CASCADE, db_column='idArtista')
-    nombre_disco = models.CharField(max_length=100, null=False)
+    nombre_disco = models.CharField(max_length=100, null=False, blank=False)
     fecha_lanzamiento = models.DateField(null=False, blank=False)
     precio = models.IntegerField(null=False, blank=False)
     id_formato = models.ForeignKey('Formato',on_delete=models.CASCADE, db_column='idFormato')  
@@ -44,7 +47,8 @@ class Album(models.Model):
     class Meta:
         unique_together = [['id_artista', 'nombre_disco', 'fecha_lanzamiento', 'precio', 'id_formato', 'id_genero']]
     
-    
+    def unique_error_message(self, *args, **kwargs):
+        return "Ya existe este producto en la base de datos."
 class Compra(models.Model):
     id_compra = models.AutoField(db_column='idCompra', primary_key=True) 
     id_usuario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, db_column='idUsuario')

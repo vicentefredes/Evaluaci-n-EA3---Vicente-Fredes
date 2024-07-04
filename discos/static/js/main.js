@@ -1,5 +1,7 @@
 $(document).ready(function() {
     
-    $("#idMensajes").delay(2000).fadeOut("slow");
+    console.log('hola')
 
+    $("#idMensajes").delay(2000).fadeOut("slow");
+    
 });

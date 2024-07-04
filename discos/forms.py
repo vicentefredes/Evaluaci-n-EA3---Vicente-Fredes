@@ -1,9 +1,10 @@
 from django import forms
 from .models import Formato, Genero, Artista, Album, Compra, Mensaje
-
 from django.forms import ModelForm
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
+from datetime import date
+from django.core.exceptions import ValidationError
 
 class ArtistaForm(forms.ModelForm):
     class Meta:
@@ -21,6 +22,14 @@ class ArtistaForm(forms.ModelForm):
             'pais': forms.TextInput(attrs={'class': 'form-control'}),
             'biografia': forms.Textarea(attrs={'class': 'form-control'}),
         }
+        error_messages = {
+            'nombre_artista': {
+                'required': "El campo es obligatorio.",
+            },
+            'pais': {
+                'required': "El campo es obligatorio.",
+        }
+    }
 
 class AlbumForm(forms.ModelForm):
     class Meta:
@@ -49,11 +58,34 @@ class AlbumForm(forms.ModelForm):
             'stock': forms.NumberInput(attrs={'class': 'form-control'}),
             'portada': forms.FileInput(attrs={'class': 'form-control'}),
         }
+        error_messages = {
+            'nombre_disco': {
+                'required': "El campo es obligatorio.",
+            },
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['id_artista'].queryset = Artista.objects.order_by('nombre_artista')  
         self.fields['id_genero'].queryset = Genero.objects.order_by('genero')  
+
+    def clean_precio(self):
+        precio = self.cleaned_data['precio']
+        if precio < 0:
+            raise ValidationError("El precio no puede ser negativo.")
+        return precio
+    
+    def clean_stock(self):
+        stock = self.cleaned_data['stock']
+        if stock < 0:
+            raise ValidationError("El precio no puede ser negativo.")
+        return stock
+
+    def clean_fecha_lanzamiento(self):
+        fecha_lanzamiento = self.cleaned_data['fecha_lanzamiento']
+        if fecha_lanzamiento > date.today():
+            raise ValidationError("La fecha de lanzamiento no puede ser una fecha futura.")
+        return fecha_lanzamiento
 
 class MensajeForm(forms.ModelForm):
     class Meta:
@@ -70,4 +102,12 @@ class MensajeForm(forms.ModelForm):
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
             'correo_electronico': forms.EmailInput(attrs={'class': 'form-control'}),
             'mensaje': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+        error_messages = {
+            'nombre': {
+                'required': "El campo es obligatorio.",
+            },
+            'mensaje': {
+                'required': "El campo es obligatorio.",
+            },
         }

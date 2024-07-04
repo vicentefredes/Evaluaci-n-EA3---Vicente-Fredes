@@ -62,3 +62,14 @@ body {
     font-weight: bold;
     color: rgb(0, 78, 140);
 }
+
+
+/*Estilos para validación de formulario*/
+.is-invalid {
+    background-color: rgb(255, 212, 215) !important;
+	border: 3px solid red !important;
+}
+
+.invalid-feedback {
+    color: rgba(220, 53, 70, 0.741) !important;
+}
