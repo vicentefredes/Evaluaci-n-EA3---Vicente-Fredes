@@ -18,9 +18,9 @@ class ArtistaForm(forms.ModelForm):
             'biografia': "Biografía",
         }
         widgets = {
-            'nombre_artista': forms.TextInput(attrs={'class': 'form-control'}),
-            'pais': forms.TextInput(attrs={'class': 'form-control'}),
-            'biografia': forms.Textarea(attrs={'class': 'form-control'}),
+            'nombre_artista': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ejemplo: Blur'}),
+            'pais': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ejemplo: Inglaterra'}),
+            'biografia': forms.Textarea(attrs={'class': 'form-control', 'placeholder':'Ejemplo: Blur es una banda británica de rock formada en 1988 en Londres.'}),
         }
         error_messages = {
             'nombre_artista': {
@@ -50,9 +50,9 @@ class AlbumForm(forms.ModelForm):
         }
         widgets = {
             'id_artista': forms.Select(attrs={'class': 'form-control'}),
-            'nombre_disco': forms.TextInput(attrs={'class': 'form-control'}),
+            'nombre_disco': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ejemplo: Brat'}),
             'fecha_lanzamiento': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'precio': forms.NumberInput(attrs={'class': 'form-control'}),
+            'precio': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Ejemplo: 5000'}),
             'id_formato': forms.Select(attrs={'class': 'form-control'}),
             'id_genero': forms.Select(attrs={'class': 'form-control'}),
             'stock': forms.NumberInput(attrs={'class': 'form-control'}),
@@ -99,9 +99,9 @@ class MensajeForm(forms.ModelForm):
             'mensaje': "Mensaje",
         }
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
-            'correo_electronico': forms.EmailInput(attrs={'class': 'form-control'}),
-            'mensaje': forms.Textarea(attrs={'class': 'form-control'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
+            'correo_electronico': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'usuario@mail.com'}),
+            'mensaje': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Tu mensaje aquí...'}),
         }
         error_messages = {
             'nombre': {

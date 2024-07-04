@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .models import Formato, Genero, Artista, Album, Compra, Mensaje
-from .forms import ArtistaForm, AlbumForm, MensajeForm 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import IntegrityError
 from django.db.models import Sum, Count
 from datetime import date
+from django.http import JsonResponse, HttpResponseBadRequest
+from .models import Genero, Artista, Album, Compra, Mensaje
+from .forms import ArtistaForm, AlbumForm, MensajeForm 
+
 
 # Create your views here.
 
@@ -52,12 +54,23 @@ def registro(request):
             return render(request, 'discos/registro.html', context)
         
         except IntegrityError:
-            error_message = "El nombre de usuario de usuario ya está en uso."
+            return HttpResponseBadRequest("El nombre de usuario de usuario ya está en uso.")
+        except ValueError as e:
+            if str(e) == "The given username must be set":
+                return HttpResponseBadRequest("El nombre de usuario es obligatorio.")
+            else:
+                raise e
     
     # Si el método no es POST o hubo un error de integridad, mostrar el formulario con los datos ingresados y el mensaje de error si existe
-    context = {"clase": "entrar", "error_message": error_message, "nombre": nombre, "email": email, "first_name": first_name, "last_name": last_name}
+    context = {"clase": "entrar", "nombre": nombre, "email": email, "first_name": first_name, "last_name": last_name}
     return render(request, 'discos/registro.html', context)
 
+def chequear_disponibilidad(request):
+    username = request.GET.get('username', None)
+    data = {
+        'is_taken': User.objects.filter(username__iexact=username).exists()
+    }
+    return JsonResponse(data)
 
 def index(request):
     # Obtener la cantidad total de artistas

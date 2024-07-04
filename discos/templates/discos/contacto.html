@@ -10,22 +10,25 @@
           <h2 class="text-center">Formulario de Contacto:</h2>
           <br />
 
-          <form action="" method="POST" class="form-horizontal">
+          <form id="formContacto" action="" method="POST" class="form-horizontal">
             {% csrf_token %}
 
             <div class="form-row justify-content-center">
               <div class="form-group col-md-8">
                 {{ form.non_field_errors }}
                 <label for="{{ form.nombre.id_for_label }}">{{ form.nombre.label }}</label>
-                {{ form.nombre }} {{ form.nombre.errors }}
+                {{ form.nombre }} 
+                <div class="invalid-feedback" id="nombreError"></div>
               </div>
               <div class="form-group col-md-8">
                 <label for="{{ form.correo_electronico.id_for_label }}">{{ form.correo_electronico.label }}</label>
-                {{ form.correo_electronico }} {{ form.correo_electronico.errors }}
+                {{ form.correo_electronico }} 
+                <div class="invalid-feedback" id="correoError"></div>
               </div>
               <div class="form-group col-md-8">
                 <label for="{{ form.mensaje.id_for_label }}">{{ form.mensaje.label }}</label>
-                {{ form.mensaje }} {{ form.mensaje.errors }}
+                {{ form.mensaje }} 
+                <div class="invalid-feedback" id="mensajeError"></div>
               </div>
             </div>
             <br />
