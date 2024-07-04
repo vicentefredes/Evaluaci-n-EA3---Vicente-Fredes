@@ -8,10 +8,10 @@
 
     <header>
       <div class="row justify-content-center">
-        <div class="col-md-8 col-sm-12">
+        <div class="col-md-7 col-sm-10">
           <h1>Listado de Artistas</h1>
         </div>
-        <div class="col-md-4 col-sm-12">
+        <div class="col-md-3 col-sm-10">
           <div class="container-btn">
             <button class="btn btn-light" id="btnAgregar">
               <a href="{% url 'artistasAdd' %}">Agregar Artista</a>
@@ -29,73 +29,77 @@
       {% endif %}
     </div>
 
-    <div class="table-container">
-        <table class="table table-striped">
-            {% if artistas %}
-                <thead>
-                    <tr>
-                    <th scope="col">Nombre del Artista</th>
-                    <th scope="col">País</th>
-                    <th scope="col">Biografía</th>
-                    <th scope="col" colspan="2">Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for artista in artistas %}
-                        <tr>
-                            <td>{{ artista.nombre_artista }}</td>
-                            <td>{{ artista.pais }}</td>
-                            <td>{{ artista.biografia }}</td>
-                            <td class="td-update"><a href="{% url 'artistas_edit' pk=artista.id_artista %}">Modificar</a></td> 
-                            <td class="td-delete"><a href="{% url 'artistas_del' pk=artista.id_artista %}">Eliminar</a></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            {% endif %}    
-        </table>
+    <div class="row justify-content-center">
+        <div class="col-10">
+            <div class="table-container">
+                    <table class="table table-striped">
+                        {% if artistas %}
+                            <thead>
+                                <tr>
+                                <th scope="col">Nombre del Artista</th>
+                                <th scope="col">País</th>
+                                <th scope="col" class="col-biografia">Biografía</th>
+                                <th scope="col" colspan="2">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for artista in artistas %}
+                                    <tr>
+                                        <td>{{ artista.nombre_artista }}</td>
+                                        <td>{{ artista.pais }}</td>
+                                        <td class="col-biografia">{{ artista.biografia }}</td>
+                                        <td class="td-update"><a href="{% url 'artistas_edit' pk=artista.id_artista %}">Modificar</a></td> 
+                                        <td class="td-delete"><a href="{% url 'artistas_del' pk=artista.id_artista %}">Eliminar</a></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        {% endif %}    
+                    </table>
 
-      <!-- Paginación de Bootstrap -->
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            {% if artistas.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" href="?page=1" aria-label="Primera">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Primera</span>
-                    </a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ artistas.previous_page_number }}" aria-label="Anterior">
-                        <span aria-hidden="true">&lt;</span>
-                        <span class="sr-only">Anterior</span>
-                    </a>
-                </li>
-            {% endif %}
+                <!-- Paginación de Bootstrap -->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        {% if artistas.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1" aria-label="Primera">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Primera</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ artistas.previous_page_number }}" aria-label="Anterior">
+                                    <span aria-hidden="true">&lt;</span>
+                                    <span class="sr-only">Anterior</span>
+                                </a>
+                            </li>
+                        {% endif %}
 
-            {% for num in artistas.paginator.page_range %}
-                {% if artistas.number == num %}
-                    <li class="page-item active" aria-current="page"><span class="page-link">{{ num }}</span></li>
-                {% else %}
-                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-                {% endif %}
-            {% endfor %}
+                        {% for num in artistas.paginator.page_range %}
+                            {% if artistas.number == num %}
+                                <li class="page-item active" aria-current="page"><span class="page-link">{{ num }}</span></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                            {% endif %}
+                        {% endfor %}
 
-            {% if artistas.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ artistas.next_page_number }}" aria-label="Siguiente">
-                        <span aria-hidden="true">&gt;</span>
-                        <span class="sr-only">Siguiente</span>
-                    </a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ artistas.paginator.num_pages }}" aria-label="Última">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Última</span>
-                    </a>
-                </li>
-            {% endif %}
-        </ul>
-      </nav>
+                        {% if artistas.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ artistas.next_page_number }}" aria-label="Siguiente">
+                                    <span aria-hidden="true">&gt;</span>
+                                    <span class="sr-only">Siguiente</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ artistas.paginator.num_pages }}" aria-label="Última">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Última</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
     </div>
   
 {% else %}
