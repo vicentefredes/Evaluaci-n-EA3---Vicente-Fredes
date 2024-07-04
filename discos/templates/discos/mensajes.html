@@ -6,9 +6,8 @@
 
 {% if user.is_staff %}
 
-  <br>
   <div class="row justify-content-center">
-    <div class="col-md-8 col-sm-12">
+    <div class="col-10">
       <header>
         <h1>Listado de Mensajes</h1>
       </header>
@@ -23,38 +22,86 @@
     {% endif %}
   </div>
 
-  <div class="table-container">
-      <table class="table table-striped">
-          {% if mensajes %}
-              <thead>
-                  <tr>
-                      <th scope="col">Nombre</th>
-                      <th scope="col">Correo Electrónico</th>
-                      <th scope="col">Mensaje</th>
-                      <th scope="col">Fecha</th>
-                      <th scope="col" colspan="2">Acción</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  {% for mensaje in mensajes %}
-                      <tr>
-                          <td>{{ mensaje.nombre }}</td>
-                          <td>{{ mensaje.correo_electronico }}</td>
-                          <td>{{ mensaje.mensaje }}</td>
-                          <td>{{ mensaje.fecha|date:"d/m/Y" }}</td>                          
-                          <td class="td-mark-read">
-                              {% if not mensaje.leido %}
-                                  <a href="{% url 'cambiar_estado' pk=mensaje.id_mensaje %}">Marcar como leído</a>
-                              {% else %}
-                                  <a href="{% url 'cambiar_estado' pk=mensaje.id_mensaje %}">Marcar como no leído</a>
-                              {% endif %}
-                          </td>
-                          <td class="td-delete"><a href="{% url 'mensajes_del' pk=mensaje.id_mensaje %}">Eliminar</a></td>
-                      </tr>
+  <div class="row justify-content-center">
+    <div class="col-10">
+      <div class="table-container">
+            <table class="table table-striped">
+                {% if mensajes %}
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Correo Electrónico</th>
+                            <th scope="col" class="col-mensaje">Mensaje</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col" colspan="2">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for mensaje in mensajes %}
+                            <tr>
+                                {% if mensaje.leido %}<td class="td-leido">{% else %}<td class="td-noleido">{% endif %} {{ mensaje.nombre }}</td>
+                                {% if mensaje.leido %}<td class="td-leido">{% else %}<td class="td-noleido">{% endif %} {{ mensaje.correo_electronico }}</td>
+                                {% if mensaje.leido %}<td class="td-leido col-mensaje">{% else %}<td class="td-noleido col-mensaje">{% endif %} {{ mensaje.mensaje }}</td>
+                                {% if mensaje.leido %}<td class="td-leido">{% else %}<td class="td-noleido">{% endif %} {{ mensaje.fecha|date:"d/m/Y H:i" }}</td>                          
+                                <td class="td-mark-read equal-width">
+                                    {% if not mensaje.leido %}
+                                        <a href="{% url 'cambiar_estado' pk=mensaje.id_mensaje %}">Marcar como leído</a>
+                                    {% else %}
+                                        <a href="{% url 'cambiar_estado' pk=mensaje.id_mensaje %}">Marcar como no leído</a>
+                                    {% endif %}
+                                </td>
+                                <td class="td-delete equal-width"><a href="{% url 'mensajes_del' pk=mensaje.id_mensaje %}">Eliminar</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                {% endif %}    
+            </table>
+
+            <!-- Paginación de Bootstrap -->
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-center">
+                  {% if mensajes.has_previous %}
+                      <li class="page-item">
+                          <a class="page-link" href="?page=1" aria-label="Primera">
+                              <span aria-hidden="true">&laquo;</span>
+                              <span class="sr-only">Primera</span>
+                          </a>
+                      </li>
+                      <li class="page-item">
+                          <a class="page-link" href="?page={{ mensajes.previous_page_number }}" aria-label="Anterior">
+                              <span aria-hidden="true">&lt;</span>
+                              <span class="sr-only">Anterior</span>
+                          </a>
+                      </li>
+                  {% endif %}
+
+                  {% for num in mensajes.paginator.page_range %}
+                      {% if mensajes.number == num %}
+                          <li class="page-item active" aria-current="page"><span class="page-link">{{ num }}</span></li>
+                      {% else %}
+                          <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                      {% endif %}
                   {% endfor %}
-              </tbody>
-          {% endif %}    
-      </table>
+
+                  {% if mensajes.has_next %}
+                      <li class="page-item">
+                          <a class="page-link" href="?page={{ mensajes.next_page_number }}" aria-label="Siguiente">
+                              <span aria-hidden="true">&gt;</span>
+                              <span class="sr-only">Siguiente</span>
+                          </a>
+                      </li>
+                      <li class="page-item">
+                          <a class="page-link" href="?page={{ mensajes.paginator.num_pages }}" aria-label="Última">
+                              <span aria-hidden="true">&raquo;</span>
+                              <span class="sr-only">Última</span>
+                          </a>
+                      </li>
+                  {% endif %}
+              </ul>
+            </nav>
+
+        </div>
+    </div>
   </div>
 
 {% else %}

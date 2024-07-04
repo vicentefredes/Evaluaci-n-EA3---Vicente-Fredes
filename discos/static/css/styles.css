@@ -148,10 +148,17 @@ header h1 {
 
 .table-striped th, .table-striped td {
     border: 1px solid black !important;
+    vertical-align: middle;
   }
 
 .col-biografia {
-    max-width: 250px; /* Ajusta este valor según tu necesidad */
+    max-width: 40vh; /* Ajusta este valor según tu necesidad */
+    word-wrap: break-word;
+    white-space: pre-line;
+}
+
+.col-mensaje {
+    max-width: 50vh; /* Ajusta este valor según tu necesidad */
     word-wrap: break-word;
     white-space: pre-line;
 }
@@ -175,6 +182,28 @@ header h1 {
     font-weight: bold;
     text-decoration: underline;
   }
+
+.table-striped .td-leido {
+    background-color: rgb(180, 180, 180);
+}
+
+.table-striped .td-noleido {
+    background-color: white;
+}
+
+.table-striped .td-mark-read {
+    background-color: rgb(248, 206, 128);
+  }
+  
+.table-striped .td-mark-read a {
+    color: rgba(14, 58, 77);
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+.equal-width {
+    width: 10%; /* Adjust this value as needed */
+}
 
 /*Estilos para validación de formulario*/
 .is-invalid {

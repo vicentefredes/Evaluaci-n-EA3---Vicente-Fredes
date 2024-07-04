@@ -264,6 +264,17 @@ def albums_del(request, pk):
 @login_required
 def listadoMensajes(request):
     mensajes = Mensaje.objects.all().order_by('-fecha')
+    paginator = Paginator(mensajes, 25)
+
+    page = request.GET.get('page')
+
+    try:
+        mensajes = paginator.page(page)
+    except PageNotAnInteger:
+        mensajes = paginator.page(1)
+    except EmptyPage:
+        mensajes = paginator.page(paginator.num_pages)
+
     context = {'mensajes': mensajes, 'clase': 'mensajes'}
     return render(request, 'discos/mensajes.html', context)
 
