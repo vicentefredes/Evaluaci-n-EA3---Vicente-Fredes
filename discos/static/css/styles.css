@@ -427,6 +427,65 @@ header h1 {
     font-weight: bold;
 }
 
+@media (max-width: 600px) {
+    #tituloCarrito {
+      font-size: 40px;
+    }
+  }
+
+.container-carrito {
+    text-align: center;
+    margin-bottom: 5%;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.container-carrito .list-group-item {
+    border: 1px solid black;
+    text-align: left;
+}
+
+.container-carrito .list-group-item .col-md-2 img {
+    object-fit: cover;
+    width: 100%;  /* Optional: Set width to ensure consistent sizing */
+    height: auto;
+}
+
+.container-carrito .list-group-item .col-md-2,
+.container-carrito .list-group-item .col-md-8  {
+    max-width: 100%;  /* Adjust as needed */
+}
+
+@media (max-width:767px) {
+    .container-carrito .list-group-item {
+        text-align: center;
+    }
+}
+
+.container-carrito .list-group-item .row {
+    display: flex;
+    align-items: center;
+}
+
+.container-carrito form {
+    text-align: center;
+}
+
+.container-carrito .btn-danger {
+    font-size: 20px;
+}
+
+#precioTotal {
+    font-size: 35px;
+}
+
+#carritoVacio {
+    margin: 5%;
+    text-align: center;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+}
+
 #idMensajes, #mensajeLogin, #mensajeRegistro {
     justify-content: center;
   }
