@@ -2,42 +2,50 @@
 
 {% block content %}
 <div class="container">
-    {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-warning" role="alert">
-            {{ message }}
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
         </div>
-        {% endfor %}
-    {% endif %}
+    </div>
+    
 
     <div class="row justify-content-center">
       <div class="col-lg-8 col-md-10 col-sm-12">
-          <div id="formInicioSesion" class="p-4 border rounded">
+          <div id="formInicioSesion" class="p-4 rounded">
               <h2 class="text-center">Iniciar Sesión: </h2>
               <br>
 
               <form action="{% url 'entrar' %}" method="post">
                 {% csrf_token %}
-                <div class="form-group">
-                    <label for="username">Nombre de usuario</label>
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Usuario">
+                <div class="row justify-content-center">
+                    <div class="form-group col-md-8">
+                        <label for="username">Nombre de usuario</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Usuario">
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label for="password">Contraseña</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="************">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="password">Contraseña</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="************">
+                <br>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary" id="btnEnviarForm">Iniciar Sesión</button>
                 </div>
-                <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
             </form>
 
-              <div id="idMensajes">
-                  {% if mensaje %}
-                      <div class="alert alert-success mx-auto">
-                          {{ mensaje }}
-                      </div>
-                  {% endif %}
-              </div>  
-            <p>¿No tienes una cuenta?</p> <a href="{% url 'registro' %}">¡Regístrate!</a>            
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-warning" role="alert">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}              
           </div>
+
+          <div class="row justify-content-center">
+            <div class="container-registro">
+                <p>¿No tienes una cuenta?</p> <a href="{% url 'registro' %}" id="linkRegistro">¡Regístrate!</a> 
+            </div>
+          </div> 
       </div>
   </div>
 

@@ -207,7 +207,22 @@ header h1 {
     width: 10%; /* Adjust this value as needed */
 }
 
-#formCrud {
+.container-registro {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-align: center;
+}
+
+.container-registro p {
+    font-size: 18px;
+}
+
+.container-registro a {
+    font-size: 30px;
+    color: rgb(0, 78, 140);
+    font-weight: bold;
+}
+
+#formCrud, #formInicioSesion, #formRegistro {
     background-color: rgb(238, 223, 250);;
     color: rgba(14, 58, 77, 0.836);
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;

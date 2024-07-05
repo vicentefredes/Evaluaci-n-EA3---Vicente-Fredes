@@ -5,11 +5,15 @@
 {% block content %}
 <div class="container">
 
-    {% if mensaje %}
-    <div class="alert alert-primary" role="alert" id="idMensaje">
-        {{ mensaje }} <a href="{% url 'entrar' %}">Haz click aquí para iniciar sesión</a>
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            {% if mensaje %}
+                <div class="alert alert-primary" role="alert" id="idMensaje">
+                    {{ mensaje }} <a href="{% url 'entrar' %}">Haz click aquí para iniciar sesión</a>
+                </div>
+            {% endif %}
+        </div>
     </div>
-    {% endif %}
 
     {% if error_message %}
     <div class="alert alert-danger" role="alert">
@@ -19,8 +23,8 @@
 
     <div class="row justify-content-center">
         <div class="col-lg-8 col-md-10 col-sm-12">
-            <div id="formRegistro" class="p-4 border rounded">
-                <h2 class="text-center">Registrar Usuario:</h2>
+            <div id="formRegistro" class="p-4 rounded">
+                <h2 class="text-center">Crea tu Nueva Cuenta:</h2>
                 <br>
 
                 <form id="registroForm" action="{% url 'registro' %}" method="post">
@@ -50,7 +54,11 @@
                         <input type="password" class="form-control" id="password" name="password" placeholder="************">
                         <div class="invalid-feedback" id="passwordError"></div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Registrarse</button>
+                    <br>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary" id="btnEnviarForm">Registrarse</button>
+                    </div>
+
                 </form>
 
             </div>
