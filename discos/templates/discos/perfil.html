@@ -2,55 +2,66 @@
 {% load static %}
 
 {% block content %}
-<h1>Mi Cuenta</h1>
+<header>
+    <div class="row justify-content-center">
+      <div class="col-10">
+          <h1>Mi Cuenta</h1>
+      </div>
+    </div>   
+</header>
 
-<div class="container-fluid inicioUsuario" style="height: 100%;">
-    <div class="row justify-content-center align-items-center">
-        <div class="col-md-4 col-lg-3 mb-5">
-            <img src="{% static 'img/usuario.jpg' %}" alt="usuario" class="img-fluid rounded-circle">
-        </div>
-        <div class="col-md-8 col-lg-6 mb-5">
-            <h3>¡Bienvenido/a, {{ user.username }}!</h3>
-            <div class="infoUsuario">
-                <div class="row">
-                    <ul>
-                        <li>Nombre: {{ user.get_full_name }}</li>
-                        <li>Correo Electrónico: {{ user.email }}</li>
-                        <li>Usuario desde: {{ user.date_joined }}</li>
-                        <li>Última vez activo: {{ user.last_login }}</li>
-                    </ul>
+<div class="row justify-content-center">
+    <div class="col-10">
+        <div class="container-perfil">
+            <div class="row justify-content-center">
+                <div class="col-sm-4 col-md-4 col-lg-3">
+                    <img src="{% static 'img/usuario.jpg' %}" alt="usuario" class="img-fluid rounded-circle">
                 </div>
-            </div>
+                <div class="col-sm-8 col-md-4 col-lg-3">
+                    <h3 class="text-center">¡Bienvenido/a, {{ user.username }}!</h3>
+                    <div class="infoUsuario">  
+                        <ul>
+                            <li>Nombre: {{ user.get_full_name }}</li>
+                            <li>Correo Electrónico: {{ user.email }}</li>
+                            <li>Usuario desde: {{ user.date_joined }}</li>
+                            <li>Última vez activo: {{ user.last_login }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div> 
         </div>
+
+        <h1 class="mt-4 mb-4" id="tituloEstadisticas">Historias de Compras</h1>
+
+        <div class="container-historial">
+            <div class="row justify-content-center">
+                <!-- Lista de compras realizadas -->
+                    <div class="col-lg-8 col-md-10 col-sm-12">
+                        <div class="list-group">
+                            {% if compras %}
+                            {% for compra in compras %}
+                            <div class="list-group-item item-compra">
+                                <h5 class="mb-1">Fecha de compra: {{ compra.fecha|date:"d/m/Y H:i:s" }}</h5>
+                                <p class="mb-1"><strong>Discos comprados:</strong></p>
+                                <ul class="list-group list-group-flush">
+                                    {% for disco in compra.discos.all %}
+                                    <li class="list-group-item">
+                                        {{ disco.id_artista.nombre_artista }} - {{ disco.nombre_disco }}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                <!-- Mostrar precio total de la compra -->
+                                <p class="mt-2"><strong>Precio total:</strong> ${{ compra.total_price }}</p>
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            <div class="list-group-item">No hay compras realizadas.</div>
+                            {% endif %}
+                        </div>
+                    </div>
+            </div>
+        </div>  
     </div>
 
-    <!-- Lista de compras realizadas -->
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Historial de Compras</h3>
-            <div class="list-group">
-                {% if compras %}
-                {% for compra in compras %}
-                <div class="list-group-item">
-                    <h5 class="mb-1">Fecha de compra: {{ compra.fecha|date:"d/m/Y H:i:s" }}</h5>
-                    <p class="mb-1"><strong>Discos comprados:</strong></p>
-                    <ul class="list-group list-group-flush">
-                        {% for disco in compra.discos.all %}
-                        <li class="list-group-item">
-                            {{ disco.id_artista.nombre_artista }} - {{ disco.nombre_disco }}
-                            <span class="badge badge-primary badge-pill float-right">${{ disco.precio }}</span>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                    <!-- Mostrar precio total de la compra -->
-                    <p class="mt-2"><strong>Precio total:</strong> ${{ compra.total_price }}</p>
-                </div>
-                {% endfor %}
-                {% else %}
-                <div class="list-group-item">No hay compras realizadas.</div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
 </div>
 {% endblock %}

@@ -10,11 +10,18 @@
           <h1 id="tituloCarrito">Carrito de Compras</h1>
       </div>
     </div>   
-  </header>
+</header>
 
 <div class="container-carrito">
     <div class="row justify-content-center">
         <div class="col-md-8">
+
+            <div id="mensajeCompra">
+                {% if mensaje %}
+                <div class="alert alert-primary mx-auto">{{ mensaje }}</div>
+                {% endif %}
+            </div>
+
             {% if compra.discos.all %}
                 <ul class="list-group">
                     {% for album in compra.discos.all %}

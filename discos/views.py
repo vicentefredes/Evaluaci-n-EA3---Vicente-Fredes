@@ -7,7 +7,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import IntegrityError
 from django.db.models import Sum, Count
 from datetime import date
-from django.http import JsonResponse, HttpResponseBadRequest
+from django.urls import reverse
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseRedirect
 from .models import Genero, Artista, Album, Compra, Mensaje
 from .forms import ArtistaForm, AlbumForm, MensajeForm 
 
@@ -314,7 +315,11 @@ def listado_albums(request):
     except EmptyPage:
         albums = paginator.page(paginator.num_pages)
 
-    context = {'albums': albums, 'clase': 'discos'}
+    # Leer flag de la sesión y eliminarlo
+    album_agregado = request.session.pop('album_agregado', False)
+    album_nombre = request.session.pop('album_nombre', '')
+
+    context = {'albums': albums, 'clase': 'discos', 'album_agregado': album_agregado, 'album_nombre': album_nombre}
     return render(request, 'discos/discos.html', context)
 
 # Vista para agregar productos al carrito
@@ -342,16 +347,21 @@ def agregar_al_carrito(request, fk_album):
 
     # Agregar el álbum a la compra
     compra.discos.add(album)
-    print(f"Álbum {album.nombre_disco} agregado a la compra {compra.id_compra}.")
 
     # Asignar el ID de compra a la sesión
     request.session['id_compra'] = compra.id_compra
+
+    # Añadir flag en la sesión
+    request.session['album_agregado'] = True
+    request.session['album_nombre'] = f"{album.id_artista} - {album.nombre_disco}"
 
     # Redirigir a la misma página de listado de álbumes
     return redirect('discos')
 
 # Vista para mostrar el carrito de compras
 def carrito_compra(request):
+    mensaje = request.GET.get('mensaje', None)
+
     if request.user.is_authenticated:
         # Usuario autenticado: obtener o crear la compra en progreso del usuario
         compra = Compra.objects.filter(id_usuario=request.user, finalizada=False).first()
@@ -375,10 +385,11 @@ def carrito_compra(request):
         context = {
             'compra': compra,
             'total_price': total_price,
+            'mensaje': mensaje,
             'clase':'carrito'
         }
     else:
-        context = {'compra': None, 'clase':'carrito'} 
+        context = {'compra': None, 'clase':'carrito', 'mensaje': mensaje} 
 
     return render(request, 'discos/carrito.html', context)
 
@@ -392,7 +403,8 @@ def confirmar_compra(request, pk):
             album.stock -= 1
             album.save()
 
-    return redirect('carrito')
+    mensaje = "Tu compra ha sido confirmada exitosamente. ¡Gracias por su preferencia!"
+    return HttpResponseRedirect(reverse('carrito') + f'?mensaje={mensaje}')
 
 def eliminar_del_carrito(request, id_compra, id_album):
     compra = Compra.objects.get(id_compra=id_compra)

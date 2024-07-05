@@ -427,6 +427,21 @@ header h1 {
     font-weight: bold;
 }
 
+.modal-title, .modal-body, .modal-footer {
+    text-align: center;
+    justify-content: center;
+}
+
+.modal-footer button {
+    font-size: 20px;
+}
+
+.modal-footer .btn-primary {
+    background-color: rgb(0, 78, 140);
+    color: white;
+    font-weight: bold;
+}
+
 @media (max-width: 600px) {
     #tituloCarrito {
       font-size: 40px;
@@ -486,7 +501,33 @@ header h1 {
     font-weight: bold;
 }
 
-#idMensajes, #mensajeLogin, #mensajeRegistro {
+.container-perfil {
+    display: flex;
+    align-items: center;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color: white;
+    color: rgba(14, 58, 77);
+    justify-content: center;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    border: 2px solid black;
+    margin-bottom: 5%;
+}
+
+#infoUsuario {
+    vertical-align: middle;
+}
+
+.container-historial {
+    margin-bottom: 5%;
+}
+
+.container-historial .list-group-item.item-compra {
+    border: 1px solid black;
+    text-align: left;
+}
+
+#idMensajes, #mensajeLogin, #mensajeRegistro, #mensajeCompra {
     justify-content: center;
   }
   
