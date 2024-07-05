@@ -21,16 +21,17 @@
       </div>   
     </header>
 
-    <div id="idMensajes">
-      {% if mensaje %}
-          <div class="alert alert-warning mx-auto">
-              {{ mensaje }}
-          </div>
-      {% endif %}
-    </div>
-
     <div class="row justify-content-center">
         <div class="col-10">
+
+            <div id="idMensajes">
+                {% if mensaje %}
+                    <div class="alert alert-warning mx-auto">
+                        {{ mensaje }}
+                    </div>
+                {% endif %}
+            </div>
+
             <div class="table-container">
                 <table class="table table-striped">
                     {% if artistas %}

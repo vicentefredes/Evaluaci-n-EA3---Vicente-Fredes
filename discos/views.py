@@ -189,17 +189,12 @@ def artistas_edit(request, pk):
 
 @login_required
 def artistas_del(request, pk):
-    context = {}
     try:
         artista = Artista.objects.get(id_artista=pk)
         artista.delete()
-        mensaje = f"{artista.nombre_artista} ha sido eliminado"
-        context = {'mensaje': mensaje, 'artistas': Artista.objects.all().order_by('nombre_artista'), 'clase': 'mantenedores'}
-        return render(request, 'discos/artistas_list.html', context)
+        return redirect('crud_artistas')
     except Artista.DoesNotExist:
-        mensaje = f"ERROR: el id {pk} no existe"
-        context = {'mensaje': mensaje, 'artistas': Artista.objects.all().order_by('nombre_artista'), 'clase': 'mantenedores'}
-        return render(request, 'discos/artistas_list.html', context)
+        return redirect('crud_artistas')
 
 #CRUD de álbumes    
 @login_required
@@ -248,17 +243,12 @@ def albums_edit(request, pk):
 
 @login_required
 def albums_del(request, pk):
-    context = {}
     try:
         album = Album.objects.get(id_album=pk)
         album.delete()
-        mensaje = f"El álbum {album.nombre_disco} ha sido eliminado"
-        context = {'mensaje': mensaje, 'albums': Album.objects.all().order_by('nombre_disco'), 'clase': 'mantenedores'}
-        return render(request, 'discos/albums_list.html', context)
+        return redirect('crud_albums')
     except Album.DoesNotExist:
-        mensaje = f"ERROR: el id {pk} no existe"
-        context = {'mensaje': mensaje, 'albums': Album.objects.all().order_by('nombre_disco'), 'clase': 'mantenedores'}
-        return render(request, 'discos/albums_list.html', context)
+        return redirect('crud_albums')
 
 #Mensajes
 @login_required
@@ -280,17 +270,12 @@ def listadoMensajes(request):
 
 @login_required
 def mensajes_del(request, pk):
-    context = {}
     try:
         mensaje = Mensaje.objects.get(id_mensaje=pk)
         mensaje.delete()
-        mensajeAlert = f"El mensaje ha sido eliminado"
-        context = {'mensaje': mensajeAlert, 'mensajes': Mensaje.objects.all().order_by('-fecha'), 'clase': 'mensajes'}
-        return render(request, 'discos/mensajes.html', context)
+        return redirect('mensajes')
     except Mensaje.DoesNotExist:
-        mensaje = f"ERROR: el id {pk} no existe"
-        context = {'mensaje': mensajeAlert, 'mensajes': Mensaje.objects.all().order_by('-fecha'), 'clase': 'mensajes'}
-        return render(request, 'discos/mensajes.html', context)
+        return redirect('mensajes')
     
 def mensajesAdd(request):
     if request.method == "POST":

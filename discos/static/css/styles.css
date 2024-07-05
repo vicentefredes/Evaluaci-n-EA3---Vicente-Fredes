@@ -186,11 +186,12 @@ header h1 {
   }
 
 .table-striped .td-leido {
-    background-color: rgb(180, 180, 180);
+    background-color: rgb(206, 203, 203);
 }
 
 .table-striped .td-noleido {
     background-color: white;
+    font-weight:500;
 }
 
 .table-striped .td-mark-read {
@@ -262,4 +263,13 @@ header h1 {
 
 .invalid-feedback {
     color: rgba(220, 53, 70, 0.741) !important;
+}
+
+#idMensajes {
+    justify-content: center;
+  }
+  
+.alert {
+    font-weight: bold;
+    text-align: center;
 }

@@ -20,25 +20,25 @@
       </div>
     </div>  
   </header>
-   
-  <div id="idMensajes">
-    {% if mensaje %}
-        <div class="alert alert-warning mx-auto">
-            {{ mensaje }}
-        </div>
-    {% endif %}
-  </div>
-
 
   <div class="row justify-content-center">
     <div class="col-10">
+
+      <div id="idMensajes">
+        {% if mensaje %}
+            <div class="alert alert-warning mx-auto">
+                {{ mensaje }}
+            </div>
+        {% endif %}
+      </div>
+
       <div class="table-container">
         <table class="table table-striped">
             {% if albums %}
                 <thead>
                     <tr>
                     <th scope="col">Artista</th>
-                    <th scope="col">Nombre del Disco</th>
+                    <th scope="col">Álbum</th>
                     <th scope="col">Género</th>
                     <th scope="col">Lanzamiento</th>
                     <th scope="col">Precio</th>
@@ -111,10 +111,6 @@
       </div>
     </div>
   </div>
-
-  
-
-  
 
 {% else %}
   <div class="container-permisos">

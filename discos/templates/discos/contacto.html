@@ -6,6 +6,13 @@
   <br>
     <div class="row justify-content-center">
       <div class="col-lg-8 col-md-10 col-sm-12">
+
+        <div id="idMensajes">
+          {% if mensaje %}
+          <div class="alert alert-primary mx-auto">{{ mensaje }}</div>
+          {% endif %}
+        </div>
+
         <div id="formCrud" class="p-4 rounded">
           <h2 class="text-center">Formulario de Contacto:</h2>
           <br />
@@ -39,12 +46,6 @@
               <a href="{% url 'index' %}" class="btn btn-secondary" id="btnVolver">Volver</a>
             </div>
           </form>
-
-          <div id="idMensajes">
-            {% if mensaje %}
-            <div class="alert alert-success mx-auto">{{ mensaje }}</div>
-            {% endif %}
-          </div>
         </div>
       </div>
     </div>
