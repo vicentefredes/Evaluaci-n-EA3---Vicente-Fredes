@@ -59,23 +59,23 @@
                     </div>
                 </div>
         
-                <h1 class="mt-4 mb-4">Estadísticas</h1>
+                <h1 class="mt-4 mb-4" id="tituloEstadisticas">Estadísticas</h1>
         
                 <div class="row justify-content-center">
                     <!-- Cantidad de artistas por país -->
                     <div class="col-md-6">
                         <div class="container-fluid bg-white mb-4 p-4">
                             <h2>Cantidad de artistas por país</h2>
-                            <div class="row">
-                                <div class="col">
-                                    <ul class="list-unstyled">
+                            <div class="row justify-content-center">
+                                <div class="col-md-4">
+                                    <ul>
                                         {% for stats in artistas_por_pais %}
                                             <li>{{ stats.pais }}: {{ stats.num_artistas }}</li>
                                             {% if forloop.counter|divisibleby:12 and not forloop.last %}
                                                 </ul>
                                             </div>
-                                            <div class="col">
-                                                <ul class="list-unstyled">
+                                            <div class="col-md-4">
+                                                <ul>
                                             {% endif %}
                                         {% endfor %}
                                     </ul>
@@ -88,16 +88,16 @@
                     <div class="col-md-6">
                         <div class="container-fluid bg-white mb-4 p-4">
                             <h2>Cantidad de álbumes por género</h2>
-                            <div class="row">
-                                <div class="col">
-                                    <ul class="list-unstyled">
+                            <div class="row justify-content-center">
+                                <div class="col-md-4">
+                                    <ul>
                                         {% for stats in albumes_por_genero %}
                                             <li>{{ stats.id_genero__genero }}: {{ stats.num_albumes }}</li>
                                             {% if forloop.counter|divisibleby:12 and not forloop.last %}
                                                 </ul>
                                             </div>
                                             <div class="col">
-                                                <ul class="list-unstyled">
+                                                <ul>
                                             {% endif %}
                                         {% endfor %}
                                     </ul>
@@ -110,11 +110,15 @@
                     <div class="col-md-6">
                         <div class="container-fluid bg-white mb-4 p-4">
                             <h2>Cantidad de álbumes por formato</h2>
-                            <ul class="list-unstyled">
-                                {% for stats in albumes_por_formato %}
-                                    <li>{{ stats.id_formato__formato }}: {{ stats.num_albumes }}</li>
-                                {% endfor %}
-                            </ul>
+                            <div class="row justify-content-center">
+                                <div class="col-md-4">
+                                    <ul>
+                                        {% for stats in albumes_por_formato %}
+                                            <li>{{ stats.id_formato__formato }}: {{ stats.num_albumes }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
         
@@ -122,16 +126,16 @@
                     <div class="col-md-6">
                         <div class="container-fluid bg-white mb-4 p-4">
                             <h2>Cantidad de álbumes por década</h2>
-                            <div class="row">
-                                <div class="col">
-                                    <ul class="list-unstyled">
+                            <div class="row justify-content-center">
+                                <div class="col-md-4">
+                                    <ul>
                                         {% for stats in estadisticas_por_decada %}
                                             <li>{{ stats.decada }}: {{ stats.num_albumes }}</li>
                                             {% if forloop.counter|divisibleby:6 and not forloop.last %}
                                                 </ul>
                                             </div>
-                                            <div class="col">
-                                                <ul class="list-unstyled">
+                                            <div class="col-md-4">
+                                                <ul>
                                             {% endif %}
                                         {% endfor %}
                                     </ul>
