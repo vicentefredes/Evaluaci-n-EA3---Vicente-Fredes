@@ -76,14 +76,17 @@ footer {
     vertical-align: middle;
     text-align: center;
     padding-top: 15px;
+    padding-bottom: 5px;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   }
 
-footer ul {
-    border-left: 1px solid rgb(41, 41, 41);
+@media (min-width: 770px) {
+    footer .links-footer {
+        border-left: 1px solid rgb(41, 41, 41);
+    }    
 }
 
-footer li a {
+footer .links-footer a {
     color: azure;
     font-weight:500;
 }
@@ -203,6 +206,38 @@ header h1 {
 .equal-width {
     width: 10%; /* Adjust this value as needed */
 }
+
+#formCrud {
+    background-color: rgb(238, 223, 250);;
+    color: rgba(14, 58, 77, 0.836);
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 500;
+    border: 2px solid rgba(14, 58, 77, 0.836);
+    margin-bottom: 5%;
+  }
+  
+#formCrud h2 {
+    font-size: 45px;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  
+#btnEnviarForm {
+    background-color: rgb(84, 18, 146);
+}
+
+#btnVolver {
+    background-color: rgba(34, 64, 77, 0.836);
+}
+
+#btnEnviarForm, #btnVolver {
+    width: 30%;
+    margin-left: 2%;
+    margin-right: 2%;
+    font-weight: 700;
+    font-size: 20px;
+    border: 2px solid rgba(14, 58, 77, 0.836);
+  }
 
 /*Estilos para validación de formulario*/
 .is-invalid {
