@@ -119,14 +119,13 @@ header h1 {
     font-size: 30px;
     font-weight: bold;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    color: rgba(14, 58, 77, 0.836);
+    background-color: rgba(14, 58, 77, 0.836);
     text-align: center;
     align-items: center;
   }
   
 .container-btn #btnAgregar a {
-    color: rgba(14, 58, 77, 0.836);
-    text-decoration: underline;
+    color: white;
   }
 
 .table-container {

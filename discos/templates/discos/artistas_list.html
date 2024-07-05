@@ -48,8 +48,8 @@
                                     <td>{{ artista.nombre_artista }}</td>
                                     <td>{{ artista.pais }}</td>
                                     <td class="col-biografia">{{ artista.biografia }}</td>
-                                    <td class="td-update"><a href="{% url 'artistas_edit' pk=artista.id_artista %}">Modificar</a></td> 
-                                    <td class="td-delete"><a href="{% url 'artistas_del' pk=artista.id_artista %}">Eliminar</a></td>
+                                    <td class="td-update equal-width"><a href="{% url 'artistas_edit' pk=artista.id_artista %}">Modificar</a></td> 
+                                    <td class="td-delete equal-width"><a href="{% url 'artistas_del' pk=artista.id_artista %}">Eliminar</a></td>
                                 </tr>
                             {% endfor %}
                         </tbody>
