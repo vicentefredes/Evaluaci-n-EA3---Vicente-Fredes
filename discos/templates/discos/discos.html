@@ -3,37 +3,49 @@
 {% load static %}
 
 {% block content %}
-<div class="container-fluid">
+<header>
     <div class="row justify-content-center">
-        {% for album in albums %}
-        <div class="col-md-4 col-lg-3">
-            <div class="card mb-4">
-                <img class="card-img-top" src="{{ album.portada.url }}" alt="{{ album.nombre_disco }}">
-                <div class="card-body">
-                    <h3 class="card-title">{{ album.id_artista }} - {{ album.nombre_disco }}</h3>
-                    <ul>
-                        <li>Género: {{ album.id_genero }}</li>
-                        <li>Formato: {{ album.id_formato }}</li>
-                        <li>Lanzamiento: {{ album.fecha_lanzamiento|date:"d/m/Y" }}</li>
-                        <li>Precio: ${{ album.precio }}</li>
-                        <li>Stock: {{ album.stock }}</li>
-                    </ul>
-                    <!-- Verificación del stock para mostrar el botón o el texto -->
-                    {% if album.stock > 0 %}
-                    <!-- Formulario para agregar al carrito -->
-                    <form method="POST" action="{% url 'agregar_al_carrito' album.id_album %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-secondary">
-                            Agregar a carrito
-                        </button>
-                    </form>
-                    {% else %}
-                    <p class="text-danger">Agotado</p>
-                    {% endif %}
+      <div class="col-10">
+          <h1>Nuestros Discos</h1>
+      </div>
+    </div>   
+  </header>
+
+<div class="row justify-content-center">
+    <div class="col-10">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                {% for album in albums %}
+                <div class="col-md-4 col-lg-3">
+                    <div class="card mb-4">
+                        <img class="card-img-top" src="{{ album.portada.url }}" alt="{{ album.nombre_disco }}">
+                        <div class="card-body">
+                            <h3 class="card-title">{{ album.id_artista }} - {{ album.nombre_disco }}</h3>
+                            <ul>
+                                <li>Género: {{ album.id_genero }}</li>
+                                <li>Formato: {{ album.id_formato }}</li>
+                                <li>Lanzamiento: {{ album.fecha_lanzamiento|date:"d/m/Y" }}</li>
+                                <li>Precio: ${{ album.precio }}</li>
+                                <li>Stock: {{ album.stock }}</li>
+                            </ul>
+                            <!-- Verificación del stock para mostrar el botón o el texto -->
+                            {% if album.stock > 0 %}
+                            <!-- Formulario para agregar al carrito -->
+                            <form method="POST" action="{% url 'agregar_al_carrito' album.id_album %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-secondary">
+                                    Agregar a Carrito
+                                </button>
+                            </form>
+                            {% else %}
+                                <p class="text-danger">Agotado</p>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
     </div>
 </div>
 

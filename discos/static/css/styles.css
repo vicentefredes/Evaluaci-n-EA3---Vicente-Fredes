@@ -5,6 +5,18 @@ body {
     min-height: 100vh;
 }
 
+.row.justify-content-center { /* Target any direct child element of the row */
+    margin: auto;
+}
+
+.row.justify-content-center {
+    width: 100%;  /* Ensure the row takes up full width */
+  }
+  
+.col-* {  /* Target the child element containing the table */
+    width: auto;  /* Let the element adjust to content width */
+  }
+
 .navbar{
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 20px;
@@ -106,6 +118,18 @@ header h1 {
     font-size: 60px;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     text-decoration: underline;
+  }
+
+@media (max-width: 600px) {
+    #tituloIndexAdmin {
+      font-size: 40px;
+    }
+  }
+
+@media (max-width: 425px) {
+    #tituloIndexAdmin {
+      font-size: 30px;
+    }
   }
 
 .container-btn {
@@ -263,6 +287,33 @@ header h1 {
 
 .invalid-feedback {
     color: rgba(220, 53, 70, 0.741) !important;
+}
+
+.card {
+    text-align: center;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin-bottom: 5%; 
+	border: 3px solid rgba(14, 58, 77, 0.836);
+    height: 98%;
+}
+
+.card ul {
+    text-align: left;
+}
+
+.card img {
+	border-bottom: 3px solid rgba(14, 58, 77, 0.836);
+}
+
+.card .btn-secondary {
+    background-color: rgba(14, 58, 77);
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.card .text-danger {
+    font-size: 25px;
+    font-weight: bold;
 }
 
 #idMensajes, #mensajeLogin, #mensajeRegistro {
