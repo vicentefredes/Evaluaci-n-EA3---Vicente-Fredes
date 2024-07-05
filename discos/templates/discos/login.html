@@ -3,18 +3,24 @@
 {% block content %}
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-lg-8 col-md-10 col-sm-12">
-        </div>
-    </div>
-    
-
-    <div class="row justify-content-center">
       <div class="col-lg-8 col-md-10 col-sm-12">
-          <div id="formInicioSesion" class="p-4 rounded">
-              <h2 class="text-center">Iniciar Sesión: </h2>
-              <br>
 
-              <form action="{% url 'entrar' %}" method="post">
+        <div id="mensajeLogin">
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-warning mx-auto">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}   
+        </div>
+                    
+
+        <div id="formInicioSesion" class="p-4 rounded">
+            <h2 class="text-center">Iniciar Sesión: </h2>
+            <br>
+
+            <form action="{% url 'entrar' %}" method="post">
                 {% csrf_token %}
                 <div class="row justify-content-center">
                     <div class="form-group col-md-8">
@@ -23,23 +29,15 @@
                     </div>
                     <div class="form-group col-md-8">
                         <label for="password">Contraseña</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="************">
+                        <input type="password" class="form-control" id="passwordlogin" name="password" placeholder="************">
                     </div>
                 </div>
                 <br>
                 <div class="form-group text-center">
                     <button type="submit" class="btn btn-primary" id="btnEnviarForm">Iniciar Sesión</button>
                 </div>
-            </form>
-
-            {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-warning" role="alert">
-                    {{ message }}
-                </div>
-                {% endfor %}
-            {% endif %}              
-          </div>
+            </form>   
+        </div>
 
           <div class="row justify-content-center">
             <div class="container-registro">

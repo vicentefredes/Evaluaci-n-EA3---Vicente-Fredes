@@ -265,11 +265,12 @@ header h1 {
     color: rgba(220, 53, 70, 0.741) !important;
 }
 
-#idMensajes {
+#idMensajes, #mensajeLogin, #mensajeRegistro {
     justify-content: center;
   }
   
 .alert {
     font-weight: bold;
     text-align: center;
+    width: 80%;
 }
