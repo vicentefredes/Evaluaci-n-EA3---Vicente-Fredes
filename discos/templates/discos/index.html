@@ -144,16 +144,14 @@
                         </div>
                     </div>
             </div>
-        </div>
-
-        
+        </div> 
 
     {% else %}
 
         <div class="row justify-content-center">
-            <div class="col-lg-6 col-md-8 col-sm-10">
+            <div class="col-lg-8 col-md-10 col-sm-12">
                 <br>
-                <h1>Bienvenido/a {{ user.username }} </h1>
+                <h1 id="tituloIndexCliente">Bienvenido/a {{ user.username }} </h1>
                 <br>
                 <div id="carouselInicio" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
@@ -191,8 +189,9 @@
                     </a>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-10">
-                <div class="container mt-5 bg-white">
+
+            <div class="col-lg-8 col-md-10">
+                <div class="container-novedades bg-white">
                     <h2>Novedades</h2>
                     <div class="list-group">
                         {% for album in novedades %}
@@ -205,6 +204,7 @@
                                     <h5 class="mb-1">{{ album.nombre_disco }}</h5>
                                     <p class="mb-1"><strong>Artista:</strong> {{ album.id_artista }}</p>
                                     <p class="mb-1"><strong>Formato:</strong> {{ album.id_formato }}</p>
+                                    <p class="mb-1"><strong>Precio:</strong> ${{ album.precio }}</p>
                                 </div>
                             </div>
                         </a>
