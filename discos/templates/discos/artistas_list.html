@@ -22,21 +22,22 @@
 
 <div class="row justify-content-center">
     <div class="col-10">
-        <input type="text" id="searchInput" class="form-control" placeholder="Buscar Artista...">
-        <select id="countrySelect" class="form-control mt-2">
-            <option value="">Todos los países</option>
-            {% for pais in paises %}
-                <option value="{{ pais }}">{{ pais }}</option>
-            {% endfor %}
-        </select>
 
-        <div id="idMensajes">
-            {% if mensaje %}
-                <div class="alert alert-warning mx-auto">
-                    {{ mensaje }}
-                </div>
-            {% endif %}
-        </div>
+        <div class="row justify-content-center filtro">
+            <div class="col-md-5">
+                <input type="search" id="searchInput" class="form-control" placeholder="Buscar Artista...">
+            </div>
+            <div class="col-md-5">
+              <select id="countrySelect" class="form-control">
+                <option value="">Todos los países</option>
+                {% for pais in paises %}
+                  <option value="{{ pais }}">{{ pais }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+        <br>
 
         <div class="table-container">
             <table class="table table-striped">
@@ -53,7 +54,7 @@
                         <tr>
                             <td>{{ artista.nombre_artista }}</td>
                             <td>{{ artista.pais }}</td>
-                            <td class="col-biografia">{{ artista.biografia }}</td>
+                            <td class="col-biografia">{% if artista.biografia %} {{ artista.biografia }} {% else %} Sin biografía {% endif %}</td>
                             <td class="td-update equal-width"><a href="{% url 'artistas_edit' pk=artista.id_artista %}">Modificar</a></td>
                             <td class="td-delete equal-width"><a href="{% url 'artistas_del' pk=artista.id_artista %}">Eliminar</a></td>
                         </tr>
@@ -124,17 +125,22 @@
             .then(data => {
                 var tableBody = document.getElementById('artistasTable');
                 tableBody.innerHTML = '';
-                data.artistas.forEach(artista => {
-                    var row = `<tr>
-                        <td>${artista.nombre_artista}</td>
-                        <td>${artista.pais}</td>
-                        <td class="col-biografia">${artista.biografia}</td>
-                        <td class="td-update equal-width"><a href="/artistas/edit/${artista.id_artista}">Modificar</a></td>
-                        <td class="td-delete equal-width"><a href="/artistas/del/${artista.id_artista}">Eliminar</a></td>
-                    </tr>`;
-                    tableBody.innerHTML += row;
-                });
-    
+                if (data.artistas.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="8">No se encontraron artistas.</td></tr>';
+                } else {
+                    data.artistas.forEach(artista => {
+                        var biografia = artista.biografia ? artista.biografia : 'Sin biografía';
+                        var row = `<tr>
+                            <td>${artista.nombre_artista}</td>
+                            <td>${artista.pais}</td>
+                            <td class="col-biografia">${biografia}</td>
+                            <td class="td-update equal-width"><a href="/artistas/edit/${artista.id_artista}">Modificar</a></td>
+                            <td class="td-delete equal-width"><a href="/artistas/del/${artista.id_artista}">Eliminar</a></td>
+                        </tr>`;
+                        tableBody.innerHTML += row;
+                    });
+                }
+                
                 // Actualizar la paginación
                 var pagination = document.querySelector('.pagination');
                 pagination.innerHTML = '';

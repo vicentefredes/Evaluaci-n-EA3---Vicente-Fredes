@@ -21,27 +21,30 @@
 
 <div class="row justify-content-center">
     <div class="col-10">
-        <input type="text" id="searchInput" class="form-control" placeholder="Buscar Álbum...">
-        <select id="formatoSelect" name='formato' class="form-control mt-2">
-            <option value="">Todos los formatos</option>
-            {% for formato in formatos %}
-                <option value="{{ formato.id_formato }}">{{ formato.formato }}</option>
-            {% endfor %}
-        </select>
-        <select id="generoSelect" name='genero' class="form-control mt-2">
-            <option value="">Todos los géneros</option>
-            {% for genero in generos %}
-                <option value="{{ genero.id_genero }}">{{ genero.genero }}</option>
-            {% endfor %}
-        </select>
+
+        <div class="row justify-content-center filtro">
+            <div class="col-md-6">
+                <input type="text" id="searchInput" class="form-control" placeholder="Buscar Álbum...">
+            </div>
+            <div class="col-md-3">
+                <select id="formatoSelect" name='formato' class="form-control">
+                    <option value="">Formato</option>
+                    {% for formato in formatos %}
+                        <option value="{{ formato.id_formato }}">{{ formato.formato }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select id="generoSelect" name='genero' class="form-control">
+                    <option value="">Género</option>
+                    {% for genero in generos %}
+                        <option value="{{ genero.id_genero }}">{{ genero.genero }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+          </div>
         
-        <div id="idMensajes">
-            {% if mensaje %}
-                <div class="alert alert-warning mx-auto">
-                    {{ mensaje }}
-                </div>
-            {% endif %}
-        </div>
+        <br>
 
         <div class="table-container">
             <table class="table table-striped">
@@ -220,7 +223,5 @@
     });
     
 </script>
-
-
 
 {% endblock %}

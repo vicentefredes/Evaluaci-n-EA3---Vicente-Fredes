@@ -117,6 +117,13 @@ footer .links-footer a {
     font-size: 20px;
 }
 
+@media (max-width: 768px) {
+    .filtro .form-control {
+      margin-top: 3%; /* or any desired margin value */
+    }
+  }
+  
+
 .pagination {
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
@@ -372,8 +379,66 @@ header h1 {
   }
 
 .equal-width {
-    width: 10%; /* Adjust this value as needed */
+    width: 10%;
 }
+
+
+@media (max-width: 560px) {
+    /* Force table to not be like tables anymore */
+    table, thead, tbody, th, td, tr {
+      display: block;
+    }
+    /* Hide table headers (but not display: none;, for accessibility) */
+    thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+    tr {
+      margin: 0 0 1rem 0;
+    }
+    td:first-child {
+        background-color: rgb(0, 78, 140) !important;
+        color: white;
+        font-weight: bold;
+    }
+
+    td {
+      /* Behave  like a "row" */
+      border: none;
+      border-bottom: 1px solid azure;
+      position: relative;
+      padding-left: 50%;
+    }
+    td:before {
+      /* Now like a table header */
+      position: absolute;
+      /* Top/left values mimic padding */
+      top: 0;
+      left: 6px;
+      width: 45%;
+      padding-right: 10px;
+      white-space: nowrap;
+    }
+
+    .equal-width {
+        width: 100%;
+    }
+
+    td::before {
+        float: left;
+    }
+
+    .col-biografia {
+        max-width: none;
+    }
+
+    .col-mensaje {
+        max-width: none;
+    }
+
+  }
+
 
 .container-registro {
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
