@@ -32,7 +32,7 @@
                             <!-- Formulario para agregar al carrito -->
                             <form method="POST" action="{% url 'agregar_al_carrito' album.id_album %}">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-secondary">
+                                <button type="submit" class="btn btn-secondary add-to-cart-button">
                                     Agregar a Carrito
                                 </button>
                             </form>
@@ -97,12 +97,9 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Álbum Agregado</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
         </div>
         <div class="modal-body">
-            <p>El álbum <strong>{{ album_nombre }}</strong> ha sido agregado al carrito de compras.</p>
+            <p></p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
@@ -111,13 +108,9 @@
     </div>
   </div>
   
-  {% if album_agregado %}
   <script>
-      $(document).ready(function() {
-          $('#albumModal').modal('show');
-      });
-  </script>
-  {% endif %}
+    
+</script>
 
 
 {% endblock %}

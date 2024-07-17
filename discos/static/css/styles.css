@@ -441,7 +441,11 @@ header h1 {
     font-weight: bold;
 }
 
-.modal-title, .modal-body, .modal-footer {
+.modal {
+    text-align: center;
+} 
+
+.modal-header, .modal-body, .modal-footer {
     text-align: center;
     justify-content: center;
 }

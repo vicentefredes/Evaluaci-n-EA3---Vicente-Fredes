@@ -8,7 +8,8 @@ from django.db import IntegrityError
 from django.db.models import Sum, Count
 from datetime import date
 from django.urls import reverse
-from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseRedirect
+import json
+from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from .models import Genero, Artista, Album, Compra, Mensaje
 from .forms import ArtistaForm, AlbumForm, MensajeForm 
 
@@ -351,12 +352,12 @@ def agregar_al_carrito(request, fk_album):
     # Asignar el ID de compra a la sesión
     request.session['id_compra'] = compra.id_compra
 
-    # Añadir flag en la sesión
-    request.session['album_agregado'] = True
-    request.session['album_nombre'] = f"{album.id_artista} - {album.nombre_disco}"
+    response_data = {
+        'success': True,
+        'message': f"¡El álbum {album.id_artista} - {album.nombre_disco} ({album.id_formato}) ha sido agregado al carrito con éxito!",
+    }
 
-    # Redirigir a la misma página de listado de álbumes
-    return redirect('discos')
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 # Vista para mostrar el carrito de compras
 def carrito_compra(request):

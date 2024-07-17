@@ -27,6 +27,32 @@ $(document).ready(function() {
     // Llamar a la función al cargar la página
     actualizarBadgeCarrito();
 
+    $('.add-to-cart-button').click(function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        var form = $(this).closest('form'); // Get the closest form element
+        var url = form.attr('action'); // Get the form action URL
+    
+        $.ajax({
+            url: url,
+            method: 'POST',
+            data: form.serialize(), // Serialize form data
+            success: function(response) {
+                if (response.success) {
+                    $('#albumModal').find('.modal-body p').text(response.message);
+                    $('#albumModal').modal('show'); // Show the modal with confirmation message
+                    actualizarBadgeCarrito();
+                } else {
+                    console.error('Error al agregar al carrito:', response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error al agregar al carrito:', xhr.responseText);
+            }
+        });
+
+    });
+
     const formatoCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     function validarCampoVacio(campo, mensajeError, idError) {
