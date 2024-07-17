@@ -124,21 +124,15 @@
             .then(data => {
                 var tableBody = document.getElementById('artistasTable');
                 tableBody.innerHTML = '';
-                data.albums.forEach(album => {
-                    if (album.id_album) {
-                        var row = `<tr>
-                            <td>${album.id_artista}</td>
-                            <td>${album.nombre_disco}</td>
-                            <td>${album.id_genero}</td>
-                            <td>${album.fecha_lanzamiento}</td>
-                            <td>$${album.precio}</td>
-                            <td>${album.id_formato}</td>
-                            <td>${album.stock}</td>
-                            <td class="td-update equal-width"><a href="/albums/edit/${album.id_album}">Modificar</a></td>
-                            <td class="td-delete equal-width"><a href="/albums/del/${album.id_album}">Eliminar</a></td>
-                        </tr>`;
-                        tableBody.innerHTML += row;
-                    }
+                data.artistas.forEach(artista => {
+                    var row = `<tr>
+                        <td>${artista.nombre_artista}</td>
+                        <td>${artista.pais}</td>
+                        <td class="col-biografia">${artista.biografia}</td>
+                        <td class="td-update equal-width"><a href="/artistas/edit/${artista.id_artista}">Modificar</a></td>
+                        <td class="td-delete equal-width"><a href="/artistas/del/${artista.id_artista}">Eliminar</a></td>
+                    </tr>`;
+                    tableBody.innerHTML += row;
                 });
     
                 // Actualizar la paginación
@@ -197,7 +191,6 @@
         fetchArtistas(query, country);
     });
     </script>
-    
     
 
 {% endblock %}

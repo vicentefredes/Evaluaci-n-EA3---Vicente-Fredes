@@ -211,7 +211,7 @@ def buscar_artistas(request):
     query = request.GET.get('q', '')
     country = request.GET.get('country', '')
     
-    artistas = Artista.objects.all()
+    artistas = Artista.objects.all().order_by('nombre_artista')
     
     if query:
         artistas = artistas.filter(nombre_artista__icontains=query)
@@ -469,6 +469,10 @@ def cambiar_estado(request, pk):
 #Discos (para el cliente)
 def listado_albums(request):
     albums = Album.objects.all().order_by('id_artista__nombre_artista', 'nombre_disco')
+
+    formatos = Formato.objects.all().order_by('formato')
+    generos = Genero.objects.all().order_by('genero')
+
     paginator = Paginator(albums, 12)  
 
     page = request.GET.get('page')
@@ -484,7 +488,7 @@ def listado_albums(request):
     album_agregado = request.session.pop('album_agregado', False)
     album_nombre = request.session.pop('album_nombre', '')
 
-    context = {'albums': albums, 'clase': 'discos', 'album_agregado': album_agregado, 'album_nombre': album_nombre}
+    context = {'albums': albums, 'formatos':formatos, 'generos':generos, 'clase': 'discos', 'album_agregado': album_agregado, 'album_nombre': album_nombre}
     return render(request, 'discos/discos.html', context)
 
 # Vista para agregar productos al carrito
