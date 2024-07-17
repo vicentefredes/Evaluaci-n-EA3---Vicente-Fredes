@@ -74,7 +74,6 @@ def chequear_disponibilidad(request):
     }
     return JsonResponse(data)
 
-
 @login_required
 def modificar_perfil(request):
     user = request.user
@@ -328,7 +327,13 @@ def mensajesAdd(request):
             mensaje = f"{nombre}, tu mensaje ha sido enviado exitosamente. ¡Gracias por comunicarte con nosotros!"
             return render(request, 'discos/contacto.html', {'form': MensajeForm(), 'mensaje': mensaje, 'clase': 'contacto'})
     else:
-        form = MensajeForm()
+        if request.user.is_authenticated:
+            # Usuario autenticado: prellenar campos 'Nombre' y 'Correo Electrónico'
+            initial_data = {'nombre': request.user.get_full_name(), 'correo_electronico': request.user.email}
+            form = MensajeForm(initial=initial_data)
+        else:
+            # Invitado: formulario vacío
+            form = MensajeForm()
     return render(request, 'discos/contacto.html', {'form': form, 'clase': 'contacto'})
 
 @login_required

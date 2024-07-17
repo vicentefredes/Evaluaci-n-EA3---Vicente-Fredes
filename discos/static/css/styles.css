@@ -117,6 +117,24 @@ footer .links-footer a {
     font-size: 20px;
 }
 
+.pagination {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.pagination .page-item  {
+    border: 1px solid rgba(14, 58, 77, 0.836);
+}
+
+.pagination .page-item .page-link {
+    color: rgba(14, 58, 77, 0.836);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: rgba(14, 58, 77, 0.836);
+    color: white;
+    font-weight: bold;
+}
+
 header .row {
     margin-bottom: 1%;
     vertical-align: middle;
