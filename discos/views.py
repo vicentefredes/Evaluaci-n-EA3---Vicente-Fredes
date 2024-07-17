@@ -74,6 +74,46 @@ def chequear_disponibilidad(request):
     }
     return JsonResponse(data)
 
+
+@login_required
+def modificar_perfil(request):
+    user = request.user
+
+    if request.method == "POST":
+        nombre = request.POST.get("nombre")
+        email = request.POST.get("email")
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        password = request.POST.get("password")
+
+        user.username = nombre
+        user.email = email
+        user.first_name = first_name
+        user.last_name = last_name
+
+        if password:
+            user.set_password(password)
+        
+        try:
+            user.save()
+            return redirect('perfil')  # Asumiendo que tienes una vista llamada 'perfil' para mostrar la información del usuario
+        except IntegrityError:
+            return HttpResponseBadRequest("El nombre de usuario ya está en uso.")
+        except ValueError as e:
+            if str(e) == "The given username must be set":
+                return HttpResponseBadRequest("El nombre de usuario es obligatorio.")
+            else:
+                raise e
+
+    context = {
+        'clase' : 'perfil',
+        "nombre": user.username,
+        "email": user.email,
+        "first_name": user.first_name,
+        "last_name": user.last_name
+    }
+    return render(request, 'discos/modificar_perfil.html', context)
+
 def index(request):
     # Obtener la cantidad total de artistas
     total_artistas = Artista.objects.count()

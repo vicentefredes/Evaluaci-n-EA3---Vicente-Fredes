@@ -532,8 +532,21 @@ header h1 {
     margin-bottom: 5%;
 }
 
-#infoUsuario {
+#infoUsuario ul {
+    margin-top: 10%;
     vertical-align: middle;
+}
+
+.btn-dark {
+    margin-top: 5%;
+    background-color: rgba(14, 58, 77);
+    text-align: center;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.btn-dark a {
+    color: white;
+    font-size: 20px;
 }
 
 .container-historial {
