@@ -1,53 +1,63 @@
 {% extends "discos/base.html" %}
-
 {% load static %}
 
 {% block content %}
 
 {% if user.is_staff %}
-
-  <header>
+<header>
     <div class="row justify-content-center">
-      <div class="col-md-7 col-sm-10">
-          <h1>Listado de Álbumes</h1>
-      </div>
-      <div class="col-md-3 col-sm-10">
-        <div class="container-btn">
-          <button class="btn btn-light" id="btnAgregar">
-            <a href="{% url 'albumsAdd' %}">Agregar Álbum</a>
-          </button>
+        <div class="col-md-7 col-sm-10">
+            <h1>Listado de Álbumes</h1>
         </div>
-      </div>
-    </div>  
-  </header>
-
-  <div class="row justify-content-center">
-    <div class="col-10">
-
-      <div id="idMensajes">
-        {% if mensaje %}
-            <div class="alert alert-warning mx-auto">
-                {{ mensaje }}
+        <div class="col-md-3 col-sm-10">
+            <div class="container-btn">
+                <button class="btn btn-light" id="btnAgregar">
+                    <a href="{% url 'albumsAdd' %}">Agregar Álbum</a>
+                </button>
             </div>
-        {% endif %}
-      </div>
+        </div>
+    </div>
+</header>
 
-      <div class="table-container">
-        <table class="table table-striped">
-            {% if albums %}
+<div class="row justify-content-center">
+    <div class="col-10">
+        <input type="text" id="searchInput" class="form-control" placeholder="Buscar Álbum...">
+        <select id="formatoSelect" name='formato' class="form-control mt-2">
+            <option value="">Todos los formatos</option>
+            {% for formato in formatos %}
+                <option value="{{ formato.id_formato }}">{{ formato.formato }}</option>
+            {% endfor %}
+        </select>
+        <select id="generoSelect" name='genero' class="form-control mt-2">
+            <option value="">Todos los géneros</option>
+            {% for genero in generos %}
+                <option value="{{ genero.id_genero }}">{{ genero.genero }}</option>
+            {% endfor %}
+        </select>
+        
+        <div id="idMensajes">
+            {% if mensaje %}
+                <div class="alert alert-warning mx-auto">
+                    {{ mensaje }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="table-container">
+            <table class="table table-striped">
                 <thead>
                     <tr>
-                    <th scope="col">Artista</th>
-                    <th scope="col">Álbum</th>
-                    <th scope="col">Género</th>
-                    <th scope="col">Lanzamiento</th>
-                    <th scope="col">Precio</th>
-                    <th scope="col">Formato</th>
-                    <th scope="col">Stock</th>
-                    <th scope="col" colspan="2">Acción</th>
+                        <th scope="col">Artista</th>
+                        <th scope="col">Álbum</th>
+                        <th scope="col">Género</th>
+                        <th scope="col">Lanzamiento</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Formato</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col" colspan="2">Acción</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="albumsTable">
                     {% for album in albums %}
                         <tr>
                             <td>{{ album.id_artista }}</td>
@@ -57,66 +67,160 @@
                             <td>${{ album.precio }}</td>
                             <td>{{ album.id_formato }}</td>
                             <td>{{ album.stock }}</td>
-                            <td class="td-update equal-width"><a href="{% url 'albums_edit' pk=album.id_album %}">Modificar</a></td> 
+                            <td class="td-update equal-width"><a href="{% url 'albums_edit' pk=album.id_album %}">Modificar</a></td>
                             <td class="td-delete equal-width"><a href="{% url 'albums_del' pk=album.id_album %}">Eliminar</a></td>
                         </tr>
                     {% endfor %}
                 </tbody>
-            {% endif %}    
-        </table>
+            </table>
 
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center">
-            {% if albums.has_previous %}
-              <li class="page-item">
-                <a class="page-link" href="?page={{ albums.previous_page_number }}" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                  <span class="sr-only">Previous</span>
-                </a>
-              </li>
-            {% else %}
-              <li class="page-item disabled">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                  <span class="sr-only">Previous</span>
-                </a>
-              </li>
-            {% endif %}
-            
-            {% for num in albums.paginator.page_range %}
-              {% if albums.number == num %}
-                <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
-              {% else %}
-                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
-              {% endif %}
-            {% endfor %}
-            
-            {% if albums.has_next %}
-              <li class="page-item">
-                <a class="page-link" href="?page={{ albums.next_page_number }}" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                  <span class="sr-only">Next</span>
-                </a>
-              </li>
-            {% else %}
-              <li class="page-item disabled">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                  <span class="sr-only">Next</span>
-                </a>
-              </li>
-            {% endif %}
-          </ul>
-        </nav>
-      </div>
+            <!-- Paginación de Bootstrap -->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    {% if albums.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1" aria-label="Primera">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Primera</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ albums.previous_page_number }}" aria-label="Anterior">
+                                <span aria-hidden="true">&lt;</span>
+                                <span class="sr-only">Anterior</span>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% for num in albums.paginator.page_range %}
+                        {% if albums.number == num %}
+                            <li class="page-item active" aria-current="page"><span class="page-link">{{ num }}</span></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if albums.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ albums.next_page_number }}" aria-label="Siguiente">
+                                <span aria-hidden="true">&gt;</span>
+                                <span class="sr-only">Siguiente</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ albums.paginator.num_pages }}" aria-label="Última">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Última</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
     </div>
-  </div>
+</div>
 
 {% else %}
-  <div class="container-permisos">
+<div class="container-permisos">
     <h1>Error</h1>
     <p>No tienes permisos para ver esta página</p>
-  </div>
+</div>
 {% endif %}
+
+<script>
+    function fetchAlbums(query, formato, genero, page = 1) {
+        fetch(`/buscar_albums/?q=${query}&formato=${formato}&genero=${genero}&page=${page}`)
+            .then(response => response.json())
+            .then(data => {
+                var tableBody = document.getElementById('albumsTable');
+                tableBody.innerHTML = '';
+                if (data.albums.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="8">No se encontraron álbumes.</td></tr>';
+                } else {
+                    data.albums.forEach(album => {
+                        var row = `<tr>
+                            <td>${album.id_artista}</td>
+                            <td>${album.nombre_disco}</td>
+                            <td>${album.id_genero}</td>
+                            <td>${album.fecha_lanzamiento}</td>
+                            <td>$${album.precio}</td>
+                            <td>${album.id_formato}</td>
+                            <td>${album.stock}</td>
+                            <td class="td-update equal-width"><a href="/albums/edit/${album.id_album}">Modificar</a></td>
+                            <td class="td-delete equal-width"><a href="/albums/del/${album.id_album}">Eliminar</a></td>
+                        </tr>`;
+                        tableBody.innerHTML += row;
+                    });
+                }
+
+                // Actualizar la paginación
+                var pagination = document.querySelector('.pagination');
+                pagination.innerHTML = '';
+
+                if (data.pagination.has_previous) {
+                    pagination.innerHTML += `<li class="page-item">
+                        <a class="page-link" href="javascript:void(0);" onclick="fetchAlbums('${data.pagination.query}', '${data.pagination.formato}', '${data.pagination.genero}', 1)" aria-label="Primera">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Primera</span>
+                        </a>
+                    </li>`;
+                    pagination.innerHTML += `<li class="page-item">
+                        <a class="page-link" href="javascript:void(0);" onclick="fetchAlbums('${data.pagination.query}', '${data.pagination.formato}', '${data.pagination.genero}', ${data.pagination.previous_page_number})" aria-label="Anterior">
+                            <span aria-hidden="true">&lt;</span>
+                            <span class="sr-only">Anterior</span>
+                        </a>
+                    </li>`;
+                }
+
+                data.pagination.page_range.forEach(num => {
+                    if (data.pagination.current_page == num) {
+                        pagination.innerHTML += `<li class="page-item active" aria-current="page"><span class="page-link">${num}</span></li>`;
+                    } else {
+                        pagination.innerHTML += `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="fetchAlbums('${data.pagination.query}', '${data.pagination.formato}', '${data.pagination.genero}', ${num})">${num}</a></li>`;
+                    }
+                });
+
+                if (data.pagination.has_next) {
+                    pagination.innerHTML += `<li class="page-item">
+                        <a class="page-link" href="javascript:void(0);" onclick="fetchAlbums('${data.pagination.query}', '${data.pagination.formato}', '${data.pagination.genero}', ${data.pagination.next_page_number})" aria-label="Siguiente">
+                            <span aria-hidden="true">&gt;</span>
+                            <span class="sr-only">Siguiente</span>
+                        </a>
+                    </li>`;
+                    pagination.innerHTML += `<li class="page-item">
+                        <a class="page-link" href="javascript:void(0);" onclick="fetchAlbums('${data.pagination.query}', '${data.pagination.formato}', '${data.pagination.genero}', ${data.pagination.num_pages})" aria-label="Última">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Última</span>
+                        </a>
+                    </li>`;
+                }
+            });
+    }
+
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        var query = this.value;
+        var formato = document.getElementById('formatoSelect').value;
+        var genero = document.getElementById('generoSelect').value;
+        fetchAlbums(query, formato, genero);
+    });
+
+    document.getElementById('formatoSelect').addEventListener('change', function() {
+        var query = document.getElementById('searchInput').value;
+        var formato = this.value;
+        var genero = document.getElementById('generoSelect').value;
+        console.log(formato);
+        fetchAlbums(query, formato, genero);
+    });
+
+    document.getElementById('generoSelect').addEventListener('change', function() {
+        var query = document.getElementById('searchInput').value;
+        var formato = document.getElementById('formatoSelect').value;
+        var genero = this.value;
+        fetchAlbums(query, formato, genero);
+    });
+    
+</script>
+
+
 
 {% endblock %}

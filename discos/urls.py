@@ -12,6 +12,7 @@ urlpatterns = [
     path('artistas_edit/<int:pk>', views.artistas_edit, name='artistas_edit'),
     path('artistas_del/<int:pk>', views.artistas_del, name='artistas_del'),
     path('crud_albums', views.crud_albums, name='crud_albums'),
+    path('buscar_albums/', views.buscar_albums, name='buscar_albums'),
     path('albumsAdd', views.albumsAdd, name='albumsAdd'),
     path('albums_edit/<int:pk>', views.albums_edit, name='albums_edit'),
     path('albums_del/<int:pk>', views.albums_del, name='albums_del'),

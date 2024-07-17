@@ -30,7 +30,6 @@ class Artista(models.Model):
     
     def unique_error_message(self, *args, **kwargs):
         return "Ya existe un artista con este nombre en este país."
-
 class Album(models.Model):
     id_album = models.AutoField(db_column='idAlbum', primary_key=True) 
     id_artista = models.ForeignKey('Artista',on_delete=models.CASCADE, db_column='idArtista')

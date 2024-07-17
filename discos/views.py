@@ -5,12 +5,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import IntegrityError
-from django.db.models import Sum, Count
+from django.db.models import Sum, Count, Q
 from datetime import date
 from django.urls import reverse
 import json
 from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
-from .models import Genero, Artista, Album, Compra, Mensaje
+from .models import Genero, Formato, Artista, Album, Compra, Mensaje
 from .forms import ArtistaForm, AlbumForm, MensajeForm 
 
 
@@ -250,8 +250,6 @@ def buscar_artistas(request):
 
     return JsonResponse({'artistas': artistas_data, 'pagination': pagination_data})
 
-
-
 @login_required
 def artistasAdd(request):
     if request.method == "POST":
@@ -291,8 +289,14 @@ def artistas_del(request, pk):
 @login_required
 def crud_albums(request):
     albums = Album.objects.all().order_by('id_artista__nombre_artista', 'nombre_disco')
-    paginator = Paginator(albums, 25)
+    
+    # Obtener todos los formatos para el filtro
+    formatos = Formato.objects.all().order_by('formato')
 
+    # Obtener todos los géneros para el filtro
+    generos = Genero.objects.all().order_by('genero')
+
+    paginator = Paginator(albums, 25)
     page = request.GET.get('page')
 
     try:
@@ -302,9 +306,74 @@ def crud_albums(request):
     except EmptyPage:
         albums = paginator.page(paginator.num_pages)
 
+    context = {
+        'albums': albums,
+        'formatos': formatos,
+        'generos': generos,
+        'clase': 'mantenedores'
+    }
 
-    context = {'albums': albums, 'clase': 'mantenedores'}
     return render(request, 'discos/albums_list.html', context)
+
+def buscar_albums(request):
+    try:
+        query = request.GET.get('q', '')
+        formato_id = request.GET.get('formato')
+        genero_id = request.GET.get('genero')
+
+        print(formato_id)
+        print(genero_id)
+
+        albums = Album.objects.all().order_by('id_artista__nombre_artista', 'nombre_disco')
+
+        if query:
+            albums = albums.filter(Q(nombre_disco__icontains=query) | Q(id_artista__nombre_artista__icontains=query))
+
+        if formato_id:
+            albums = albums.filter(id_formato=formato_id)
+
+        if genero_id:
+            albums = albums.filter(id_genero=genero_id)
+
+        paginator = Paginator(albums, 25)
+        page_number = request.GET.get('page')
+
+        try:
+            albums_page = paginator.page(page_number)
+        except PageNotAnInteger:
+            albums_page = paginator.page(1)
+        except EmptyPage:
+            albums_page = paginator.page(paginator.num_pages)
+
+        albums_data = [{
+            'id_album': album.id_album,
+            'nombre_disco': album.nombre_disco,
+            'id_artista': album.id_artista.nombre_artista if album.id_artista else '',
+            'fecha_lanzamiento': album.fecha_lanzamiento.strftime('%Y-%m-%d') if album.fecha_lanzamiento else '',
+            'precio': album.precio,
+            'id_formato': album.id_formato.formato if album.id_formato else '',
+            'id_genero': album.id_genero.genero if album.id_genero else '',
+            'portada': album.portada.url if album.portada else '',
+            'stock': album.stock,
+        } for album in albums_page]
+
+        pagination_data = {
+            'has_previous': albums_page.has_previous(),
+            'previous_page_number': albums_page.previous_page_number() if albums_page.has_previous() else None,
+            'has_next': albums_page.has_next(),
+            'next_page_number': albums_page.next_page_number() if albums_page.has_next() else None,
+            'num_pages': paginator.num_pages,
+            'page_range': list(paginator.page_range),
+            'current_page': albums_page.number,
+            'query': query,
+            'formato': formato_id,
+            'genero': genero_id,
+        }
+
+        return JsonResponse({'albums': albums_data, 'pagination': pagination_data})
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 @login_required
 def albumsAdd(request):
