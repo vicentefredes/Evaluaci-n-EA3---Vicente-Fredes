@@ -199,8 +199,58 @@ def crud_artistas(request):
     except EmptyPage:
         artistas = paginator.page(paginator.num_pages)
 
-    context = {'artistas': artistas, 'clase': 'mantenedores'}
+    # Obtener todos los países para el filtro
+    paises = Artista.objects.values_list('pais', flat=True).distinct().order_by('pais')
+
+    context = {'artistas': artistas, 'paises': paises, 'clase': 'mantenedores'}
     return render(request, 'discos/artistas_list.html', context)
+
+
+@login_required
+def buscar_artistas(request):
+    query = request.GET.get('q', '')
+    country = request.GET.get('country', '')
+    
+    artistas = Artista.objects.all()
+    
+    if query:
+        artistas = artistas.filter(nombre_artista__icontains=query)
+    
+    if country:
+        artistas = artistas.filter(pais=country)
+
+    paginator = Paginator(artistas, 25)
+    page = request.GET.get('page')
+
+    try:
+        artistas_page = paginator.page(page)
+    except PageNotAnInteger:
+        artistas_page = paginator.page(1)
+    except EmptyPage:
+        artistas_page = paginator.page(paginator.num_pages)
+    
+    artistas_data = [{
+        'id_artista': artista.id_artista,
+        'nombre_artista': artista.nombre_artista,
+        'pais': artista.pais,
+        'biografia': artista.biografia,
+    } for artista in artistas_page]
+
+    pagination_data = {
+        'has_previous': artistas_page.has_previous(),
+        'previous_page_number': artistas_page.previous_page_number() if artistas_page.has_previous() else None,
+        'has_next': artistas_page.has_next(),
+        'next_page_number': artistas_page.next_page_number() if artistas_page.has_next() else None,
+        'num_pages': paginator.num_pages,
+        'page_range': list(paginator.page_range),
+        'current_page': artistas_page.number,
+        'query': query,
+        'country': country,
+    }
+
+    return JsonResponse({'artistas': artistas_data, 'pagination': pagination_data})
+
+
 
 @login_required
 def artistasAdd(request):

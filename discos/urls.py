@@ -7,6 +7,7 @@ urlpatterns = [
     path('entrar', views.custom_login, name='entrar'),
     path('', views.index, name='index'),
     path('crud_artistas', views.crud_artistas, name='crud_artistas'),
+    path('buscar_artistas/', views.buscar_artistas, name='buscar_artistas'),
     path('artistasAdd', views.artistasAdd, name='artistasAdd'),
     path('artistas_edit/<int:pk>', views.artistas_edit, name='artistas_edit'),
     path('artistas_del/<int:pk>', views.artistas_del, name='artistas_del'),
