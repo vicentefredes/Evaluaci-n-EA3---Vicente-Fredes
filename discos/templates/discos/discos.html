@@ -41,7 +41,7 @@
         <div class="container-fluid">
             <div class="row justify-content-center" id="albumsContainer">
                 {% for album in albums %}
-                <div class="col-md-4 col-lg-3">
+                <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
                     <div class="card mb-4">
                         <img class="card-img-top" src="{{ album.portada.url }}" alt="{{ album.nombre_disco }}">
                         <div class="card-body">
@@ -117,7 +117,7 @@
 
 <script>
     function fetchAlbums(query, formato, genero, page = 1) {
-        fetch(`/buscar_albums/?q=${query}&formato=${formato}&genero=${genero}&page=${page}`)
+        fetch(`/buscar_catalogo_albums/?q=${query}&formato=${formato}&genero=${genero}&page=${page}`)
             .then(response => response.json())
             .then(data => {
                 var albumsContainer = document.getElementById('albumsContainer');
@@ -126,7 +126,7 @@
                     albumsContainer.innerHTML = '<p>No se encontraron álbumes.</p>';
                 } else {
                     data.albums.forEach(album => {
-                        var albumCard = `<div class="col-md-4 col-lg-3">
+                        var albumCard = `<div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
                             <div class="card mb-4">
                                 <img class="card-img-top" src="${album.portada}" alt="${album.nombre_disco}">
                                 <div class="card-body">
@@ -213,7 +213,5 @@
         fetchAlbums(query, formato, genero);
     });
 
-    // Fetch initial albums on page load
-    fetchAlbums('', '', '');
 </script>
 {% endblock %}

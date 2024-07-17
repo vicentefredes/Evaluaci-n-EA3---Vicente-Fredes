@@ -315,7 +315,7 @@ def crud_albums(request):
 
     return render(request, 'discos/albums_list.html', context)
 
-def buscar_albums(request):
+def buscar_albums(request, items_per_page=25):
     try:
         query = request.GET.get('q', '')
         formato_id = request.GET.get('formato')
@@ -335,7 +335,7 @@ def buscar_albums(request):
         if genero_id:
             albums = albums.filter(id_genero=genero_id)
 
-        paginator = Paginator(albums, 25)
+        paginator = Paginator(albums, items_per_page)
         page_number = request.GET.get('page')
 
         try:
