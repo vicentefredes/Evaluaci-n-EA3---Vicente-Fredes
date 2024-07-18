@@ -25,7 +25,7 @@
 
         <div class="row justify-content-center filtro">
             <div class="col-md-5">
-                <input type="search" id="searchInput" class="form-control" placeholder="Buscar Artista...">
+                <input type="search" id="searchInputMantArtista" class="form-control" placeholder="Buscar Artista...">
             </div>
             <div class="col-md-5">
               <select id="countrySelect" class="form-control">
@@ -116,87 +116,6 @@
         </div>
     </div>
 </div>
-{% endif %}
-
-<script>
-    function fetchArtistas(query, country, page = 1) {
-        fetch(`/buscar_artistas/?q=${query}&country=${country}&page=${page}`)
-            .then(response => response.json())
-            .then(data => {
-                var tableBody = document.getElementById('artistasTable');
-                tableBody.innerHTML = '';
-                if (data.artistas.length === 0) {
-                    tableBody.innerHTML = '<tr><td colspan="8">No se encontraron artistas.</td></tr>';
-                } else {
-                    data.artistas.forEach(artista => {
-                        var biografia = artista.biografia ? artista.biografia : 'Sin biografía';
-                        var row = `<tr>
-                            <td>${artista.nombre_artista}</td>
-                            <td>${artista.pais}</td>
-                            <td class="col-biografia">${biografia}</td>
-                            <td class="td-update equal-width"><a href="/artistas/edit/${artista.id_artista}">Modificar</a></td>
-                            <td class="td-delete equal-width"><a href="/artistas/del/${artista.id_artista}">Eliminar</a></td>
-                        </tr>`;
-                        tableBody.innerHTML += row;
-                    });
-                }
-                
-                // Actualizar la paginación
-                var pagination = document.querySelector('.pagination');
-                pagination.innerHTML = '';
-    
-                if (data.pagination.has_previous) {
-                    pagination.innerHTML += `<li class="page-item">
-                        <a class="page-link" href="javascript:void(0);" onclick="fetchArtistas('${data.pagination.query}', '${data.pagination.country}', 1)" aria-label="Primera">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Primera</span>
-                        </a>
-                    </li>`;
-                    pagination.innerHTML += `<li class="page-item">
-                        <a class="page-link" href="javascript:void(0);" onclick="fetchArtistas('${data.pagination.query}', '${data.pagination.country}', ${data.pagination.previous_page_number})" aria-label="Anterior">
-                            <span aria-hidden="true">&lt;</span>
-                            <span class="sr-only">Anterior</span>
-                        </a>
-                    </li>`;
-                }
-    
-                data.pagination.page_range.forEach(num => {
-                    if (data.pagination.current_page == num) {
-                        pagination.innerHTML += `<li class="page-item active" aria-current="page"><span class="page-link">${num}</span></li>`;
-                    } else {
-                        pagination.innerHTML += `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="fetchArtistas('${data.pagination.query}', '${data.pagination.country}', ${num})">${num}</a></li>`;
-                    }
-                });
-    
-                if (data.pagination.has_next) {
-                    pagination.innerHTML += `<li class="page-item">
-                        <a class="page-link" href="javascript:void(0);" onclick="fetchArtistas('${data.pagination.query}', '${data.pagination.country}', ${data.pagination.next_page_number})" aria-label="Siguiente">
-                            <span aria-hidden="true">&gt;</span>
-                            <span class="sr-only">Siguiente</span>
-                        </a>
-                    </li>`;
-                    pagination.innerHTML += `<li class="page-item">
-                        <a class="page-link" href="javascript:void(0);" onclick="fetchArtistas('${data.pagination.query}', '${data.pagination.country}', ${data.pagination.num_pages})" aria-label="Última">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Última</span>
-                        </a>
-                    </li>`;
-                }
-            });
-    }
-    
-    document.getElementById('searchInput').addEventListener('keyup', function() {
-        var query = this.value;
-        var country = document.getElementById('countrySelect').value;
-        fetchArtistas(query, country);
-    });
-    
-    document.getElementById('countrySelect').addEventListener('change', function() {
-        var query = document.getElementById('searchInput').value;
-        var country = this.value;
-        fetchArtistas(query, country);
-    });
-    </script>
-    
+{% endif %}    
 
 {% endblock %}

@@ -24,10 +24,10 @@
 
         <div class="row justify-content-center filtro">
             <div class="col-md-6">
-                <input type="text" id="searchInput" class="form-control" placeholder="Buscar Álbum...">
+                <input type="text" id="searchInputMantAlbum" class="form-control" placeholder="Buscar Álbum...">
             </div>
             <div class="col-md-3">
-                <select id="formatoSelect" name='formato' class="form-control">
+                <select id="formatoSelectMant" name='formato' class="form-control">
                     <option value="">Formato</option>
                     {% for formato in formatos %}
                         <option value="{{ formato.id_formato }}">{{ formato.formato }}</option>
@@ -35,7 +35,7 @@
                 </select>
             </div>
             <div class="col-md-3">
-                <select id="generoSelect" name='genero' class="form-control">
+                <select id="generoSelectMant" name='genero' class="form-control">
                     <option value="">Género</option>
                     {% for genero in generos %}
                         <option value="{{ genero.id_genero }}">{{ genero.genero }}</option>
@@ -129,99 +129,5 @@
     <p>No tienes permisos para ver esta página</p>
 </div>
 {% endif %}
-
-<script>
-    function fetchAlbums(query, formato, genero, page = 1) {
-        fetch(`/buscar_albums/?q=${query}&formato=${formato}&genero=${genero}&page=${page}`)
-            .then(response => response.json())
-            .then(data => {
-                var tableBody = document.getElementById('albumsTable');
-                tableBody.innerHTML = '';
-                if (data.albums.length === 0) {
-                    tableBody.innerHTML = '<tr><td colspan="8">No se encontraron álbumes.</td></tr>';
-                } else {
-                    data.albums.forEach(album => {
-                        var row = `<tr>
-                            <td>${album.id_artista}</td>
-                            <td>${album.nombre_disco}</td>
-                            <td>${album.id_genero}</td>
-                            <td>${album.fecha_lanzamiento}</td>
-                            <td>$${album.precio}</td>
-                            <td>${album.id_formato}</td>
-                            <td>${album.stock}</td>
-                            <td class="td-update equal-width"><a href="/albums/edit/${album.id_album}">Modificar</a></td>
-                            <td class="td-delete equal-width"><a href="/albums/del/${album.id_album}">Eliminar</a></td>
-                        </tr>`;
-                        tableBody.innerHTML += row;
-                    });
-                }
-
-                // Actualizar la paginación
-                var pagination = document.querySelector('.pagination');
-                pagination.innerHTML = '';
-
-                if (data.pagination.has_previous) {
-                    pagination.innerHTML += `<li class="page-item">
-                        <a class="page-link" href="javascript:void(0);" onclick="fetchAlbums('${data.pagination.query}', '${data.pagination.formato}', '${data.pagination.genero}', 1)" aria-label="Primera">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Primera</span>
-                        </a>
-                    </li>`;
-                    pagination.innerHTML += `<li class="page-item">
-                        <a class="page-link" href="javascript:void(0);" onclick="fetchAlbums('${data.pagination.query}', '${data.pagination.formato}', '${data.pagination.genero}', ${data.pagination.previous_page_number})" aria-label="Anterior">
-                            <span aria-hidden="true">&lt;</span>
-                            <span class="sr-only">Anterior</span>
-                        </a>
-                    </li>`;
-                }
-
-                data.pagination.page_range.forEach(num => {
-                    if (data.pagination.current_page == num) {
-                        pagination.innerHTML += `<li class="page-item active" aria-current="page"><span class="page-link">${num}</span></li>`;
-                    } else {
-                        pagination.innerHTML += `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="fetchAlbums('${data.pagination.query}', '${data.pagination.formato}', '${data.pagination.genero}', ${num})">${num}</a></li>`;
-                    }
-                });
-
-                if (data.pagination.has_next) {
-                    pagination.innerHTML += `<li class="page-item">
-                        <a class="page-link" href="javascript:void(0);" onclick="fetchAlbums('${data.pagination.query}', '${data.pagination.formato}', '${data.pagination.genero}', ${data.pagination.next_page_number})" aria-label="Siguiente">
-                            <span aria-hidden="true">&gt;</span>
-                            <span class="sr-only">Siguiente</span>
-                        </a>
-                    </li>`;
-                    pagination.innerHTML += `<li class="page-item">
-                        <a class="page-link" href="javascript:void(0);" onclick="fetchAlbums('${data.pagination.query}', '${data.pagination.formato}', '${data.pagination.genero}', ${data.pagination.num_pages})" aria-label="Última">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Última</span>
-                        </a>
-                    </li>`;
-                }
-            });
-    }
-
-    document.getElementById('searchInput').addEventListener('keyup', function() {
-        var query = this.value;
-        var formato = document.getElementById('formatoSelect').value;
-        var genero = document.getElementById('generoSelect').value;
-        fetchAlbums(query, formato, genero);
-    });
-
-    document.getElementById('formatoSelect').addEventListener('change', function() {
-        var query = document.getElementById('searchInput').value;
-        var formato = this.value;
-        var genero = document.getElementById('generoSelect').value;
-        console.log(formato);
-        fetchAlbums(query, formato, genero);
-    });
-
-    document.getElementById('generoSelect').addEventListener('change', function() {
-        var query = document.getElementById('searchInput').value;
-        var formato = document.getElementById('formatoSelect').value;
-        var genero = this.value;
-        fetchAlbums(query, formato, genero);
-    });
-    
-</script>
 
 {% endblock %}

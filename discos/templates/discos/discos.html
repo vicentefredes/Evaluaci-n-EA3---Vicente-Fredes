@@ -16,10 +16,10 @@
         
         <div class="row justify-content-center filtro">
             <div class="col-md-5">
-                <input type="text" id="searchInput" class="form-control" placeholder="Buscar Álbum...">
+                <input type="text" id="searchInputCatAlbum" class="form-control" placeholder="Buscar Álbum...">
             </div>
             <div class="col-md-3">
-                <select id="formatoSelect" name='formato' class="form-control">
+                <select id="formatoSelectCat" name='formato' class="form-control">
                     <option value="">Todos los formatos</option>
                     {% for formato in formatos %}
                         <option value="{{ formato.id_formato }}">{{ formato.formato }}</option>
@@ -27,7 +27,7 @@
                 </select>
             </div>
             <div class="col-md-3">
-                <select id="generoSelect" name='genero' class="form-control">
+                <select id="generoSelectCat" name='genero' class="form-control">
                     <option value="">Todos los géneros</option>
                     {% for genero in generos %}
                         <option value="{{ genero.id_genero }}">{{ genero.genero }}</option>
