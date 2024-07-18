@@ -153,6 +153,24 @@ $(document).ready(function() {
 
 
     // MANEJO DE FILTROS EN MANTENEDOR DE ÁLBUMES
+
+        function formatDate(dateStr) {
+            // Dividir la cadena de fecha en partes
+            var parts = dateStr.split('-');
+            var year = parts[0];
+            var month = parts[1] - 1; // Los meses en JavaScript van de 0 a 11
+            var day = parts[2];
+        
+            // Crear una nueva fecha en la zona horaria local
+            var date = new Date(year, month, day);
+        
+            var formattedDay = ('0' + date.getDate()).slice(-2);
+            var formattedMonth = ('0' + (date.getMonth() + 1)).slice(-2);
+            var formattedYear = date.getFullYear();
+        
+            return `${formattedDay}/${formattedMonth}/${formattedYear}`;
+        }
+
         function fetchAlbumsMantenedor(query, formato, genero, page = 1) {
             fetch(`/buscar_albums/?q=${query}&formato=${formato}&genero=${genero}&page=${page}`)
                 .then(response => response.json())
@@ -167,7 +185,7 @@ $(document).ready(function() {
                                 <td>${album.id_artista}</td>
                                 <td>${album.nombre_disco}</td>
                                 <td>${album.id_genero}</td>
-                                <td>${album.fecha_lanzamiento}</td>
+                                <td>${formatDate(album.fecha_lanzamiento)}</td>
                                 <td>$${album.precio}</td>
                                 <td>${album.id_formato}</td>
                                 <td>${album.stock}</td>
