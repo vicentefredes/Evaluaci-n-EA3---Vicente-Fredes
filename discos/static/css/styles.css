@@ -141,6 +141,10 @@ footer .links-footer a {
     font-size: 20px;
 }
 
+.filtro {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
 @media (max-width: 768px) {
     .filtro .form-control {
       margin-top: 3%; /* or any desired margin value */
