@@ -78,7 +78,7 @@ $(document).ready(function() {
                                 <td>${artista.pais}</td>
                                 <td class="col-biografia">${biografia}</td>
                                 <td class="td-update equal-width"><a href="/artistas_edit/${artista.id_artista}">Modificar</a></td>
-                                <td class="td-delete equal-width"><a href="/artistas_del/${artista.id_artista}?q=${query}&country=${country}&page=${page}"">Eliminar</a></td>         
+                                <td class="td-delete equal-width"><a href="/artistas_del/${artista.id_artista}?q=${query}&country=${country}&page=${page}">Eliminar</a></td>         
                             </tr>`;
                             tableBody.innerHTML += row;
                         });
@@ -172,7 +172,7 @@ $(document).ready(function() {
                                 <td>${album.id_formato}</td>
                                 <td>${album.stock}</td>
                                 <td class="td-update equal-width"><a href="/albums_edit/${album.id_album}">Modificar</a></td>
-                                <td class="td-delete equal-width"><a href="/albums_del/${album.id_album}">Eliminar</a></td>
+                                <td class="td-delete equal-width"><a href="/albums_del/${album.id_album}?q=${query}&formato=${formato}&genero=${genero}&page=${page}">Eliminar</a></td>
                             </tr>`;
                             tableBody.innerHTML += row;
                         });

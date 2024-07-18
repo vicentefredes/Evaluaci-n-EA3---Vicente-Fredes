@@ -314,8 +314,21 @@ def artistas_del(request, pk):
 #CRUD de álbumes    
 @login_required
 def crud_albums(request):
+    query = request.GET.get('q', '')
+    formato_id = request.GET.get('formato')
+    genero_id = request.GET.get('genero')
+    
     albums = Album.objects.annotate(lower_nombre_artista=Lower('id_artista__nombre_artista')).order_by('lower_nombre_artista', 'nombre_disco')
     
+    if query:
+        albums = albums.filter(Q(nombre_disco__icontains=query) | Q(id_artista__nombre_artista__icontains=query))
+
+    if formato_id:
+        albums = albums.filter(id_formato=formato_id)
+
+    if genero_id:
+        albums = albums.filter(id_genero=genero_id)
+
     # Obtener todos los formatos para el filtro
     formatos = Formato.objects.all().order_by('formato')
 
@@ -337,7 +350,10 @@ def crud_albums(request):
         'formatos': formatos,
         'generos': generos,
         'clase': 'mantenedores',
-        'dropdown': 'albumes'
+        'dropdown': 'albumes',
+        'query': query,
+        'formato': formato_id,
+        'genero': genero_id,
     }
 
     return render(request, 'discos/albums_list.html', context)
@@ -431,17 +447,14 @@ def albums_edit(request, pk):
 @login_required
 def albums_del(request, pk):
     try:
-        current_page = request.GET.get('page')
-
-        print(current_page)
+        query_params = request.GET.copy()
 
         album = Album.objects.get(id_album=pk)
         album.delete()
 
-        if current_page:
-            return redirect(f'{reverse("crud_albums")}?page={current_page}')
-        else:
-            return redirect('crud_albums')
+        url = f'{reverse("crud_albums")}?{urlencode(query_params)}'
+        print(url)
+        return redirect(url)
         
     except Album.DoesNotExist:
         return redirect('crud_albums')
