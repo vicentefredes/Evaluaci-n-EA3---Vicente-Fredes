@@ -51,8 +51,8 @@
                     Mantenedores   
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="{% url 'crud_artistas' %}">Artistas</a>
-                      <a class="dropdown-item" href="{% url 'crud_albums' %}">Discos</a>
+                    {% if dropdown == 'artistas' %}<a class="dropdown-item active" href="{% url 'crud_artistas' %}">{% else %}<a class="dropdown-item" href="{% url 'crud_artistas' %}">{% endif %} Artistas</a>
+                    {% if dropdown == 'albumes' %}<a class="dropdown-item active" href="{% url 'crud_albums' %}">{% else %}<a class="dropdown-item" href="{% url 'crud_albums' %}">{% endif %} Discos</a>
                   </div>
               </li>
               {% if clase == 'mensajes' %}<li class="nav-item active">{% else %}<li class="nav-item">{% endif %}
@@ -78,10 +78,10 @@
                       {{ user.username }}    
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{% url 'perfil' %}">Mi Perfil</a>
-                    <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                    {% if clase == 'perfil' %}<a class="dropdown-item active" href="{% url 'perfil' %}">{% else %}<a class="dropdown-item" href="{% url 'perfil' %}">{% endif %} Mi Perfil</a>
+                    <form method="post" action="{% url 'logout' %}" style="display: inline;" class="logout-form">
                       {% csrf_token %}
-                      <button type="submit" class="dropdown-item" style="cursor: pointer; border: none; background: none; padding: 0;">Cerrar Sesión</button>
+                      <button type="submit" class="dropdown-item" style="cursor: pointer; border: none; background: none;">Cerrar Sesión</button>
                     </form>
                   </div>
               </li>

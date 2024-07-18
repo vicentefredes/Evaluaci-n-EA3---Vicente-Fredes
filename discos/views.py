@@ -202,7 +202,7 @@ def crud_artistas(request):
     # Obtener todos los países para el filtro
     paises = Artista.objects.values_list('pais', flat=True).distinct().order_by('pais')
 
-    context = {'artistas': artistas, 'paises': paises, 'clase': 'mantenedores'}
+    context = {'artistas': artistas, 'paises': paises, 'clase': 'mantenedores', 'dropdown': 'artistas'}
     return render(request, 'discos/artistas_list.html', context)
 
 
@@ -258,10 +258,10 @@ def artistasAdd(request):
             form.save()
             nombre = form.cleaned_data.get('nombre_artista')
             mensaje = f"{nombre} ha sido agregado exitosamente"
-            return render(request, 'discos/artistas_add.html', {'form': ArtistaForm(), 'mensaje': mensaje, 'clase': 'mantenedores'})
+            return render(request, 'discos/artistas_add.html', {'form': ArtistaForm(), 'mensaje': mensaje, 'clase': 'mantenedores', 'dropdown': 'artistas'})
     else:
         form = ArtistaForm()
-    return render(request, 'discos/artistas_add.html', {'form': form, 'clase': 'mantenedores'})
+    return render(request, 'discos/artistas_add.html', {'form': form, 'clase': 'mantenedores', 'dropdown': 'artistas'})
 
 @login_required
 def artistas_edit(request, pk):
@@ -271,10 +271,10 @@ def artistas_edit(request, pk):
         if form.is_valid():
             form.save()
             mensaje = f"Los datos de {artista.nombre_artista} han sido actualizados exitosamente"
-            return render(request, 'discos/artistas_edit.html', {'artista': artista, 'mensaje': mensaje, 'form': form, 'clase': 'mantenedores'})
+            return render(request, 'discos/artistas_edit.html', {'artista': artista, 'mensaje': mensaje, 'form': form, 'clase': 'mantenedores', 'dropdown': 'artistas'})
     else:
         form = ArtistaForm(instance=artista)
-    return render(request, 'discos/artistas_edit.html', {'artista': artista, 'form': form, 'clase': 'mantenedores'})
+    return render(request, 'discos/artistas_edit.html', {'artista': artista, 'form': form, 'clase': 'mantenedores', 'dropdown': 'artistas'})
 
 @login_required
 def artistas_del(request, pk):
@@ -310,7 +310,8 @@ def crud_albums(request):
         'albums': albums,
         'formatos': formatos,
         'generos': generos,
-        'clase': 'mantenedores'
+        'clase': 'mantenedores',
+        'dropdown': 'albumes'
     }
 
     return render(request, 'discos/albums_list.html', context)
@@ -383,10 +384,10 @@ def albumsAdd(request):
             form.save()
             nombre = form.cleaned_data.get('nombre_disco')
             mensaje = f"{nombre} ha sido agregado exitosamente"
-            return render(request, 'discos/albums_add.html', {'form': AlbumForm(), 'mensaje': mensaje, 'clase': 'mantenedores'})
+            return render(request, 'discos/albums_add.html', {'form': AlbumForm(), 'mensaje': mensaje, 'clase': 'mantenedores', 'dropdown': 'albumes'})
     else:
         form = AlbumForm()
-    return render(request, 'discos/albums_add.html', {'form': form, 'clase': 'mantenedores'})
+    return render(request, 'discos/albums_add.html', {'form': form, 'clase': 'mantenedores', 'dropdown': 'albumes'})
 
 @login_required
 def albums_edit(request, pk):
@@ -396,10 +397,10 @@ def albums_edit(request, pk):
         if form.is_valid():
             form.save()
             mensaje = f"Los datos del álbum {album.nombre_disco} han sido actualizados exitosamente"
-            return render(request, 'discos/albums_edit.html', {'album': album, 'mensaje': mensaje, 'form': form, 'clase': 'mantenedores'})
+            return render(request, 'discos/albums_edit.html', {'album': album, 'mensaje': mensaje, 'form': form, 'clase': 'mantenedores', 'dropdown': 'albumes'})
     else:
         form = AlbumForm(instance=album)
-    return render(request, 'discos/albums_edit.html', {'album': album, 'form': form, 'clase': 'mantenedores'})
+    return render(request, 'discos/albums_edit.html', {'album': album, 'form': form, 'clase': 'mantenedores', 'dropdown': 'albumes'})
 
 @login_required
 def albums_del(request, pk):
