@@ -20,7 +20,7 @@
             </div>
             <div class="col-md-3">
                 <select id="formatoSelectCat" name='formato' class="form-control">
-                    <option value="">Todos los formatos</option>
+                    <option value="">Formato</option>
                     {% for formato in formatos %}
                         <option value="{{ formato.id_formato }}">{{ formato.formato }}</option>
                     {% endfor %}
@@ -28,7 +28,7 @@
             </div>
             <div class="col-md-3">
                 <select id="generoSelectCat" name='genero' class="form-control">
-                    <option value="">Todos los géneros</option>
+                    <option value="">Género</option>
                     {% for genero in generos %}
                         <option value="{{ genero.id_genero }}">{{ genero.genero }}</option>
                     {% endfor %}

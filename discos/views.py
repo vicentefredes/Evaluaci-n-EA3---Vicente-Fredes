@@ -18,7 +18,11 @@ from .forms import ArtistaForm, AlbumForm, MensajeForm
 
 # Create your views here.
 
-def custom_login(request):
+#-----------------------------------------
+
+# Inicio de sesión
+
+def custom_login(request): # Renderizar formulario / Enviar formulario y ejecutar login
     if request.user.is_authenticated:
         return redirect('index')
 
@@ -34,10 +38,16 @@ def custom_login(request):
     
     # Si el método no es POST o hubo un error, mostrar el formulario de inicio de sesión
     context = {'clase': 'entrar'}
+
     return render(request, 'discos/login.html', context)
 
+# Fin Inicio de sesión
 
-def registro(request):
+#-----------------------------------------
+
+# Registro de usuarios
+
+def registro(request): # Renderizar formulario / Ejecución de POST y creación de usuario
     if request.user.is_authenticated:
         return redirect('index')
 
@@ -67,17 +77,25 @@ def registro(request):
     
     # Si el método no es POST o hubo un error de integridad, mostrar el formulario con los datos ingresados y el mensaje de error si existe
     context = {"clase": "entrar", "nombre": nombre, "email": email, "first_name": first_name, "last_name": last_name}
+
     return render(request, 'discos/registro.html', context)
 
-def chequear_disponibilidad(request):
+def chequear_disponibilidad(request): # Manejo backend de el constraint UNIQUE del nombre de usuario
     username = request.GET.get('username', None)
     data = {
         'is_taken': User.objects.filter(username__iexact=username).exists()
     }
+
     return JsonResponse(data)
 
+# Fin Registro de Usuarios 
+
+#-----------------------------------------
+
+# Editar información de usuario
+
 @login_required
-def modificar_perfil(request):
+def modificar_perfil(request): # Renderizar formulario para editar datos de usuario / Ejecución de POST
     user = request.user
 
     if request.method == "POST":
@@ -97,7 +115,7 @@ def modificar_perfil(request):
         
         try:
             user.save()
-            return redirect('perfil')  # Asumiendo que tienes una vista llamada 'perfil' para mostrar la información del usuario
+            return redirect('perfil') # Cuando guardamos cambios, nos redirige al perfil de usuario
         except IntegrityError:
             return HttpResponseBadRequest("El nombre de usuario ya está en uso.")
         except ValueError as e:
@@ -113,7 +131,14 @@ def modificar_perfil(request):
         "first_name": user.first_name,
         "last_name": user.last_name
     }
+
     return render(request, 'discos/modificar_perfil.html', context)
+
+# Fin Editar información de usuario
+
+#-----------------------------------------
+
+# Renderización de Index
 
 def index(request):
     # Obtener la cantidad total de artistas
@@ -149,8 +174,8 @@ def index(request):
         'estadisticas_por_decada': estadisticas_por_decada,
         'novedades':novedades
     }
-    return render(request, 'discos/index.html', context)
 
+    return render(request, 'discos/index.html', context)
 
 def albums_por_decada():
     # Define los rangos de las décadas
@@ -186,20 +211,28 @@ def albums_por_decada():
     
     return resultados
 
+# Fin Renderización de index
+
+#-----------------------------------------
+
+# Mantenedor de artistas
 
 @login_required
-def crud_artistas(request):
+def crud_artistas(request): # Renderizar listado
     # Obtener parámetros de búsqueda y país del request
     query = request.GET.get('q', '')
     country = request.GET.get('country', '')
 
-    # Filtrar artistas basado en los parámetros
+    # Obtener todos los artistas en la base de datos en orden alfabético
     artistas = Artista.objects.annotate(lower_nombre=Lower('nombre_artista')).order_by('lower_nombre')
+
+    # Filtrar artistas basado en los parámetros
     if query:
         artistas = artistas.filter(nombre_artista__icontains=query)
     if country:
         artistas = artistas.filter(pais__icontains=country)
 
+    # Paginación
     paginator = Paginator(artistas, 25)
     page = request.GET.get('page')
 
@@ -213,6 +246,7 @@ def crud_artistas(request):
     # Obtener todos los países para el filtro
     paises = Artista.objects.values_list('pais', flat=True).distinct().order_by('pais')
 
+    # Contexto y renderización
     context = {
         'artistas': artistas,
         'paises': paises,
@@ -225,18 +259,22 @@ def crud_artistas(request):
 
 
 @login_required
-def buscar_artistas(request):
+def buscar_artistas(request): # Generar JSON para la aplicación de filtros
+    # Obtener parámetros de búsqueda y país del request
     query = request.GET.get('q', '')
     country = request.GET.get('country', '')
     
+    # Obtener todos los artistas en la base de datos en orden alfabético
     artistas = Artista.objects.annotate(lower_nombre=Lower('nombre_artista')).order_by('lower_nombre')
     
+    # Filtrar artistas basado en los parámetros
     if query:
         artistas = artistas.filter(nombre_artista__icontains=query)
     
     if country:
         artistas = artistas.filter(pais=country)
 
+    # Paginación
     paginator = Paginator(artistas, 25)
     page = request.GET.get('page')
 
@@ -247,6 +285,7 @@ def buscar_artistas(request):
     except EmptyPage:
         artistas_page = paginator.page(paginator.num_pages)
     
+    # Generación de datos para JSON
     artistas_data = [{
         'id_artista': artista.id_artista,
         'nombre_artista': artista.nombre_artista,
@@ -269,7 +308,7 @@ def buscar_artistas(request):
     return JsonResponse({'artistas': artistas_data, 'pagination': pagination_data})
 
 @login_required
-def artistasAdd(request):
+def artistasAdd(request): # Renderización de formulario para agregar artista y envío de este
     if request.method == "POST":
         form = ArtistaForm(request.POST)
         if form.is_valid():
@@ -282,7 +321,7 @@ def artistasAdd(request):
     return render(request, 'discos/artistas_add.html', {'form': form, 'clase': 'mantenedores', 'dropdown': 'artistas'})
 
 @login_required
-def artistas_edit(request, pk):
+def artistas_edit(request, pk): # Renderización de formulario para editar artista y envío de este
     artista = Artista.objects.get(id_artista=pk)
     if request.method == "POST":
         form = ArtistaForm(request.POST, instance=artista)
@@ -295,31 +334,41 @@ def artistas_edit(request, pk):
     return render(request, 'discos/artistas_edit.html', {'artista': artista, 'form': form, 'clase': 'mantenedores', 'dropdown': 'artistas'})
 
 @login_required
-def artistas_del(request, pk):
+def artistas_del(request, pk): # Eliminación de artista
     try:
         # Recoger todos los parámetros de la solicitud original
         query_params = request.GET.copy()
 
+        # Obtener artista y eliminar
         artista = Artista.objects.get(id_artista=pk)
         artista.delete()
         
         # Redirigir de vuelta a la misma página con los mismos parámetros
+        # Nos aseguramos de mantener filtros y paginación tras la eliminación del artista, evitando que el listado vuelva a su estado inical
         url = f'{reverse("crud_artistas")}?{urlencode(query_params)}'
-        print(url)
+
         return redirect(url)
     
     except Artista.DoesNotExist:
         return redirect('crud_artistas')
+    
+# Fin Mantenedor de Artistas
 
-#CRUD de álbumes    
+#-----------------------------------------
+
+# Mantenedor de álbumes 
+    
 @login_required
-def crud_albums(request):
+def crud_albums(request): # Renderizar listado
+    # Obtener parámetros de búsqueda, formato y género del request
     query = request.GET.get('q', '')
     formato_id = request.GET.get('formato')
     genero_id = request.GET.get('genero')
     
+    # Obtener todos los álbumes de la base de datos, en orden alfabético (nombre del artista, y nombre del disco en caso de haber varios por artista)
     albums = Album.objects.annotate(lower_nombre_artista=Lower('id_artista__nombre_artista')).order_by('lower_nombre_artista', 'nombre_disco')
     
+    # Filtrar álbumes basado en los parámetros
     if query:
         albums = albums.filter(Q(nombre_disco__icontains=query) | Q(id_artista__nombre_artista__icontains=query))
 
@@ -335,6 +384,7 @@ def crud_albums(request):
     # Obtener todos los géneros para el filtro
     generos = Genero.objects.all().order_by('genero')
 
+    # Paginación
     paginator = Paginator(albums, 25)
     page = request.GET.get('page')
 
@@ -345,6 +395,7 @@ def crud_albums(request):
     except EmptyPage:
         albums = paginator.page(paginator.num_pages)
 
+    # Contexto y renderización
     context = {
         'albums': albums,
         'formatos': formatos,
@@ -358,17 +409,17 @@ def crud_albums(request):
 
     return render(request, 'discos/albums_list.html', context)
 
-def buscar_albums(request, items_per_page=25):
+def buscar_albums(request, items_per_page=25): # Generar JSON para la aplicación de filtros **Aplicará tanto para el mantenedor como para el catálogo de álbumes
     try:
+        # Obtener parámetros de búsqueda, formato y género del request
         query = request.GET.get('q', '')
         formato_id = request.GET.get('formato')
         genero_id = request.GET.get('genero')
 
-        print(formato_id)
-        print(genero_id)
-
+        # Obtener todos los álbumes de la base de datos, en orden alfabético (nombre del artista, y nombre del disco en caso de haber varios por artista)
         albums = Album.objects.annotate(lower_nombre_artista=Lower('id_artista__nombre_artista')).order_by('lower_nombre_artista', 'nombre_disco')
 
+        # Filtrar álbumes basado en los parámetros
         if query:
             albums = albums.filter(Q(nombre_disco__icontains=query) | Q(id_artista__nombre_artista__icontains=query))
 
@@ -378,6 +429,7 @@ def buscar_albums(request, items_per_page=25):
         if genero_id:
             albums = albums.filter(id_genero=genero_id)
 
+        # Paginación
         paginator = Paginator(albums, items_per_page)
         page_number = request.GET.get('page')
 
@@ -388,6 +440,7 @@ def buscar_albums(request, items_per_page=25):
         except EmptyPage:
             albums_page = paginator.page(paginator.num_pages)
 
+        # Generación de datos para JSON
         albums_data = [{
             'id_album': album.id_album,
             'nombre_disco': album.nombre_disco,
@@ -419,7 +472,7 @@ def buscar_albums(request, items_per_page=25):
         return JsonResponse({'error': str(e)}, status=500)
 
 @login_required
-def albumsAdd(request):
+def albumsAdd(request): # Renderización de formulario para agregar album y envío de este
     if request.method == "POST":
         form = AlbumForm(request.POST, request.FILES)
         if form.is_valid():
@@ -432,7 +485,7 @@ def albumsAdd(request):
     return render(request, 'discos/albums_add.html', {'form': form, 'clase': 'mantenedores', 'dropdown': 'albumes'})
 
 @login_required
-def albums_edit(request, pk):
+def albums_edit(request, pk): # Renderización de formulario para editar album y envío de este
     album = Album.objects.get(id_album=pk)
     if request.method == "POST":
         form = AlbumForm(request.POST, request.FILES, instance=album)
@@ -445,26 +498,37 @@ def albums_edit(request, pk):
     return render(request, 'discos/albums_edit.html', {'album': album, 'form': form, 'clase': 'mantenedores', 'dropdown': 'albumes'})
 
 @login_required
-def albums_del(request, pk):
+def albums_del(request, pk): # Eliminación de álbum
     try:
+        # Recoger todos los parámetros de la solicitud original
         query_params = request.GET.copy()
 
+        # Obtener álbum y eliminar
         album = Album.objects.get(id_album=pk)
         album.delete()
 
+        # Redirigir de vuelta a la misma página con los mismos parámetros
+        # Nos aseguramos de mantener filtros y paginación tras la eliminación del artista, evitando que el listado vuelva a su estado inical
         url = f'{reverse("crud_albums")}?{urlencode(query_params)}'
-        print(url)
+
         return redirect(url)
         
     except Album.DoesNotExist:
         return redirect('crud_albums')
 
-#Mensajes
-@login_required
-def listadoMensajes(request):
-    mensajes = Mensaje.objects.all().order_by('-fecha')
-    paginator = Paginator(mensajes, 25)
+# Fin Mantenedor de Albumes
 
+#-----------------------------------------
+
+# Mensajes del formulario de Contacto
+
+@login_required
+def listadoMensajes(request): # Renderización de listado de mensajes para el administrador
+    # Obtención de mensajes desde el más reciente al más antiguo
+    mensajes = Mensaje.objects.all().order_by('-fecha') 
+    
+    # Paginación
+    paginator = Paginator(mensajes, 25) 
     page = request.GET.get('page')
 
     try:
@@ -474,19 +538,31 @@ def listadoMensajes(request):
     except EmptyPage:
         mensajes = paginator.page(paginator.num_pages)
 
+    # Contexto y renderización
     context = {'mensajes': mensajes, 'clase': 'mensajes'}
     return render(request, 'discos/mensajes.html', context)
 
 @login_required
-def mensajes_del(request, pk):
+def cambiar_estado(request, pk): # Función a ejecutarse cuando el administrador marque un mensaje como léido/no leído
+    mensaje = Mensaje.objects.get(id_mensaje=pk)
+    if mensaje.leido == True:
+        mensaje.leido = False
+    else: 
+        mensaje.leido = True
+    mensaje.save()
+    return redirect('mensajes')
+
+@login_required
+def mensajes_del(request, pk): # Eliminar mensaje del la base de datos
     try:
+        # Obtener página
         current_page = request.GET.get('page')
 
-        print(current_page)
-
+        # Obtener mensaje y eliminar
         mensaje = Mensaje.objects.get(id_mensaje=pk)
         mensaje.delete()
 
+        # Controlar que el listado se mantenga en la misma página tras eliminar
         if current_page:
             return redirect(f'{reverse("mensajes")}?page={current_page}')
         else:
@@ -495,7 +571,7 @@ def mensajes_del(request, pk):
     except Mensaje.DoesNotExist:
         return redirect('mensajes')
     
-def mensajesAdd(request):
+def mensajesAdd(request): # Renderización de formulario de contacto / Ejecución de POST
     if request.method == "POST":
         form = MensajeForm(request.POST)
         if form.is_valid():
@@ -511,26 +587,26 @@ def mensajesAdd(request):
         else:
             # Invitado: formulario vacío
             form = MensajeForm()
+
     return render(request, 'discos/contacto.html', {'form': form, 'clase': 'contacto'})
 
-@login_required
-def cambiar_estado(request, pk):
-    mensaje = Mensaje.objects.get(id_mensaje=pk)
-    if mensaje.leido == True:
-        mensaje.leido = False
-    else: 
-        mensaje.leido = True
-    mensaje.save()
-    return redirect('mensajes')
+# Fin Mensajes del formulario de Contacto
 
+#-----------------------------------------
 
-#Discos (para el cliente)
-def listado_albums(request):
+#  Catálogo y compra de discos
+
+def listado_albums(request): # Renderización de catálogo de álbumes para buscarlos y agregarlos al carrito
+    # Obtener todos los álbumes de la base de datos, en orden alfabético (nombre del artista, y nombre del disco en caso de haber varios por artista)
     albums = Album.objects.annotate(lower_nombre_artista=Lower('id_artista__nombre_artista')).order_by('lower_nombre_artista', 'nombre_disco')
 
+    # Obtener todos los formatos para el filtro
     formatos = Formato.objects.all().order_by('formato')
+
+    # Obtener todos los géneros para el filtro
     generos = Genero.objects.all().order_by('genero')
 
+    # Paginación
     paginator = Paginator(albums, 12)  
 
     page = request.GET.get('page')
@@ -546,11 +622,13 @@ def listado_albums(request):
     album_agregado = request.session.pop('album_agregado', False)
     album_nombre = request.session.pop('album_nombre', '')
 
+    # Contexto y renderización
     context = {'albums': albums, 'formatos':formatos, 'generos':generos, 'clase': 'discos', 'album_agregado': album_agregado, 'album_nombre': album_nombre}
+
     return render(request, 'discos/discos.html', context)
 
-# Vista para agregar productos al carrito
-def agregar_al_carrito(request, fk_album):
+def agregar_al_carrito(request, fk_album): # Vista para agregar productos al carrito
+    # Obtener álbum escogido
     album = Album.objects.get(id_album=fk_album)
     
     if request.user.is_authenticated:
@@ -578,6 +656,7 @@ def agregar_al_carrito(request, fk_album):
     # Asignar el ID de compra a la sesión
     request.session['id_compra'] = compra.id_compra
 
+    # Generación de JSON para correcto funcionamiento frontend, con despliegue de modal y actualización de badge en navbar
     response_data = {
         'success': True,
         'message': f"¡El álbum {album.id_artista} - {album.nombre_disco} ({album.id_formato}) ha sido agregado al carrito con éxito!",
@@ -585,8 +664,7 @@ def agregar_al_carrito(request, fk_album):
 
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
-# Vista para mostrar el carrito de compras
-def carrito_compra(request):
+def carrito_compra(request): # Vista para mostrar el carrito de compras
     mensaje = request.GET.get('mensaje', None)
 
     if request.user.is_authenticated:
@@ -620,20 +698,24 @@ def carrito_compra(request):
 
     return render(request, 'discos/carrito.html', context)
 
-def confirmar_compra(request, pk):
+def confirmar_compra(request, pk): # Vista para confirmar compra, actualizando valor de atributado 'finalizada' a True, disminuyendo stock de los álbumes y limpiando carrito
+    # Obtener compra y marcar como finalizada
     compra = Compra.objects.get(id_compra=pk)
     compra.finalizada = True
     compra.save()
 
+    # Disminuir en 1 el valor de 'stock' para cada álbum incluido en la compra
     for album in compra.discos.all():
         if album.stock is not None and album.stock > 0:
             album.stock -= 1
             album.save()
 
+    # Mensaje de confirmación y limpieza de carrito
     mensaje = "Tu compra ha sido confirmada exitosamente. ¡Gracias por su preferencia!"
     return HttpResponseRedirect(reverse('carrito') + f'?mensaje={mensaje}')
 
-def eliminar_del_carrito(request, id_compra, id_album):
+def eliminar_del_carrito(request, id_compra, id_album): # Vista para controlar eliminar de un álbum de del carrito de compras
+    # Obtener compra y album
     compra = Compra.objects.get(id_compra=id_compra)
     album = Album.objects.get(id_album=id_album)
     
@@ -648,8 +730,15 @@ def eliminar_del_carrito(request, id_compra, id_album):
     # Redireccionar de vuelta al carrito
     return redirect('carrito')
 
+# Fin Catálogo y compra de discos
+
+#-----------------------------------------
+
+# Perfil de usuario
+
 @login_required
-def perfil(request):
+def perfil(request): # Renderizar perfil - con sus datos y su historial de compras
+    # Obtener usuario
     user = request.user
     
     # Obtener las compras finalizadas del usuario
@@ -660,6 +749,7 @@ def perfil(request):
         total_price = compra.discos.aggregate(total=Sum('precio'))['total']
         compra.total_price = total_price if total_price else 0  # Añadir el precio total como atributo a la compra
     
+    # Contexto y renderización
     context = {
         'clase': 'perfil',
         'compras': compras,
@@ -667,7 +757,13 @@ def perfil(request):
 
     return render(request, 'discos/perfil.html', context)
 
-def obtener_discos_en_carrito(request):
+# Fin Perfil de usuario
+
+#-----------------------------------------
+
+# Manejo de badge en navbar que indica cantidad de álbumes en el carrito
+
+def obtener_discos_en_carrito(request): # Generación de JSON necesario para indicar cantidad de álbumes en badge
     if request.user.is_authenticated:
         # Usuario autenticado: obtener o crear la compra en progreso del usuario
         compra = Compra.objects.filter(id_usuario=request.user, finalizada=False).first()
@@ -695,3 +791,5 @@ def obtener_discos_en_carrito(request):
         'cantidad_albumes': cantidad_albumes
     }
     return JsonResponse(data)
+
+# Fin Manejo de badge en navbar que indica cantidad de álbumes en el carrito
