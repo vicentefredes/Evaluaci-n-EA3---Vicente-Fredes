@@ -6,8 +6,6 @@ $(document).ready(function() {
         // Obtener el CSRF token de Django
         var csrftoken = getCookie('csrftoken'); 
 
-
-
         // Función para obtener el token CSRF
         function getCookie(name) {
             var cookieValue = null;
@@ -171,8 +169,8 @@ $(document).ready(function() {
                                 <td>$${album.precio}</td>
                                 <td>${album.id_formato}</td>
                                 <td>${album.stock}</td>
-                                <td class="td-update equal-width"><a href="/albums/edit/${album.id_album}">Modificar</a></td>
-                                <td class="td-delete equal-width"><a href="/albums/del/${album.id_album}">Eliminar</a></td>
+                                <td class="td-update equal-width"><a href="/albums_edit/${album.id_album}">Modificar</a></td>
+                                <td class="td-delete equal-width"><a href="/albums_del/${album.id_album}">Eliminar</a></td>
                             </tr>`;
                             tableBody.innerHTML += row;
                         });
