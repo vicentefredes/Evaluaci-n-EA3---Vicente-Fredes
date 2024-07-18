@@ -71,7 +71,7 @@
                             <td>{{ album.id_formato }}</td>
                             <td>{{ album.stock }}</td>
                             <td class="td-update equal-width"><a href="{% url 'albums_edit' pk=album.id_album %}">Modificar</a></td>
-                            <td class="td-delete equal-width"><a href="{% url 'albums_del' pk=album.id_album %}">Eliminar</a></td>
+                            <td class="td-delete equal-width"><a href="{% url 'albums_del' pk=album.id_album %}?page={{ albums.number }}">Eliminar</a></td>
                         </tr>
                     {% endfor %}
                 </tbody>

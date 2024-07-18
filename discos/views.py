@@ -279,9 +279,19 @@ def artistas_edit(request, pk):
 @login_required
 def artistas_del(request, pk):
     try:
+        current_page = request.GET.get('page')
+
+        print(current_page)
+        
         artista = Artista.objects.get(id_artista=pk)
         artista.delete()
-        return redirect('crud_artistas')
+        
+        # Redirigir de vuelta a la misma página, si se especificó una página válida
+        if current_page:
+            return redirect(f'{reverse("crud_artistas")}?page={current_page}')
+        else:
+            return redirect('crud_artistas')
+    
     except Artista.DoesNotExist:
         return redirect('crud_artistas')
 
@@ -405,9 +415,18 @@ def albums_edit(request, pk):
 @login_required
 def albums_del(request, pk):
     try:
+        current_page = request.GET.get('page')
+
+        print(current_page)
+
         album = Album.objects.get(id_album=pk)
         album.delete()
-        return redirect('crud_albums')
+
+        if current_page:
+            return redirect(f'{reverse("crud_albums")}?page={current_page}')
+        else:
+            return redirect('crud_albums')
+        
     except Album.DoesNotExist:
         return redirect('crud_albums')
 
@@ -432,9 +451,18 @@ def listadoMensajes(request):
 @login_required
 def mensajes_del(request, pk):
     try:
+        current_page = request.GET.get('page')
+
+        print(current_page)
+
         mensaje = Mensaje.objects.get(id_mensaje=pk)
         mensaje.delete()
-        return redirect('mensajes')
+
+        if current_page:
+            return redirect(f'{reverse("mensajes")}?page={current_page}')
+        else:
+            return redirect('mensajes')
+
     except Mensaje.DoesNotExist:
         return redirect('mensajes')
     

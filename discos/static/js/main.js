@@ -128,6 +128,8 @@ $(document).ready(function() {
                 });
         }
 
+        window.fetchArtistas = fetchArtistas;
+
         var searchInputMantArtista = document.getElementById('searchInputMantArtista');
         var countrySelect = document.getElementById('countrySelect');
     
@@ -219,6 +221,8 @@ $(document).ready(function() {
                     }
                 });
         }
+
+        window.fetchAlbumsMantenedor = fetchAlbumsMantenedor;
     
         var searchInputMantAlbum = document.getElementById('searchInputMantAlbum');
         var formatoSelectMant = document.getElementById('formatoSelectMant');

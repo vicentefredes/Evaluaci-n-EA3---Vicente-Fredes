@@ -50,7 +50,7 @@
                                         <a href="{% url 'cambiar_estado' pk=mensaje.id_mensaje %}">Marcar como no leído</a>
                                     {% endif %}
                                 </td>
-                                <td class="td-delete equal-width"><a href="{% url 'mensajes_del' pk=mensaje.id_mensaje %}">Eliminar</a></td>
+                                <td class="td-delete equal-width"><a href="{% url 'mensajes_del' pk=mensaje.id_mensaje %}?page={{ mensajes.number }}">Eliminar</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>
