@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import IntegrityError
 from django.db.models import Sum, Count, Q
+from django.db.models.functions import Lower
 from datetime import date
 from django.urls import reverse
 import json
@@ -187,7 +188,7 @@ def albums_por_decada():
 #CRUD de Artistas
 @login_required
 def crud_artistas(request):
-    artistas = Artista.objects.all().order_by('nombre_artista')
+    artistas = Artista.objects.annotate(lower_nombre=Lower('nombre_artista')).order_by('lower_nombre')
     paginator = Paginator(artistas, 25)
 
     page = request.GET.get('page')
@@ -211,7 +212,7 @@ def buscar_artistas(request):
     query = request.GET.get('q', '')
     country = request.GET.get('country', '')
     
-    artistas = Artista.objects.all().order_by('nombre_artista')
+    artistas = Artista.objects.annotate(lower_nombre=Lower('nombre_artista')).order_by('lower_nombre')
     
     if query:
         artistas = artistas.filter(nombre_artista__icontains=query)
@@ -298,7 +299,7 @@ def artistas_del(request, pk):
 #CRUD de álbumes    
 @login_required
 def crud_albums(request):
-    albums = Album.objects.all().order_by('id_artista__nombre_artista', 'nombre_disco')
+    albums = Album.objects.annotate(lower_nombre_artista=Lower('id_artista__nombre_artista')).order_by('lower_nombre_artista', 'nombre_disco')
     
     # Obtener todos los formatos para el filtro
     formatos = Formato.objects.all().order_by('formato')
@@ -335,7 +336,7 @@ def buscar_albums(request, items_per_page=25):
         print(formato_id)
         print(genero_id)
 
-        albums = Album.objects.all().order_by('id_artista__nombre_artista', 'nombre_disco')
+        albums = Album.objects.annotate(lower_nombre_artista=Lower('id_artista__nombre_artista')).order_by('lower_nombre_artista', 'nombre_disco')
 
         if query:
             albums = albums.filter(Q(nombre_disco__icontains=query) | Q(id_artista__nombre_artista__icontains=query))
@@ -497,7 +498,7 @@ def cambiar_estado(request, pk):
 
 #Discos (para el cliente)
 def listado_albums(request):
-    albums = Album.objects.all().order_by('id_artista__nombre_artista', 'nombre_disco')
+    albums = Album.objects.annotate(lower_nombre_artista=Lower('id_artista__nombre_artista')).order_by('lower_nombre_artista', 'nombre_disco')
 
     formatos = Formato.objects.all().order_by('formato')
     generos = Genero.objects.all().order_by('genero')
