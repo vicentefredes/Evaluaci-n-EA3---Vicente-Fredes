@@ -10,6 +10,7 @@ from django.db.models.functions import Lower
 from datetime import date
 from django.urls import reverse
 import json
+from urllib.parse import urlencode
 from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from .models import Genero, Formato, Artista, Album, Compra, Mensaje
 from .forms import ArtistaForm, AlbumForm, MensajeForm 
@@ -185,12 +186,21 @@ def albums_por_decada():
     
     return resultados
 
-#CRUD de Artistas
+
 @login_required
 def crud_artistas(request):
-    artistas = Artista.objects.annotate(lower_nombre=Lower('nombre_artista')).order_by('lower_nombre')
-    paginator = Paginator(artistas, 25)
+    # Obtener parámetros de búsqueda y país del request
+    query = request.GET.get('q', '')
+    country = request.GET.get('country', '')
 
+    # Filtrar artistas basado en los parámetros
+    artistas = Artista.objects.annotate(lower_nombre=Lower('nombre_artista')).order_by('lower_nombre')
+    if query:
+        artistas = artistas.filter(nombre_artista__icontains=query)
+    if country:
+        artistas = artistas.filter(pais__icontains=country)
+
+    paginator = Paginator(artistas, 25)
     page = request.GET.get('page')
 
     try:
@@ -203,7 +213,14 @@ def crud_artistas(request):
     # Obtener todos los países para el filtro
     paises = Artista.objects.values_list('pais', flat=True).distinct().order_by('pais')
 
-    context = {'artistas': artistas, 'paises': paises, 'clase': 'mantenedores', 'dropdown': 'artistas'}
+    context = {
+        'artistas': artistas,
+        'paises': paises,
+        'clase': 'mantenedores',
+        'dropdown': 'artistas',
+        'query': query,
+        'country': country,
+    }
     return render(request, 'discos/artistas_list.html', context)
 
 
@@ -280,18 +297,16 @@ def artistas_edit(request, pk):
 @login_required
 def artistas_del(request, pk):
     try:
-        current_page = request.GET.get('page')
+        # Recoger todos los parámetros de la solicitud original
+        query_params = request.GET.copy()
 
-        print(current_page)
-        
         artista = Artista.objects.get(id_artista=pk)
         artista.delete()
         
-        # Redirigir de vuelta a la misma página, si se especificó una página válida
-        if current_page:
-            return redirect(f'{reverse("crud_artistas")}?page={current_page}')
-        else:
-            return redirect('crud_artistas')
+        # Redirigir de vuelta a la misma página con los mismos parámetros
+        url = f'{reverse("crud_artistas")}?{urlencode(query_params)}'
+        print(url)
+        return redirect(url)
     
     except Artista.DoesNotExist:
         return redirect('crud_artistas')

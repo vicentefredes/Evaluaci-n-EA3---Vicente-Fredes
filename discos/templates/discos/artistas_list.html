@@ -56,7 +56,7 @@
                                 <td>{{ artista.pais }}</td>
                                 <td class="col-biografia">{% if artista.biografia %} {{ artista.biografia }} {% else %} Sin biografía {% endif %}</td>
                                 <td class="td-update equal-width"><a href="{% url 'artistas_edit' pk=artista.id_artista %}">Modificar</a></td>
-                                <td class="td-delete equal-width"><a href="{% url 'artistas_del' pk=artista.id_artista %}?page={{ artistas.number }}">Eliminar</a></td>
+                                <td class="td-delete equal-width"><a href="{% url 'artistas_del' pk=artista.id_artista %}?{% if request.GET %}{{ request.GET.urlencode }}{% endif %}">Eliminar</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -64,7 +64,7 @@
 
                 <!-- Paginación de Bootstrap -->
                 <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
+                    <ul class="pagination justify-content-center">F
                         {% if artistas.has_previous %}
                             <li class="page-item">
                                 <a class="page-link" href="?page=1" aria-label="Primera">
