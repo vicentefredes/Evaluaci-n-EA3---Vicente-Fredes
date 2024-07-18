@@ -292,7 +292,7 @@ $(document).ready(function() {
                                         <ul>
                                             <li>Género: ${album.id_genero}</li>
                                             <li>Formato: ${album.id_formato}</li>
-                                            <li>Lanzamiento: ${album.fecha_lanzamiento}</li>
+                                            <li>Lanzamiento: ${formatDate(album.fecha_lanzamiento)}</li>
                                             <li>Precio: $${album.precio}</li>
                                         </ul>
                                         ${album.stock > 0 ? 
