@@ -4,6 +4,43 @@ $(document).ready(function() {
 
     $("#idMensajes").delay(2000).fadeOut("slow");
 
+    // Obtener el CSRF token de Django
+    var csrftoken = getCookie('csrftoken'); 
+
+
+
+    // Función para obtener el token CSRF
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Verificar y agregar el token CSRF en los headers de las solicitudes AJAX
+    function csrfSafeMethod(method) {
+        // estos métodos no requieren CSRF
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+
     // Función para actualizar el badge con la cantidad de álbumes en el carrito
     function actualizarBadgeCarrito() {
         $.ajax({
@@ -27,21 +64,128 @@ $(document).ready(function() {
     // Llamar a la función al cargar la página
     actualizarBadgeCarrito();
 
-    $('.add-to-cart-button').click(function(event) {
-        event.preventDefault(); // Prevent default form submission
-
-        var form = $(this).closest('form'); // Get the closest form element
-        var url = form.attr('action'); // Get the form action URL
+    function fetchAlbums(query, formato, genero, page = 1) {
+        fetch(`/buscar_catalogo_albums/?q=${query}&formato=${formato}&genero=${genero}&page=${page}`)
+            .then(response => response.json())
+            .then(data => {
+                var albumsContainer = document.getElementById('albumsContainer');
+                albumsContainer.innerHTML = '';
+                if (data.albums.length === 0) {
+                    albumsContainer.innerHTML = '<p>No se encontraron álbumes.</p>';
+                } else {
+                    data.albums.forEach(album => {
+                        var albumCard = `<div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                            <div class="card mb-4">
+                                <img class="card-img-top" src="${album.portada}" alt="${album.nombre_disco}">
+                                <div class="card-body">
+                                    <h3 class="card-title">${album.id_artista} - ${album.nombre_disco}</h3>
+                                    <ul>
+                                        <li>Género: ${album.id_genero}</li>
+                                        <li>Formato: ${album.id_formato}</li>
+                                        <li>Lanzamiento: ${album.fecha_lanzamiento}</li>
+                                        <li>Precio: $${album.precio}</li>
+                                    </ul>
+                                    ${album.stock > 0 ? 
+                                    `<form id="addToCartForm_${album.id_album}" method="POST" action="/agregar_al_carrito/${album.id_album}/">
+                                        <input type="hidden" name="csrfmiddlewaretoken" value="${csrftoken}">
+                                        <button type="submit" class="btn btn-secondary add-to-cart-button">Agregar a Carrito</button>
+                                    </form>` : 
+                                    '<p class="text-danger">Agotado</p>'}
+                                </div>
+                            </div>
+                        </div>`;
+                        albumsContainer.innerHTML += albumCard;
+                    });
+                }
     
+                var paginationContainer = document.getElementById('paginationContainer');
+                paginationContainer.innerHTML = '';
+    
+                if (data.pagination.has_previous) {
+                    paginationContainer.innerHTML += `<li class="page-item">
+                        <a class="page-link" href="javascript:void(0);" aria-label="Previous" onclick="fetchAlbums('${query}', '${formato}', '${genero}', ${data.pagination.previous_page_number})">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>`;
+                } else {
+                    paginationContainer.innerHTML += `<li class="page-item disabled">
+                        <a class="page-link" href="javascript:void(0);" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>`;
+                }
+    
+                data.pagination.page_range.forEach(num => {
+                    paginationContainer.innerHTML += `<li class="page-item ${data.pagination.current_page === num ? 'active' : ''}">
+                        <a class="page-link" href="javascript:void(0);" onclick="fetchAlbums('${query}', '${formato}', '${genero}', ${num})">${num}</a>
+                    </li>`;
+                });
+    
+                if (data.pagination.has_next) {
+                    paginationContainer.innerHTML += `<li class="page-item">
+                        <a class="page-link" href="javascript:void(0);" aria-label="Next" onclick="fetchAlbums('${query}', '${formato}', '${genero}', ${data.pagination.next_page_number})">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>`;
+                } else {
+                    paginationContainer.innerHTML += `<li class="page-item disabled">
+                        <a class="page-link" href="javascript:void(0);" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>`;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching albums:', error);
+            });
+    }
+    
+    // Asegurarse de que la función fetchAlbums esté disponible globalmente
+    window.fetchAlbums = fetchAlbums;
+    
+    document.getElementById('searchInput').addEventListener('input', function() {
+        var query = this.value;
+        var formato = document.getElementById('formatoSelect').value;
+        var genero = document.getElementById('generoSelect').value;
+        fetchAlbums(query, formato, genero);
+    });
+    
+    document.getElementById('formatoSelect').addEventListener('change', function() {
+        var query = document.getElementById('searchInput').value;
+        var formato = this.value;
+        var genero = document.getElementById('generoSelect').value;
+        fetchAlbums(query, formato, genero);
+    });
+    
+    document.getElementById('generoSelect').addEventListener('change', function() {
+        var query = document.getElementById('searchInput').value;
+        var formato = document.getElementById('formatoSelect').value;
+        var genero = this.value;
+        fetchAlbums(query, formato, genero);
+    });
+    
+
+    // jQuery para manejar el evento click del botón "Agregar a Carrito"
+    $(document).on('click', '.add-to-cart-button', function(event) {
+        event.preventDefault(); // Prevenir el envío predeterminado del formulario
+
+        var form = $(this).closest('form'); // Obtener el formulario más cercano
+        var url = form.attr('action'); // Obtener la URL de acción del formulario
+
         $.ajax({
             url: url,
             method: 'POST',
-            data: form.serialize(), // Serialize form data
+            data: form.serialize(), // Serializar los datos del formulario
             success: function(response) {
                 if (response.success) {
                     $('#albumModal').find('.modal-body p').text(response.message);
-                    $('#albumModal').modal('show'); // Show the modal with confirmation message
-                    actualizarBadgeCarrito();
+                    $('#albumModal').modal('show'); // Mostrar el modal con el mensaje de confirmación
+                    actualizarBadgeCarrito(); // Actualizar el contador del carrito
+                    console.log("se ha ejecutado la actualización de badge")
                 } else {
                     console.error('Error al agregar al carrito:', response.message);
                 }
@@ -50,8 +194,8 @@ $(document).ready(function() {
                 console.error('Error al agregar al carrito:', xhr.responseText);
             }
         });
-
     });
+
 
     const formatoCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
