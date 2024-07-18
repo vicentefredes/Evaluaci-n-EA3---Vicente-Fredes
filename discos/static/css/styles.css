@@ -1,679 +1,740 @@
-body {
-    background-color: rgba(255, 230, 235);
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
+/* ESTILOS PARA EL SITIO EN GENERAL */
 
-.row.justify-content-center { /* Target any direct child element of the row */
-    margin: auto;
-}
-
-.row.justify-content-center {
-    width: 100%;  /* Ensure the row takes up full width */
-  }
-  
-.col-* {  /* Target the child element containing the table */
-    width: auto;  /* Let the element adjust to content width */
-  }
-
-.navbar{
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-size: 20px;
-    color: black;
-    background-color: rgba(255, 230, 235) !important;
-    border-bottom: 2px solid rgba(14, 58, 77, 0.836);
-}
-
-@media (max-width: 670px) {
-    .navbar-brand {
-      width: 70%;
-      height: auto;
+    /* Configuración de body y sistema de grid */
+    body {
+        background-color: rgba(255, 230, 235);
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
     }
-  }
 
-.navbar .navbar-toggler {
-    margin-right: 5px;
-    margin-bottom: 5px;
-    border-color: black;
-    border-width: medium;
-    font-size: 20px;
-}
+    .row.justify-content-center { /* Target any direct child element of the row */
+        margin: auto;
+    }
 
-.navbar .navbar-nav {
-    margin: 0 auto;
-}
-
-.navbar .navbar-nav .nav-item .nav-link {
-    margin-top: 7px;
-    color: rgb(0, 78, 140);
-    line-height: 1.5;
-    margin-right: 2vh;
-}
-
-.dropdown-menu {
-    background-color: rgba(255, 230, 235) !important;
-}
-
-.dropdown-item {
-    margin-top: 7px;
-    color: rgb(0, 78, 140);
-    line-height: 1.5;
-    margin-right: 2vh;
-    padding-left: 2vh;
-    padding-right: 2vh;
-    background-color: rgba(255, 230, 235) !important;
-}
-
-.navbar .navbar-nav .nav-item.active .nav-link {
-    background-color: rgb(194, 155, 222);
-    color: white;
-    font-weight: bold;
-}
-
-.navbar .navbar-nav .dropdown-item.active {
-    background-color: rgb(194, 155, 222) !important;
-    color: white;
-    font-weight: bold;
-}
-
-.navbar .navbar-nav .nav-item :hover {
-    font-weight: bold;
-}
-
-.dropdown-menu {
-    border-top: none;
-    border-left: 2px solid rgba(14, 58, 77, 0.836);
-    border-right: 2px solid rgba(14, 58, 77, 0.836);
-    border-bottom: 2px solid rgba(14, 58, 77, 0.836);
-}
-
-.dropdown-item :hover {
-    font-weight: bold;
-    color: rgb(0, 78, 140);
-}
-
-@media (max-width: 768px) {
-    .navbar-nav {
-      text-align: center; /* Center navbar items horizontally */
+    .row.justify-content-center {
+        width: 100%;  /* Ensure the row takes up full width */
     }
     
+    .col-* {  /* Target the child element containing the table */
+        width: auto;  /* Let the element adjust to content width */
+    }
+
+    /* Estilos para navbar */
+    .navbar{
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        font-size: 20px;
+        color: black;
+        background-color: rgba(255, 230, 235) !important;
+        border-bottom: 2px solid rgba(14, 58, 77, 0.836);
+    }
+
+    @media (max-width: 670px) {
+        .navbar-brand {
+        width: 70%;
+        height: auto;
+        }
+    }
+
+    .navbar .navbar-toggler {
+        margin-right: 5px;
+        margin-bottom: 5px;
+        border-color: black;
+        border-width: medium;
+        font-size: 20px;
+    }
+
+    .navbar .navbar-nav {
+        margin: 0 auto;
+    }
+
+    .navbar .navbar-nav .nav-item .nav-link {
+        margin-top: 7px;
+        color: rgb(0, 78, 140);
+        line-height: 1.5;
+        margin-right: 2vh;
+    }
+
     .dropdown-menu {
-      text-align: center; /* Center dropdown items horizontally (optional) */
+        background-color: rgba(255, 230, 235) !important;
     }
-  }  
 
-footer {
-    width: 100%;
-    margin-bottom: 0;
-    margin-top: auto;
-    background-color: rgb(194, 155, 222);
-    align-items: center;
-    vertical-align: middle;
-    text-align: center;
-    padding-top: 15px;
-    padding-bottom: 5px;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    border-top: 1px solid black
-  }
-
-@media (min-width: 770px) {
-    footer .links-footer {
-        border-left: 1px solid rgb(41, 41, 41);
-    }    
-}
-
-footer .links-footer a {
-    color: azure;
-    font-weight:500;
-}
-
-.container-permisos {
-    background-color: rgb(122, 31, 240);
-    color: white;
-    text-align: center;
-    border: 2px solid black;
-    padding-top: 3%;
-    padding-bottom: 3%;
-}
-
-.container-permisos p {
-    font-size: 20px;
-}
-
-.filtro {
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-}
-
-@media (max-width: 768px) {
-    .filtro .form-control {
-      margin-top: 3%; /* or any desired margin value */
+    .dropdown-item {
+        margin-top: 7px;
+        color: rgb(0, 78, 140);
+        line-height: 1.5;
+        margin-right: 2vh;
+        padding-left: 2vh;
+        padding-right: 2vh;
+        background-color: rgba(255, 230, 235) !important;
     }
-  }
-  
-.pagination {
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-}
 
-.pagination .page-item  {
-    border: 1px solid rgba(14, 58, 77, 0.836);
-}
-
-.pagination .page-item .page-link {
-    color: rgba(14, 58, 77, 0.836);
-}
-
-.pagination .page-item.active .page-link {
-    background-color: rgba(14, 58, 77, 0.836);
-    color: white;
-    font-weight: bold;
-}
-
-header .row {
-    margin-bottom: 1%;
-    vertical-align: middle;
-    align-items: center;
-  }
-  
-header h1 {
-    text-align: center;
-    margin-top: 3%;
-    margin-bottom: 3%;
-    color: rgba(14, 58, 77, 0.836);
-    font-weight: bold;
-    font-size: 60px;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    text-decoration: underline;
-  }
-
-@media (max-width: 600px) {
-    #tituloIndexAdmin {
-      font-size: 40px;
-    }
-  }
-
-@media (max-width: 425px) {
-    #tituloIndexAdmin {
-      font-size: 30px;
-    }
-  }
-
-#tituloEstadisticas {
-    text-align: center;
-    margin-top: 3%;
-    margin-bottom: 3%;
-    padding-top: 1%;
-    padding-bottom: 1%;
-    color: rgba(14, 58, 77, 0.836);
-    border-top: 2px solid rgba(14, 58, 77, 0.836);;
-    border-bottom: 2px solid rgba(14, 58, 77, 0.836);;
-    font-weight: bold;
-    font-size: 40px;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-}
-
-@media (max-width: 425px) {
-    #tituloEstadisticas {
-      font-size: 30px;
-    }
-  }
-
-.container-fluid {
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    text-align: center;
-    color: rgba(8, 29, 37, 0.836);
-}
-
-.container-fluid h2 {
-    text-align: center;
-}
-
-.container-fluid ul {
-    text-align: left;
-}
-
-#tituloIndexCliente {
-    text-align: center;
-    margin-top: 3%;
-    margin-bottom: 3%;
-    color: rgba(14, 58, 77, 0.836);;
-    font-weight: bold;
-    font-size: 60px;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    text-decoration: underline;
-}
-
-@media (max-width: 600px) {
-    #tituloIndexCliente {
-      font-size: 40px;
-    }
-  }
-
-.carousel-item {
-    border: 2px solid black;
-    max-height: 80vh;
-}
-
-.carousel-caption {
-    background-color: rgba(0, 78, 140, 0.7);
-    border: 2px solid rgb(20, 29, 43);
-    color: white;
-    width: 40%;
-    left: 30%;
-    padding-top: 10px;
-    padding-bottom: 0;
-    line-height: 0.5;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-}
-
-.carousel-indicators {
-    margin-bottom: 0;
-}
-
-.carousel-indicators li {
-    background-color: rgb(0, 78, 140);
-    height: 5px;
-    width: 15%;
-}
-
-.container-novedades {
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    margin-top:5%;
-    margin-bottom: 5%;
-    border: 2px solid black;
-}
-
-.container-novedades h2 {
-    background-color: rgb(0, 78, 140);
-    text-align: center;
-    color: white;
-    padding-top: 1%;
-    padding-bottom: 1%;
-    border-bottom: 2px solid black;
-    margin-bottom: 0;
-    font-size: 40px;
-}
-
-@media (max-width: 850px) {
-    .container-novedades h2 {
-      font-size: 30px;
-    }
-  }
-
-.container-novedades .list-group-item {
-    border: 1px solid black;
-}
-
-.container-novedades .list-group-item .row {
-    display: flex;
-    align-items: center;
-}
-
-.container-btn {
-    text-align: center;
-    margin-top: 2%;
-    margin-bottom: 2%;
-  }
-  
-.container-btn #btnAgregar {
-    padding-left: 5%;
-    padding-right: 5%;
-    padding-top: 3%;
-    padding-bottom: 3%;
-    font-size: 30px;
-    font-weight: bold;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    background-color: rgba(14, 58, 77, 0.836);
-    text-align: center;
-    align-items: center;
-  }
-  
-.container-btn #btnAgregar a {
-    color: white;
-  }
-
-.table-container {
-    overflow-x:auto;
-  }
-  
-.table-striped {
-    background-color: azure;
-    border: 2px solid black;
-    text-align: center;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  }
-
-.table-striped th {
-    font-size: 18px;
-    background-color: rgb(0, 78, 140);
-    color: white;
-  }
-
-.table-striped th, .table-striped td {
-    border: 1px solid black !important;
-    vertical-align: middle;
-  }
-
-.col-biografia {
-    max-width: 40vh; /* Ajusta este valor según tu necesidad */
-    word-wrap: break-word;
-    white-space: pre-line;
-}
-
-.col-mensaje {
-    max-width: 50vh; /* Ajusta este valor según tu necesidad */
-    word-wrap: break-word;
-    white-space: pre-line;
-}
-
-.table-striped .td-update {
-    background-color: rgb(248, 248, 152);
-  }
-  
-.table-striped .td-update a {
-    color: rgba(14, 58, 77);
-    font-weight: bold;
-    text-decoration: underline;
-  }
-  
-.table-striped .td-delete {
-    background-color: rgb(206, 62, 62);
-  }
-  
-.table-striped .td-delete a {
-    color: white;
-    font-weight: bold;
-    text-decoration: underline;
-  }
-
-.table-striped .td-leido {
-    background-color: rgb(206, 203, 203);
-}
-
-.table-striped .td-noleido {
-    background-color: white;
-    font-weight:500;
-}
-
-.table-striped .td-mark-read {
-    background-color: rgb(248, 206, 128);
-  }
-  
-.table-striped .td-mark-read a {
-    color: rgba(14, 58, 77);
-    font-weight: bold;
-    text-decoration: underline;
-  }
-
-.equal-width {
-    width: 10%;
-}
-
-
-@media (max-width: 560px) {
-    /* Force table to not be like tables anymore */
-    table, thead, tbody, th, td, tr {
-      display: block;
-    }
-    /* Hide table headers (but not display: none;, for accessibility) */
-    thead tr {
-      position: absolute;
-      top: -9999px;
-      left: -9999px;
-    }
-    tr {
-      margin: 0 0 1rem 0;
-    }
-    td:first-child {
-        background-color: rgb(0, 78, 140) !important;
+    .navbar .navbar-nav .nav-item.active .nav-link {
+        background-color: rgb(194, 155, 222);
         color: white;
         font-weight: bold;
     }
 
-    td {
-      /* Behave  like a "row" */
-      border: none;
-      border-bottom: 1px solid azure;
-      position: relative;
-      padding-left: 50%;
-    }
-    td:before {
-      /* Now like a table header */
-      position: absolute;
-      /* Top/left values mimic padding */
-      top: 0;
-      left: 6px;
-      width: 45%;
-      padding-right: 10px;
-      white-space: nowrap;
+    .navbar .navbar-nav .dropdown-item.active {
+        background-color: rgb(194, 155, 222) !important;
+        color: white;
+        font-weight: bold;
     }
 
-    .equal-width {
+    .navbar .navbar-nav .nav-item :hover {
+        font-weight: bold;
+    }
+
+    .dropdown-menu {
+        border-top: none;
+        border-left: 2px solid rgba(14, 58, 77, 0.836);
+        border-right: 2px solid rgba(14, 58, 77, 0.836);
+        border-bottom: 2px solid rgba(14, 58, 77, 0.836);
+    }
+
+    .dropdown-item :hover {
+        font-weight: bold;
+        color: rgb(0, 78, 140);
+    }
+
+    @media (max-width: 768px) {
+        .navbar-nav {
+        text-align: center;
+        }
+        
+        .dropdown-menu {
+        text-align: center; 
+        }
+    }  
+
+    /* Estilos para Footer */
+    footer {
         width: 100%;
+        margin-bottom: 0;
+        margin-top: auto;
+        background-color: rgb(194, 155, 222);
+        align-items: center;
+        vertical-align: middle;
+        text-align: center;
+        padding-top: 15px;
+        padding-bottom: 5px;
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        border-top: 1px solid black
     }
 
-    td::before {
-        float: left;
+    @media (min-width: 770px) {
+        footer .links-footer {
+            border-left: 1px solid rgb(41, 41, 41);
+        }    
     }
 
+    footer .links-footer a {
+        color: azure;
+        font-weight:500;
+    }
+
+    /* Estilos para container con mensaje que indica que un usuario no tiene permisos para acceder a una página */
+    .container-permisos {
+        background-color: rgb(122, 31, 240);
+        color: white;
+        text-align: center;
+        border: 2px solid black;
+        padding-top: 3%;
+        padding-bottom: 3%;
+    }
+
+    .container-permisos p {
+        font-size: 20px;
+    }
+
+    /* Estilos para los filtros de los mantenedores de artistas y álbumes, así como del catálogo de álbumes */
+    .filtro {
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+
+    @media (max-width: 768px) {
+        .filtro .form-control {
+        margin-top: 3%; /* or any desired margin value */
+        }
+    }
+    
+    /* Estilos para la paginación - presente en los mantenedores de artistas y de álbumes, en catálogo de albumes, y en el listado de mensajes */
+    .pagination {
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+
+    .pagination .page-item  {
+        border: 1px solid rgba(14, 58, 77, 0.836);
+    }
+
+    .pagination .page-item .page-link {
+        color: rgba(14, 58, 77, 0.836);
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: rgba(14, 58, 77, 0.836);
+        color: white;
+        font-weight: bold;
+    }
+
+    /*Estilos para validación de formulario*/
+    .is-invalid {
+        background-color: rgb(255, 212, 215) !important;
+        border: 3px solid red !important;
+    }
+
+    .invalid-feedback {
+        color: rgba(220, 53, 70, 0.741) !important;
+    }
+
+    /* Estilos para mensajes informativos */
+    #idMensajes, #mensajeLogin, #mensajeRegistro, #mensajeCompra {
+        justify-content: center;
+      }
+      
+    .alert {
+        font-weight: bold;
+        text-align: center;
+        width: 80%;
+    }
+
+    /* Estilos generales para los headers presentes en la mayoría de las páginas del sitio */
+    header .row {
+        margin-bottom: 1%;
+        vertical-align: middle;
+        align-items: center;
+    }
+    
+    header h1 {
+        text-align: center;
+        margin-top: 3%;
+        margin-bottom: 3%;
+        color: rgba(14, 58, 77, 0.836);
+        font-weight: bold;
+        font-size: 60px;
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        text-decoration: underline;
+    }
+
+/* FIN ESTILOS PARA EL SITIO EN GENERAL */
+
+/* ESTILOS PARA EL INDEX DEL ADMINISTRADOR*/
+
+    /* Al tener un título más largo, controlaremos su tamaño en pantallas más grandes */
+    @media (max-width: 600px) {
+        #tituloIndexAdmin {
+        font-size: 40px;
+        }
+    }
+
+    @media (max-width: 425px) {
+        #tituloIndexAdmin {
+        font-size: 30px;
+        }
+    }
+
+    /* Estilos para el título de la sección de estadísticas y control de su tamaño de acuerdo al tamaño de la pantalla */
+    #tituloEstadisticas {
+        text-align: center;
+        margin-top: 3%;
+        margin-bottom: 3%;
+        padding-top: 1%;
+        padding-bottom: 1%;
+        color: rgba(14, 58, 77, 0.836);
+        border-top: 2px solid rgba(14, 58, 77, 0.836);;
+        border-bottom: 2px solid rgba(14, 58, 77, 0.836);;
+        font-weight: bold;
+        font-size: 40px;
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+
+    @media (max-width: 425px) {
+        #tituloEstadisticas {
+        font-size: 30px;
+        }
+    }
+
+    /* Containers que contienen las estadísticas, separadas en 4 categorías: artistas por país, discos por género, discos por formato, y discos por década */
+    .container-fluid {
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        text-align: center;
+        color: rgba(8, 29, 37, 0.836);
+    }
+
+    .container-fluid h2 {
+        text-align: center;
+    }
+
+    .container-fluid ul {
+        text-align: left;
+    }
+
+/* FIN ESTILOS PARA EL INDEX DEL ADMINISTRADOR*/
+
+/* ESTILOS PARA EL INDEX DEL CLIENTE */
+
+    /* Estilos para el título de la sección del index de cliente y control de su tamaño de acuerdo al tamaño de la pantalla */
+    #tituloIndexCliente {
+        text-align: center;
+        margin-top: 3%;
+        margin-bottom: 3%;
+        color: rgba(14, 58, 77, 0.836);;
+        font-weight: bold;
+        font-size: 60px;
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+        #tituloIndexCliente {
+        font-size: 40px;
+        }
+    }
+
+    /* Estilos para carousel de bienvenida al usuario */
+    .carousel-item {
+        border: 2px solid black;
+        max-height: 80vh;
+    }
+
+    .carousel-caption {
+        background-color: rgba(0, 78, 140, 0.7);
+        border: 2px solid rgb(20, 29, 43);
+        color: white;
+        width: 40%;
+        left: 30%;
+        padding-top: 10px;
+        padding-bottom: 0;
+        line-height: 0.5;
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+
+    .carousel-indicators {
+        margin-bottom: 0;
+    }
+
+    .carousel-indicators li {
+        background-color: rgb(0, 78, 140);
+        height: 5px;
+        width: 15%;
+    }
+
+    /* Estilos para contenedor con listado de 'Novedades' (últimos 5 álbumes sumados a la base de datos) */
+    .container-novedades {
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        margin-top:5%;
+        margin-bottom: 5%;
+        border: 2px solid black;
+    }
+
+    .container-novedades h2 {
+        background-color: rgb(0, 78, 140);
+        text-align: center;
+        color: white;
+        padding-top: 1%;
+        padding-bottom: 1%;
+        border-bottom: 2px solid black;
+        margin-bottom: 0;
+        font-size: 40px;
+    }
+
+    @media (max-width: 850px) {
+        .container-novedades h2 {
+        font-size: 30px;
+        }
+    }
+
+    .container-novedades .list-group-item {
+        border: 1px solid black;
+    }
+
+    .container-novedades .list-group-item .row {
+        display: flex;
+        align-items: center;
+    }
+
+/* FIN ESTILOS PARA EL INDEX DEL CLIENTE*/
+
+/* ESTILOS PARA LOS MANTENEDORES Y LISTADOS */
+
+    /* Estilos para botón de agregar en mantenedores de artistas y álbumes */
+    .container-btn {
+        text-align: center;
+        margin-top: 2%;
+        margin-bottom: 2%;
+    }
+    
+    .container-btn #btnAgregar {
+        padding-left: 5%;
+        padding-right: 5%;
+        padding-top: 3%;
+        padding-bottom: 3%;
+        font-size: 30px;
+        font-weight: bold;
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        background-color: rgba(14, 58, 77, 0.836);
+        text-align: center;
+        align-items: center;
+    }
+    
+    .container-btn #btnAgregar a {
+        color: white;
+    }
+
+    /* Estilos para las tablas que contendrán los listados */
+    .table-container {
+        overflow-x:auto;
+    }
+    
+    .table-striped {
+        background-color: azure;
+        border: 2px solid black;
+        text-align: center;
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+
+    .table-striped th {
+        font-size: 18px;
+        background-color: rgb(0, 78, 140);
+        color: white;
+    }
+
+    .table-striped th, .table-striped td {
+        border: 1px solid black !important;
+        vertical-align: middle;
+    }
+
+    /* Control de ancho para columnas (td) que pueden tener un texto más amplio*/
     .col-biografia {
-        max-width: none;
+        max-width: 40vh; 
+        word-wrap: break-word;
+        white-space: pre-line;
     }
 
     .col-mensaje {
-        max-width: none;
+        max-width: 50vh; 
+        word-wrap: break-word;
+        white-space: pre-line;
     }
 
-  }
-
-
-.container-registro {
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    text-align: center;
-}
-
-.container-registro p {
-    font-size: 18px;
-}
-
-.container-registro a {
-    font-size: 30px;
-    color: rgb(0, 78, 140);
-    font-weight: bold;
-}
-
-#formCrud, #formInicioSesion, #formRegistro {
-    background-color: rgb(238, 223, 250);;
-    color: rgba(14, 58, 77, 0.836);
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-weight: 500;
-    border: 2px solid rgba(14, 58, 77, 0.836);
-    margin-bottom: 5%;
-  }
-  
-#formCrud h2 {
-    font-size: 45px;
-    font-weight: bold;
-    text-decoration: underline;
-  }
-  
-#btnEnviarForm {
-    background-color: rgb(84, 18, 146);
-}
-
-#btnVolver {
-    background-color: rgba(34, 64, 77, 0.836);
-}
-
-#btnEnviarForm, #btnVolver {
-    width: 30%;
-    margin-left: 2%;
-    margin-right: 2%;
-    font-weight: 700;
-    font-size: 20px;
-    border: 2px solid rgba(14, 58, 77, 0.836);
-  }
-
-/*Estilos para validación de formulario*/
-.is-invalid {
-    background-color: rgb(255, 212, 215) !important;
-	border: 3px solid red !important;
-}
-
-.invalid-feedback {
-    color: rgba(220, 53, 70, 0.741) !important;
-}
-
-.card {
-    text-align: center;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    margin-bottom: 5%; 
-	border: 3px solid rgba(14, 58, 77, 0.836);
-    height: 98%;
-}
-
-.card ul {
-    text-align: left;
-}
-
-.card img {
-	border-bottom: 3px solid rgba(14, 58, 77, 0.836);
-}
-
-.card .btn-secondary {
-    background-color: rgba(14, 58, 77);
-    font-weight: bold;
-    font-size: 18px;
-}
-
-.card .text-danger {
-    font-size: 25px;
-    font-weight: bold;
-}
-
-.modal {
-    text-align: center;
-} 
-
-.modal-header, .modal-body, .modal-footer {
-    text-align: center;
-    justify-content: center;
-}
-
-.modal-footer button {
-    font-size: 20px;
-}
-
-.modal-footer .btn-primary {
-    background-color: rgb(0, 78, 140);
-    color: white;
-    font-weight: bold;
-}
-
-@media (max-width: 600px) {
-    #tituloCarrito {
-      font-size: 40px;
+    /* Estilos para td's que contendrán enlaces (modificar, eliminar, marcar como leído/no leído)*/
+    .table-striped .td-update {
+        background-color: rgb(248, 248, 152);
     }
-  }
+    
+    .table-striped .td-update a {
+        color: rgba(14, 58, 77);
+        font-weight: bold;
+        text-decoration: underline;
+    }
+    
+    .table-striped .td-delete {
+        background-color: rgb(206, 62, 62);
+    }
+    
+    .table-striped .td-delete a {
+        color: white;
+        font-weight: bold;
+        text-decoration: underline;
+    }
 
-.container-carrito {
-    text-align: center;
-    margin-bottom: 5%;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-}
+    .table-striped .td-mark-read {
+        background-color: rgb(248, 206, 128);
+    }
+    
+    .table-striped .td-mark-read a {
+        color: rgba(14, 58, 77);
+        font-weight: bold;
+        text-decoration: underline;
+    }
 
-.container-carrito .list-group-item {
-    border: 1px solid black;
-    text-align: left;
-}
+    /* Estilos para diferenciar mensajes no leídos de mensajes leídos en listado de mensajes */
+    .table-striped .td-leido {
+        background-color: rgb(206, 203, 203);
+    }
 
-.container-carrito .list-group-item .col-md-2 img {
-    object-fit: cover;
-    width: 100%;  /* Optional: Set width to ensure consistent sizing */
-    height: auto;
-}
+    .table-striped .td-noleido {
+        background-color: white;
+        font-weight:500;
+    }
 
-.container-carrito .list-group-item .col-md-2,
-.container-carrito .list-group-item .col-md-8  {
-    max-width: 100%;  /* Adjust as needed */
-}
+    /* Controlar que aquellos td que contengan enlaces sean del mismo ancho, para una mejor visualización */
+    .equal-width {
+        width: 10%;
+    }
 
-@media (max-width:767px) {
-    .container-carrito .list-group-item {
+    /* Estilos para re-organizar los listados en pantallas angostas (dispositivos móviles) */
+    @media (max-width: 560px) {
+        /* Forzar que las tablas ya no se "comporten" como tablas */
+        table, thead, tbody, th, td, tr {
+        display: block;
+        }
+        /* Esconder headers de las tablas */
+        thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+        }
+        tr {
+        margin: 0 0 1rem 0;
+        }
+        td:first-child {
+            background-color: rgb(0, 78, 140) !important;
+            color: white;
+            font-weight: bold;
+        }
+
+        td {
+        /* Hacer que se vean como una sola fila */
+        border: none;
+        border-bottom: 1px solid azure;
+        position: relative;
+        padding-left: 50%;
+        }
+
+        /* En reemplazo del header - actualmente en desuso */
+        td:before {
+        position: absolute;
+        top: 0;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        float: left;
+        }
+
+        /* Ahora los td con enlaces ocuparán todo el ancho */
+        .equal-width {
+            width: 100%;
+        }
+
+        /* Columnas con mucho texto ya no necesitan control de ancho */
+        .col-biografia {
+            max-width: none;
+        }
+
+        .col-mensaje {
+            max-width: none;
+        }
+
+    }
+
+/* FIN ESTILOS PARA LOS MANTENEDORES Y LISTADOS */
+
+/* ESTILOS PARA FORMULARIOS */
+
+    /* Estilos para contenedores de formularios */
+    #formCrud, #formInicioSesion, #formRegistro {
+        background-color: rgb(238, 223, 250);;
+        color: rgba(14, 58, 77, 0.836);
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        font-weight: 500;
+        border: 2px solid rgba(14, 58, 77, 0.836);
+        margin-bottom: 5%;
+    }
+    
+    #formCrud h2 {
+        font-size: 45px;
+        font-weight: bold;
+        text-decoration: underline;
+    }
+    
+    /* Estilos para botones de formularios */
+    #btnEnviarForm {
+        background-color: rgb(84, 18, 146);
+    }
+
+    #btnVolver {
+        background-color: rgba(34, 64, 77, 0.836);
+    }
+
+    #btnEnviarForm, #btnVolver {
+        width: 30%;
+        margin-left: 2%;
+        margin-right: 2%;
+        font-weight: 700;
+        font-size: 20px;
+        border: 2px solid rgba(14, 58, 77, 0.836);
+    }
+
+    /* Estilos para enlace del registro de sesión, abajo del formulario de inicio de sesion */
+    .container-registro {
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         text-align: center;
     }
-}
+    
+    .container-registro p {
+        font-size: 18px;
+    }
+    
+    .container-registro a {
+        font-size: 30px;
+        color: rgb(0, 78, 140);
+        font-weight: bold;
+    }
 
-.container-carrito .list-group-item .row {
-    display: flex;
-    align-items: center;
-}
+/* FIN ESTILOS PARA FORMULARIOS */
 
-.container-carrito form {
-    text-align: center;
-}
+/* ESTILOS PARA CATÁLOGO DE ÁLBUMES */
 
-.container-carrito .btn-danger {
-    font-size: 20px;
-}
+    /* Estilos para cards que contienen los álbumes */
+    .card {
+        text-align: center;
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        margin-bottom: 5%; 
+        border: 3px solid rgba(14, 58, 77, 0.836);
+        height: 98%;
+    }
 
-#precioTotal {
-    font-size: 35px;
-}
+    .card ul {
+        text-align: left;
+    }
 
-#carritoVacio {
-    margin: 5%;
-    text-align: center;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-size: 25px;
-    font-weight: bold;
-}
+    .card img {
+        border-bottom: 3px solid rgba(14, 58, 77, 0.836);
+    }
 
-.container-perfil {
-    display: flex;
-    align-items: center;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    background-color: white;
-    color: rgba(14, 58, 77);
-    justify-content: center;
-    padding-top: 1%;
-    padding-bottom: 1%;
-    border: 2px solid black;
-    margin-bottom: 5%;
-}
+    .card .btn-secondary {
+        background-color: rgba(14, 58, 77);
+        font-weight: bold;
+        font-size: 18px;
+    }
 
-#infoUsuario ul {
-    margin-top: 10%;
-    vertical-align: middle;
-}
+    .card .text-danger {
+        font-size: 25px;
+        font-weight: bold;
+    }
 
-.btn-dark {
-    margin-top: 5%;
-    background-color: rgba(14, 58, 77);
-    text-align: center;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-}
+    /* Estilos para el modal que se despliega al agregar un álbum a la compra */
+    .modal {
+        text-align: center;
+    } 
 
-.btn-dark a {
-    color: white;
-    font-size: 20px;
-}
+    .modal-header, .modal-body, .modal-footer {
+        text-align: center;
+        justify-content: center;
+    }
 
-.container-historial {
-    margin-bottom: 5%;
-}
+    .modal-footer button {
+        font-size: 20px;
+    }
 
-.container-historial .list-group-item.item-compra {
-    border: 1px solid black;
-    text-align: left;
-}
+    .modal-footer .btn-primary {
+        background-color: rgb(0, 78, 140);
+        color: white;
+        font-weight: bold;
+    }
 
-#idMensajes, #mensajeLogin, #mensajeRegistro, #mensajeCompra {
-    justify-content: center;
-  }
-  
-.alert {
-    font-weight: bold;
-    text-align: center;
-    width: 80%;
-}
+/* FIN ESTILOS PARA CATÁLOGO DE ÁLBUMES */
+
+/* ESTILOS PARA EL CARRITO DE COMPRAS */
+
+    /* Controlar tamaño del título de la sección para pantallas más delgadas */
+    @media (max-width: 600px) {
+        #tituloCarrito {
+        font-size: 40px;
+        }
+    }
+
+    /* Estilos para el contenedor del carrito */
+    .container-carrito {
+        text-align: center;
+        margin-bottom: 5%;
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+
+    .container-carrito .list-group-item {
+        border: 1px solid black;
+        text-align: left;
+    }
+
+    .container-carrito .list-group-item .col-md-2 img {
+        object-fit: cover;
+        width: 100%;  
+        height: auto;
+    }
+
+    .container-carrito .list-group-item .col-md-2,
+    .container-carrito .list-group-item .col-md-8  {
+        max-width: 100%;  
+    }
+
+    /* Que los álbumes vayan al centro en pantallas más delgadas */
+    @media (max-width:767px) {
+        .container-carrito .list-group-item {
+            text-align: center;
+        }
+    }
+
+    .container-carrito .list-group-item .row {
+        display: flex;
+        align-items: center;
+    }
+
+    .container-carrito form {
+        text-align: center;
+    }
+
+    .container-carrito .btn-danger {
+        font-size: 20px;
+    }
+
+    #precioTotal {
+        font-size: 35px;
+    }
+
+    #carritoVacio {
+        margin: 5%;
+        text-align: center;
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+/* FIN ESTILOS PARA EL CARRITO DE COMPRAS */
+
+/* ESTILOS PARA EL PERFIL DE USUARIO */
+
+    /* Estilos para contenedor que incluye foto , e información básica del usuario */
+    .container-perfil {
+        display: flex;
+        align-items: center;
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        background-color: white;
+        color: rgba(14, 58, 77);
+        justify-content: center;
+        padding-top: 1%;
+        padding-bottom: 1%;
+        border: 2px solid black;
+        margin-bottom: 5%;
+    }
+
+    #infoUsuario ul {
+        margin-top: 10%;
+        vertical-align: middle;
+    }
+
+    /* Estilos para botón que dirigirá al formulario de edición de usuario */
+    .btn-dark {
+        margin-top: 5%;
+        background-color: rgba(14, 58, 77);
+        text-align: center;
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+
+    .btn-dark a {
+        color: white;
+        font-size: 20px;
+    }
+
+    /* Estilos para el historial de compras finalizadas del usuario */
+    .container-historial {
+        margin-bottom: 5%;
+    }
+
+    .container-historial .list-group-item.item-compra {
+        border: 1px solid black;
+        text-align: left;
+    }
+
+/* FIN ESTILOS PARA EL PERFIL DE USUARIO */
