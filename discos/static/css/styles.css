@@ -22,6 +22,7 @@ body {
     font-size: 20px;
     color: black;
     background-color: rgba(255, 230, 235) !important;
+    border-bottom: 2px solid rgba(14, 58, 77, 0.836);;
 }
 
 @media (max-width: 670px) {
