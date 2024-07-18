@@ -1,42 +1,45 @@
 $(document).ready(function() {
 
-    //GENERAL
+    // FUNCIONES PARA EL SITIO EN GENERAL
+
+        // Fade-out para mensajes de confirmación
         $("#idMensajes").delay(2000).fadeOut("slow");
 
-        // Obtener el CSRF token de Django
-        var csrftoken = getCookie('csrftoken'); 
+        // MANEJO DE CSRF TOKEN
+            // Obtener el CSRF token de Django
+            var csrftoken = getCookie('csrftoken'); 
 
-        // Función para obtener el token CSRF
-        function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = cookies[i].trim();
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
+            // Función para obtener el token CSRF
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        // Verificar que la cookie empiece con el nombre deseado
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
                     }
                 }
+                return cookieValue;
             }
-            return cookieValue;
-        }
 
-        // Verificar y agregar el token CSRF en los headers de las solicitudes AJAX
-        function csrfSafeMethod(method) {
-            // estos métodos no requieren CSRF
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
+            // Verificar y agregar el token CSRF en los headers de las solicitudes AJAX
+            function csrfSafeMethod(method) {
+                // estos métodos no requieren CSRF
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
 
-        $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
                 }
-            }
-        });
-
+            });
+        // FIN MANEJO DE CSRF TOKEN
 
         // Función para actualizar el badge con la cantidad de álbumes en el carrito
         function actualizarBadgeCarrito() {
@@ -60,17 +63,23 @@ $(document).ready(function() {
 
         // Llamar a la función al cargar la página
         actualizarBadgeCarrito();
+    
+    // FIN DE FUNCIONES PARA EL SITIO EN GENERAL
+
+    //--------------------------------------------------------------------------------------------
 
     // MANEJO DE FILTROS EN MANTENEDOR DE ARTISTAS
+
+        // Aplicación de filtros - A partir de respuesta JSON retornada por la vista 'buscar_artistas'
         function fetchArtistas(query, country, page = 1) {
             fetch(`/buscar_artistas/?q=${query}&country=${country}&page=${page}`)
                 .then(response => response.json())
                 .then(data => {
-                    var tableBody = document.getElementById('artistasTable');
-                    tableBody.innerHTML = '';
-                    if (data.artistas.length === 0) {
+                    var tableBody = document.getElementById('artistasTable'); 
+                    tableBody.innerHTML = ''; // Se 'limpia' la tabla del listado
+                    if (data.artistas.length === 0) { // Si no hay concidencias, contenido se reemplaza por un mensaje indicando que no se ha encontrado nada
                         tableBody.innerHTML = '<tr><td colspan="8">No se encontraron artistas.</td></tr>';
-                    } else {
+                    } else { // Si hay concidencias, se generan nuevamente los tr con los datos del JSON
                         data.artistas.forEach(artista => {
                             var biografia = artista.biografia ? artista.biografia : 'Sin biografía';
                             var row = `<tr>
@@ -128,11 +137,14 @@ $(document).ready(function() {
                 });
         }
 
-        window.fetchArtistas = fetchArtistas;
+        // Aseguramos que la función esté disponible globalmente
+        window.fetchArtistas = fetchArtistas; 
 
+        // Obtención del filtros en el html
         var searchInputMantArtista = document.getElementById('searchInputMantArtista');
         var countrySelect = document.getElementById('countrySelect');
     
+        // Llamados a la función de filtrado cuando se ingresen valores en los filtros
         if (searchInputMantArtista && countrySelect) {
             searchInputMantArtista.addEventListener('keyup', function() {
                 var query = this.value;
@@ -151,9 +163,11 @@ $(document).ready(function() {
 
     // FIN MANEJO DE FILTROS EN MANTENEDOR DE ARTISTAS
 
+    //--------------------------------------------------------------------------------------------
 
     // MANEJO DE FILTROS EN MANTENEDOR DE ÁLBUMES
 
+        // Función para evitar que se pierda el formato de fechas deseado tras filtros **Aplica tanto para el mantenedor como para el catálogo de álbumes
         function formatDate(dateStr) {
             // Dividir la cadena de fecha en partes
             var parts = dateStr.split('-');
@@ -171,15 +185,16 @@ $(document).ready(function() {
             return `${formattedDay}/${formattedMonth}/${formattedYear}`;
         }
 
+        // Aplicación de filtros - A partir de respuesta JSON retornada por la vista 'buscar_albums'
         function fetchAlbumsMantenedor(query, formato, genero, page = 1) {
             fetch(`/buscar_albums/?q=${query}&formato=${formato}&genero=${genero}&page=${page}`)
                 .then(response => response.json())
                 .then(data => {
                     var tableBody = document.getElementById('albumsTable');
-                    tableBody.innerHTML = '';
-                    if (data.albums.length === 0) {
+                    tableBody.innerHTML = ''; // Se 'limpia' la tabla del listado
+                    if (data.albums.length === 0) { // Si no hay concidencias, contenido se reemplaza por un mensaje indicando que no se ha encontrado nada
                         tableBody.innerHTML = '<tr><td colspan="8">No se encontraron álbumes.</td></tr>';
-                    } else {
+                    } else { // Si hay concidencias, se generan nuevamente los tr con los datos del JSON
                         data.albums.forEach(album => {
                             var row = `<tr>
                                 <td>${album.id_artista}</td>
@@ -240,12 +255,15 @@ $(document).ready(function() {
                 });
         }
 
+        // Aseguramos que la función esté disponible globalmente
         window.fetchAlbumsMantenedor = fetchAlbumsMantenedor;
     
+        // Obtención del filtros en el html
         var searchInputMantAlbum = document.getElementById('searchInputMantAlbum');
         var formatoSelectMant = document.getElementById('formatoSelectMant');
         var generoSelectMant = document.getElementById('generoSelectMant');
     
+        // Llamados a la función de filtrado cuando se ingresen valores en los filtros
         if (searchInputMantAlbum && formatoSelectMant && generoSelectMant) {
             searchInputMantAlbum.addEventListener('keyup', function() {
                 var query = this.value;
@@ -273,16 +291,20 @@ $(document).ready(function() {
 
     // FIN MANEJO DE FILTROS EN MANTENEDOR DE ÁLBUMES
 
+    //--------------------------------------------------------------------------------------------
+
     // MANEJO DE FILTROS Y MODAL EN EL CATÁLOGO DE ÁLBUMES
+
+        // Aplicación de filtros - A partir de respuesta JSON retornada por la vista 'buscar_albums'
         function fetchAlbumsCatalogo(query, formato, genero, page = 1) {
             fetch(`/buscar_catalogo_albums/?q=${query}&formato=${formato}&genero=${genero}&page=${page}`)
                 .then(response => response.json())
                 .then(data => {
                     var albumsContainer = document.getElementById('albumsContainer');
-                    albumsContainer.innerHTML = '';
-                    if (data.albums.length === 0) {
-                        albumsContainer.innerHTML = '<p>No se encontraron álbumes.</p>';
-                    } else {
+                    albumsContainer.innerHTML = ''; // Se 'limpia' el contenedor con los cards de los álbumes
+                    if (data.albums.length === 0) { // Si no hay concidencias, contenido se reemplaza por un mensaje indicando que no se ha encontrado nada
+                        albumsContainer.innerHTML = '<p style="color:black; font-weight:bold; font-size: 20px;">No se encontraron álbumes.</p>';
+                    } else { // Si hay concidencias, se generan nuevamente los cards con los datos del JSON
                         data.albums.forEach(album => {
                             var albumCard = `<div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
                                 <div class="card mb-4">
@@ -308,6 +330,7 @@ $(document).ready(function() {
                         });
                     }
         
+                    // Actualizar la paginación
                     var paginationContainer = document.getElementById('paginationContainer');
                     paginationContainer.innerHTML = '';
         
@@ -354,33 +377,35 @@ $(document).ready(function() {
                 });
         }
         
-        // Asegurarse de que la función fetchAlbumsCatalogo esté disponible globalmente
+        // Asegurarse de que la función esté disponible globalmente
         window.fetchAlbumsCatalogo = fetchAlbumsCatalogo;
 
+        // Obtención del filtros en el html
         var searchInputCatAlbum = document.getElementById('searchInputCatAlbum');
         var formatoSelectCat = document.getElementById('formatoSelectCat');
         var generoSelectCat = document.getElementById('generoSelectCat');
         
+        // Llamados a la función de filtrado cuando se ingresen valores en los filtros
         if (searchInputCatAlbum && formatoSelectCat && generoSelectCat) {
             searchInputCatAlbum.addEventListener('keyup', function() {
                 var query = this.value;
                 var formato = formatoSelectCat.value;
                 var genero = generoSelectCat.value;
-                fetchAlbumsCatalogo(query, formato, genero);  // Asegúrate de usar la función correcta para el catálogo
+                fetchAlbumsCatalogo(query, formato, genero);  
             });
         
             formatoSelectCat.addEventListener('change', function() {
                 var query = searchInputCatAlbum.value;
                 var formato = this.value;
                 var genero = generoSelectCat.value;
-                fetchAlbumsCatalogo(query, formato, genero);  // Asegúrate de usar la función correcta para el catálogo
+                fetchAlbumsCatalogo(query, formato, genero);  
             });
         
             generoSelectCat.addEventListener('change', function() {
                 var query = searchInputCatAlbum.value;
                 var formato = formatoSelectCat.value;
                 var genero = this.value;
-                fetchAlbumsCatalogo(query, formato, genero);  // Asegúrate de usar la función correcta para el catálogo
+                fetchAlbumsCatalogo(query, formato, genero);  
             });
             } else {
             console.error('Uno o más elementos no se encontraron en el DOM.');
@@ -403,7 +428,6 @@ $(document).ready(function() {
                         $('#albumModal').find('.modal-body p').text(response.message);
                         $('#albumModal').modal('show'); // Mostrar el modal con el mensaje de confirmación
                         actualizarBadgeCarrito(); // Actualizar el contador del carrito
-                        console.log("se ha ejecutado la actualización de badge")
                     } else {
                         console.error('Error al agregar al carrito:', response.message);
                     }
@@ -416,10 +440,14 @@ $(document).ready(function() {
 
     // FIN MANEJO DE FILTROS Y MODAL EN EL CATÁLOGO DE ÁLBUMES
 
+    //--------------------------------------------------------------------------------------------
 
     // VALIDACIÓN FRONT-END DE FORMULARIOS
+
+        // Constante para controlar que se cumpla formato de correo electrónico - que tenga @ y posteriormente un punto (django valida solo la @)
         const formatoCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+        // Función para controlar envío de campos requeridos vacíos (incluyendo casos donde se envíen solo espacios en blanco)
         function validarCampoVacio(campo, mensajeError, idError) {
             let valor = campo.val().trim();
             if (valor === '') {
@@ -433,183 +461,209 @@ $(document).ready(function() {
             }
         }
 
-        var usernameDisponible = false;
-
-        $("#nombreusuario").focusout(function () {
-            let nombre = $(this).val().trim();
-            if (nombre === '') {
-                $(this).addClass("is-invalid");
-                $("#nombreError").text("El nombre de usuario no puede estar vacío").show();
-                usernameDisponible = false;
-            } else {
-                $(this).removeClass("is-invalid");
-                $("#nombreError").hide();
-                $.ajax({
-                    url: "chequear_disponibilidad",
-                    data: {
-                        'username': nombre
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data.is_taken) {
-                            $("#nombreusuario").addClass("is-invalid");
-                            $("#nombreError").text("El nombre de usuario ya está en uso.").show();
-                            usernameDisponible = false;
-                        } else {
-                            $("#nombreusuario").removeClass("is-invalid");
-                            $("#nombreError").hide();
-                            usernameDisponible = true;
+        // FORMULARIO DE REGISTRO DE USUARIO
+            // Validación del nombre de usuario
+            var usernameDisponible = false; // Variable que indica disponibilidad 
+            $("#nombreusuario").focusout(function () { // Se controla ingreso una vez se haya dejado de escribir en la campo y se haya pasado a otro
+                let nombre = $(this).val().trim();
+                if (nombre === '') { // Marcar como inválido cuando se deja vacío, al ser un campo obligatorio
+                    $(this).addClass("is-invalid");
+                    $("#nombreError").text("El nombre de usuario no puede estar vacío").show();
+                    usernameDisponible = false;
+                } else {
+                    $(this).removeClass("is-invalid");
+                    $("#nombreError").hide();
+                    $.ajax({ // Se comprueba disponibilidad del nombre de usuario, a partir de JSON retornado por la vista 'chequear_disponibilidad'
+                        url: "chequear_disponibilidad",
+                        data: {
+                            'username': nombre
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.is_taken) { // Se marca campo como inválido si se ingresa un usuario que ya está en uso
+                                $("#nombreusuario").addClass("is-invalid");
+                                $("#nombreError").text("El nombre de usuario ya está en uso.").show();
+                                usernameDisponible = false;
+                            } else { // Si el usuario está disponible, se marca variable como 'True'
+                                $("#nombreusuario").removeClass("is-invalid");
+                                $("#nombreError").hide();
+                                usernameDisponible = true;
+                            }
                         }
-                    }
-                });
-            }
-        });
-
-        $("#first_name").focusout(function () {
-            validarCampoVacio($(this), "El nombre no puede estar vacío", $("#firstNameError"));
-        });
-
-        $("#last_name").focusout(function () {
-            validarCampoVacio($(this), "El apellido no puede estar vacío", $("#lastNameError"));
-        });
-
-        $("#email").focusout(function () {
-            let email = $(this).val();
-            if (email.trim() !== '' && !formatoCorreo.test(email)) {
-                $(this).addClass("is-invalid");
-                $("#emailError").text("Por favor, ingrese un correo electrónico válido").show();
-            } else {
-                $(this).removeClass("is-invalid");
-                $("#emailError").hide();
-            }
-        });
-
-        $("#password").focusout(function () {
-            let password = $(this).val();
-            let nombre = $("#nombreusuario").val();
-            if (password.length < 8) {
-                $(this).addClass("is-invalid");
-                $("#passwordError").text("La contraseña debe tener al menos 8 caracteres").show();
-            } else if (!isNaN(password)) {
-                $(this).addClass("is-invalid");
-                $("#passwordError").text("La contraseña no puede ser solo numérica").show();
-            } else if (password === nombre) {
-                $(this).addClass("is-invalid");
-                $("#passwordError").text("La contraseña no puede ser igual al nombre de usuario").show();
-            } else {
-                $(this).removeClass("is-invalid");
-                $("#passwordError").hide();
-            }
-        });
-
-        // Validar el formulario antes de enviar
-        $("#registroForm").on("submit", function (e) {
-            let isValid = true;
-
-            isValid &= validarCampoVacio($("#nombreusuario"), "El nombre de usuario no puede estar vacío", $("#nombreError"));
-            isValid &= validarCampoVacio($("#first_name"), "El nombre no puede estar vacío", $("#firstNameError"));
-            isValid &= validarCampoVacio($("#last_name"), "El apellido no puede estar vacío", $("#lastNameError"));
-
-            let email = $("#email").val().trim();
-            if (email === '' || !formatoCorreo.test(email)) {
-                $("#email").addClass("is-invalid");
-                $("#emailError").text("Por favor, ingrese un correo electrónico válido").show();
-                isValid = false;
-            } else {
-                $("#email").removeClass("is-invalid");
-                $("#emailError").hide();
-            }
-
-            let password = $("#password").val();
-            let nombre = $("#nombreusuario").val();
-            if (password.length < 8 || !isNaN(password) || password === nombre) {
-                $("#password").addClass("is-invalid");
-                if (password.length < 8) {
-                    $("#passwordError").text("La contraseña debe tener al menos 8 caracteres").show();
-                } else if (!isNaN(password)) {
-                    $("#passwordError").text("La contraseña no puede ser solo numérica").show();
-                } else if (password === nombre) {
-                    $("#passwordError").text("La contraseña no puede ser igual al nombre de usuario").show();
+                    });
                 }
-                isValid = false;
-            } else {
-                $("#password").removeClass("is-invalid");
-                $("#passwordError").hide();
-            }
+            });
 
-            if (!usernameDisponible) {
-                $("#nombreusuario").addClass("is-invalid");
-                $("#nombreError").text("El nombre de usuario ya está en uso.").show();
-                isValid = false;
-            }
+            $("#first_name").focusout(function () { // Se controla ingreso una vez se haya dejado de escribir en la campo y se haya pasado a otro
+                validarCampoVacio($(this), "El nombre no puede estar vacío", $("#firstNameError"));
+            });
 
-            if (!isValid) {
-                e.preventDefault();
-                alert("Por favor, corrige los errores antes de enviar el formulario.");
-            }
-        });
+            $("#last_name").focusout(function () { // Se controla ingreso una vez se haya dejado de escribir en la campo y se haya pasado a otro
+                validarCampoVacio($(this), "El apellido no puede estar vacío", $("#lastNameError"));
+            });
+
+            $("#email").focusout(function () { // Se controla ingreso una vez se haya dejado de escribir en la campo y se haya pasado a otro
+                let email = $(this).val();
+                if (email.trim() !== '' && !formatoCorreo.test(email)) { // Se controla tanto que no esté vacío como que cumpla con el formato
+                    $(this).addClass("is-invalid");
+                    $("#emailError").text("Por favor, ingrese un correo electrónico válido").show();
+                } else {
+                    $(this).removeClass("is-invalid");
+                    $("#emailError").hide();
+                }
+            });
+
+            $("#password").focusout(function () { // Se controla ingreso una vez se haya dejado de escribir en la campo y se haya pasado a otro
+                let password = $(this).val(); // Obtener valor de contraseña
+                let nombre = $("#nombreusuario").val(); // Obtener valor del nombre de usuario para que pueda ser comparado con la contraseña
+                if (password.length < 8) { // Controlar que cumpla con logitud mínima
+                    $(this).addClass("is-invalid");
+                    $("#passwordError").text("La contraseña debe tener al menos 8 caracteres").show();
+                } else if (!isNaN(password)) { // Controlar que no sea compuesto de puros números
+                    $(this).addClass("is-invalid");
+                    $("#passwordError").text("La contraseña no puede ser solo numérica").show();
+                } else if (password === nombre) { // Controlar que no sea igual al nombre de usuario
+                    $(this).addClass("is-invalid");
+                    $("#passwordError").text("La contraseña no puede ser igual al nombre de usuario").show();
+                } else {
+                    $(this).removeClass("is-invalid");
+                    $("#passwordError").hide();
+                }
+            });
+
+            // Validación final del formulario antes de enviar
+            $("#registroForm").on("submit", function (e) { 
+                // Variable que verifica si el formulario en su totalidad es válido
+                let isValid = true;
+
+                // Valida que los campos no estén vacíos, de lo contrario, isValid pasa a ser False
+                isValid &= validarCampoVacio($("#nombreusuario"), "El nombre de usuario no puede estar vacío", $("#nombreError"));
+                isValid &= validarCampoVacio($("#first_name"), "El nombre no puede estar vacío", $("#firstNameError"));
+                isValid &= validarCampoVacio($("#last_name"), "El apellido no puede estar vacío", $("#lastNameError"));
+
+                // Validación de correo electrónico - que no esté vacío y que cumpla con formato
+                let email = $("#email").val().trim();
+                if (email === '' || !formatoCorreo.test(email)) {
+                    $("#email").addClass("is-invalid");
+                    $("#emailError").text("Por favor, ingrese un correo electrónico válido").show();
+                    isValid = false;
+                } else {
+                    $("#email").removeClass("is-invalid");
+                    $("#emailError").hide();
+                }
+
+                // Validación de contraseña - longitud, integridad, que sea alfanumérica
+                let password = $("#password").val();
+                let nombre = $("#nombreusuario").val();
+                if (password.length < 8 || !isNaN(password) || password === nombre) {
+                    $("#password").addClass("is-invalid");
+                    if (password.length < 8) {
+                        $("#passwordError").text("La contraseña debe tener al menos 8 caracteres").show();
+                    } else if (!isNaN(password)) {
+                        $("#passwordError").text("La contraseña no puede ser solo numérica").show();
+                    } else if (password === nombre) {
+                        $("#passwordError").text("La contraseña no puede ser igual al nombre de usuario").show();
+                    }
+                    isValid = false;
+                } else {
+                    $("#password").removeClass("is-invalid");
+                    $("#passwordError").hide();
+                }
+
+                // Validar que nombre de usuario no esté en uso
+                if (!usernameDisponible) {
+                    $("#nombreusuario").addClass("is-invalid");
+                    $("#nombreError").text("El nombre de usuario ya está en uso.").show();
+                    isValid = false;
+                }
+
+                // Verificación final del formulario completo - si no es valido, informará mediante alert que hay errores
+                if (!isValid) {
+                    e.preventDefault();
+                    alert("Por favor, corrige los errores antes de enviar el formulario.");
+                }
+            });
+        // FIN FORMULARIO DE REGISTRO DE USUARIO
+
+        // FORMULARIO DE CONTACTO
+
+            // Validar que nombre no esté vacío
+            $("#id_nombre").focusout(function () { // Se ejecuta apenas usuario termine de escribir y pase a otro campo
+                let nombre = $(this).val();
+                if (nombre.trim() === '') {
+                    $("#id_nombre").addClass("is-invalid");
+                    $("#nombreError").text("El campo de nombre no puede estar vacío.").show();
+                } else {
+                    $("#id_nombre").removeClass("is-invalid");
+                    $("#nombreError").hide();
+                }
+            });
+
+            // Validar que correo electrónico no esté vacío y que cumpla con el formato
+            $("#id_correo_electronico").focusout(function () { // Se ejecuta apenas usuario termine de escribir y pase a otro campo
+                let correo = $(this).val();
+                if (correo.trim() !== '' && !formatoCorreo.test(correo)) {
+                    $("#id_correo_electronico").addClass("is-invalid");
+                    $("#correoError").text("Formato de correo electrónico inválido").show();
+                } else {
+                    $("#id_correo_electronico").removeClass("is-invalid");
+                    $("#correoError").hide();
+                }
+            });
+
+            // Validad que mensaje no esté vacío
+            $("#id_mensaje").focusout(function () { // Se ejecuta apenas usuario termine de escribir y pase a otro campo
+                let mensaje = $(this).val();
+                if (mensaje.trim() === '') {
+                    $("#id_mensaje").addClass("is-invalid");
+                    $("#mensajeError").text("El mensaje no puede estar vacío.").show();
+                } else {
+                    $("#id_nombre").removeClass("is-invalid");
+                    $("#mensajeError").hide();
+                }
+            });
         
+            // Validación final del formulario antes de enviar
+            $("#btnEnviarForm").click(function (event) {
+                let nombre = $("#id_nombre").val();
+                let correo = $("#id_correo_electronico").val();
+                let mensaje = $("#id_mensaje").val();
+                let formularioValido = true; // Variable que verifica si el formulario en su totalidad es válido
 
-        $("#id_nombre").focusout(function () {
-            let nombre = $(this).val();
-            if (nombre.trim() === '') {
-            $("#id_nombre").addClass("is-invalid");
-            $("#nombreError").text("El campo de nombre no puede estar vacío.").show();
-            } else {
-            $("#id_nombre").removeClass("is-invalid");
-            $("#nombreError").hide();
-            }
-        });
-
-        $("#id_correo_electronico").focusout(function () {
-        let correo = $(this).val();
-        if (correo.trim() !== '' && !formatoCorreo.test(correo)) {
-            $("#id_correo_electronico").addClass("is-invalid");
-            $("#correoError").text("Formato de correo electrónico inválido").show();
-        } else {
-            $("#id_correo_electronico").removeClass("is-invalid");
-            $("#correoError").hide();
-        }
-        });
-
-        $("#id_mensaje").focusout(function () {
-            let mensaje = $(this).val();
-            if (mensaje.trim() === '') {
-            $("#id_mensaje").addClass("is-invalid");
-            $("#mensajeError").text("El mensaje no puede estar vacío.").show();
-            } else {
-            $("#id_nombre").removeClass("is-invalid");
-            $("#mensajeError").hide();
-            }
-        });
-    
-        $("#btnEnviarForm").click(function (event) {
-        let correo = $("#id_correo_electronico").val();
-        let mensaje = $("#id_mensaje").val();
-        let formularioValido = true;
-    
-        if (correo.trim() == '') {
-            $("#id_correo_electronico").addClass("is-invalid");
-            formularioValido = false;
-        } else if (!formatoCorreo.test(correo)) {
-            $("#id_correo_electronico").addClass("is-invalid");
-            formularioValido = false;
-        }
-    
-        if (mensaje.trim() == '') {
-            $("#id_mensaje").addClass("is-invalid");
-            formularioValido = false;
-        }
-    
-        if (!formularioValido) {
-            event.preventDefault();
-            alert("Por favor, corrige los errores antes de enviar el formulario.");
-        }
-        });
-    
-        $("input, textarea").focus(function () {
-        $(this).removeClass("is-invalid");
-        });
+                // Validar que nombre no esté vacío
+                if (nombre.trim() == '') {
+                    $("id_nombre").addClass("is-invalid");
+                    formularioValido = false;
+                }
+            
+                // Validar que correo electrónico no esté vacío y que cumpla con el formato
+                if (correo.trim() == '') {
+                    $("#id_correo_electronico").addClass("is-invalid");
+                    formularioValido = false;
+                } else if (!formatoCorreo.test(correo)) {
+                    $("#id_correo_electronico").addClass("is-invalid");
+                    formularioValido = false;
+                }
+            
+                // Validar que mensaje no esté vacío
+                if (mensaje.trim() == '') {
+                    $("#id_mensaje").addClass("is-invalid");
+                    formularioValido = false;
+                }
+            
+                // Verificación final del formulario completo - si no es valido, informará mediante alert que hay errores
+                if (!formularioValido) {
+                    event.preventDefault();
+                    alert("Por favor, corrige los errores antes de enviar el formulario.");
+                }
+            });
+        
+            // Campos no deben estar marcados como inválidos mientras tenga focus
+            $("input, textarea").focus(function () {
+                $(this).removeClass("is-invalid");
+            });
+        // FIN FORMULARIO DE CONTACTO
 
     // FIN VALIDACIÓN FRONT-END DE FORMULARIOS
+
 });
