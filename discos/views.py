@@ -180,6 +180,7 @@ def index(request):
 def albums_por_decada():
     # Define los rangos de las décadas
     decades = [
+        (date(1910, 1, 1), date(1919, 12, 31)),
         (date(1920, 1, 1), date(1929, 12, 31)),
         (date(1930, 1, 1), date(1939, 12, 31)),
         (date(1940, 1, 1), date(1949, 12, 31)),

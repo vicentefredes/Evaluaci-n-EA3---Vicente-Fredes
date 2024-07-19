@@ -111,10 +111,16 @@
                         <div class="container-fluid bg-white mb-4 p-4">
                             <h2>Cantidad de álbumes por formato</h2>
                             <div class="row justify-content-center">
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     <ul>
                                         {% for stats in albumes_por_formato %}
                                             <li>{{ stats.id_formato__formato }}: {{ stats.num_albumes }}</li>
+                                            {% if forloop.counter|divisibleby:4 and not forloop.last %}
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <ul>
+                                            {% endif %}
                                         {% endfor %}
                                     </ul>
                                 </div>
@@ -127,14 +133,14 @@
                         <div class="container-fluid bg-white mb-4 p-4">
                             <h2>Cantidad de álbumes por década</h2>
                             <div class="row justify-content-center">
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                     <ul>
                                         {% for stats in estadisticas_por_decada %}
                                             <li>{{ stats.decada }}: {{ stats.num_albumes }}</li>
-                                            {% if forloop.counter|divisibleby:6 and not forloop.last %}
+                                            {% if forloop.counter|divisibleby:4 and not forloop.last %}
                                                 </ul>
                                             </div>
-                                            <div class="col-md-5">
+                                            <div class="col-md-4">
                                                 <ul>
                                             {% endif %}
                                         {% endfor %}
